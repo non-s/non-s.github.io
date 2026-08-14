@@ -50,9 +50,9 @@ MODEL_FILE = DATA_DIR / "view_predictor.json"
 
 # Slots de cron dos shorts (UTC) — usado pelo dashboard para enumerar os
 # próximos agendamentos. Definido aqui (e não no workflow) para que o
-# dashboard não dependa de parsing de YAML do workflow. pata-jazz-shorts.yml
-# roda 1x por hora (minuto 7 de cada hora), entao todas as 24 horas contam.
-# Deve permanecer alinhado com `.github/workflows/pata-jazz-shorts.yml`.
+# dashboard não dependa de parsing de YAML do workflow. liquid-wire-video.yml
+# roda 1x por hora (minuto 17 de cada hora), entao todas as 24 horas contam.
+# Deve permanecer alinhado com `.github/workflows/liquid-wire-video.yml`.
 # O canal publica um Short por dia às 18:07 UTC; o minuto não participa das
 # features do modelo, portanto somente a hora é necessária aqui.
 SHORTS_CRON_HOURS_UTC: tuple[int, ...] = (18,)

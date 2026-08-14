@@ -1,4 +1,4 @@
-"""Verifica se a conta do Pata Jazz pode usar a API de transmissao ao vivo.
+"""Verifica se a conta do Liquid Wire pode usar a API de transmissao ao vivo.
 
 Nao cria broadcast, stream nem altera configuracoes do canal. O relatorio
 serve como pre-flight antes de uma live real, evitando deixar um evento vazio

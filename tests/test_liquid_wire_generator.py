@@ -13,9 +13,9 @@ from utils.liquid_wire_timeline import build_timeline
 
 
 def test_dimensions_match_youtube_format() -> None:
-    assert liquid._dimensions_for_preset("short") == (720, 1280)
-    assert liquid._dimensions_for_preset("long") == (1280, 720)
-    assert liquid._dimensions_for_preset("live-test") == (1280, 720)
+    assert liquid._dimensions_for_preset("short") == (1080, 1920)
+    assert liquid._dimensions_for_preset("long") == (1920, 1080)
+    assert liquid._dimensions_for_preset("live-test") == (1920, 1080)
 
 
 def test_profile_is_deterministic_for_seed() -> None:

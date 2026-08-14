@@ -16,7 +16,7 @@ from utils.paths import data_dir
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Generate the Pata Jazz editorial calendar")
+    parser = argparse.ArgumentParser(description="Generate the Liquid Wire editorial calendar")
     parser.add_argument("--days", type=int, default=30)
     parser.add_argument("--start", type=date.fromisoformat, default=date.today())
     args = parser.parse_args(argv)

@@ -3,9 +3,9 @@ from utils.editorial_brief import build_editorial_brief
 
 def test_short_brief_is_a_discovery_asset():
     brief = build_editorial_brief(
-        scene="sleepy cat by window", mood="relax", kind="short", duration=30, hook="Cozy cat"
+        scene="calm wireframe flow", mood="focus", kind="short", duration=30, hook="Calm wireframe"
     )
-    assert brief["pillar"] == "atmospheric-pet-jazz"
+    assert brief["pillar"] == "geometric-generative"
     assert brief["format_role"] == "discovery and funnel entry"
     assert brief["primary_metric"] == "stayed to watch"
     assert brief["orientation"] == "vertical 9:16"
@@ -13,9 +13,9 @@ def test_short_brief_is_a_discovery_asset():
 
 def test_long_brief_is_a_retention_asset():
     brief = build_editorial_brief(
-        scene="dog relaxing", mood="relax", kind="long", duration=1800, hook="Gentle dog"
+        scene="fluid mesh form", mood="ambient", kind="long", duration=1800, hook="Fluid mesh"
     )
-    assert brief["pillar"] == "gentle-dog-jazz"
+    assert brief["pillar"] == "organic-generative"
     assert brief["format_role"] == "retention session"
     assert brief["primary_metric"] == "average view duration"
     assert brief["orientation"] == "horizontal 16:9"

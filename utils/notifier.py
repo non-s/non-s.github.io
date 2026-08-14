@@ -1,6 +1,6 @@
 """utils/notifier.py — envia alertas via webhook (Slack-compativel ou generico).
 
-Lê a URL do webhook da variavel de ambiente ``PATA_JAZZ_ALERT_WEBHOOK``. Se
+Lê a URL do webhook da variavel de ambiente ``LIQUID_WIRE_ALERT_WEBHOOK``. Se
 nao estiver definida, apenas loga a mensagem e retorna False (sem falhar o
 fluxo que chamou - o alerta e best-effort, nao bloqueante).
 
@@ -18,7 +18,8 @@ import urllib.request
 
 log = logging.getLogger(__name__)
 
-WEBHOOK_ENV = "PATA_JAZZ_ALERT_WEBHOOK"
+WEBHOOK_ENV = "LIQUID_WIRE_ALERT_WEBHOOK"
+_LEGACY_WEBHOOK_ENV = "PATA_JAZZ_ALERT_WEBHOOK"
 _TIMEOUT_SECONDS = 10
 
 
@@ -27,7 +28,7 @@ def _is_slack_webhook(url: str) -> bool:
 
 
 def send_alert(message: str, level: str = "warning") -> bool:
-    """Envia ``message`` para o webhook configurado em ``PATA_JAZZ_ALERT_WEBHOOK``.
+    """Envia ``message`` para o webhook configurado em ``LIQUID_WIRE_ALERT_WEBHOOK``.
 
     Retorna True se enviou com sucesso, False caso contrario (webhook nao
     configurado, erro de rede ou HTTP != 2xx). Nunca levanta excecao: o
@@ -35,9 +36,11 @@ def send_alert(message: str, level: str = "warning") -> bool:
 
     Suporta dois formatos de payload:
     - Slack-compatible (URL contem hooks.slack.com): ``{"text": message}``
-    - Generico: ``{"level": level, "message": message, "source": "pata-jazz"}``
+    - Generico: ``{"level": level, "message": message, "source": "liquid-wire"}``
     """
     url = os.environ.get(WEBHOOK_ENV, "").strip()
+    if not url:
+        url = os.environ.get(_LEGACY_WEBHOOK_ENV, "").strip()
     if not url:
         log.info("Alerta (sem webhook configurado) [%s]: %s", level, message)
         return False
@@ -45,7 +48,7 @@ def send_alert(message: str, level: str = "warning") -> bool:
     if _is_slack_webhook(url):
         payload = {"text": message}
     else:
-        payload = {"level": level, "message": message, "source": "pata-jazz"}
+        payload = {"level": level, "message": message, "source": "liquid-wire"}
 
     body = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(  # nosec B310

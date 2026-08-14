@@ -34,7 +34,7 @@ class TestExtractKeywordsFromTitle:
         assert "cat" in kws
 
     def test_filters_niche_stop_words(self):
-        kws = sync_trending._extract_keywords_from_title("Pata Jazz Music Video")
+        kws = sync_trending._extract_keywords_from_title("Liquid Wire Music Video")
         assert "pata" not in kws
         assert "jazz" not in kws
         assert "music" not in kws
@@ -121,9 +121,9 @@ class TestSeoKeywordsTrendingIntegration:
     def test_returns_static_when_no_dynamic_file(self, tmp_path, monkeypatch):
         monkeypatch.setattr(seo_keywords, "data_dir", lambda: tmp_path)
         result = seo_keywords.trending_keywords()
-        # Pelo menos as estaticas (thunderstorm/fireworks/etc) devem aparecer
+        # Pelo menos as estaticas (generative art trending terms) devem aparecer
         assert len(result) > 0
-        assert "thunderstorm music for dogs" in result
+        assert "ai generated art video" in result
 
     def test_dynamic_prepended_to_static(self, tmp_path, monkeypatch):
         monkeypatch.setattr(seo_keywords, "data_dir", lambda: tmp_path)
@@ -133,7 +133,7 @@ class TestSeoKeywordsTrendingIntegration:
         assert "custom trending 1" in result
         assert "custom trending 2" in result
         # Estaticas ainda presentes
-        assert "thunderstorm music for dogs" in result
+        assert "ai generated art video" in result
 
     def test_dynamic_appears_first(self, tmp_path, monkeypatch):
         monkeypatch.setattr(seo_keywords, "data_dir", lambda: tmp_path)
@@ -145,12 +145,12 @@ class TestSeoKeywordsTrendingIntegration:
     def test_no_duplicates(self, tmp_path, monkeypatch):
         monkeypatch.setattr(seo_keywords, "data_dir", lambda: tmp_path)
         trending_file = tmp_path / "trending_keywords.json"
-        # "thunderstorm music for dogs" ja esta no estatico; nao duplica
+        # "ai generated art video" ja esta no estatico; nao duplica
         trending_file.write_text(
-            json.dumps({"keywords": ["thunderstorm music for dogs", "new keyword"]})
+            json.dumps({"keywords": ["ai generated art video", "new keyword"]})
         )
         result = seo_keywords.trending_keywords()
-        assert result.count("thunderstorm music for dogs") == 1
+        assert result.count("ai generated art video") == 1
 
 
 class TestSearchYoutube:

@@ -3,12 +3,12 @@
 Parte da "humanizacao" da automacao: o canal nao pode parecer um feed de bot.
 Alem de publicar e responder comentarios, a pagina do canal precisa respirar.
 Este script rotaciona a descricao (about) e as keywords do canal por semana
-ISO, reforçando angulos diferentes da marca (relaxamento, rotina, proposito),
-com IA e fallback local. Roda no workflow pata-jazz-identity.yml (semanal),
+ISO, reforçando angulos diferentes da marca (ambient, foco, generativo),
+com IA e fallback local. Roda no workflow liquid-wire-identity.yml (semanal),
 mas tambem aceita disparo manual.
 
 Guards:
-- PATA_JAZZ_ENABLED=1 e PATA_JAZZ_IDENTITY_ENABLED=1 para ligar (mesmo
+- LIQUID_WIRE_ENABLED=1 e LIQUID_WIRE_IDENTITY_ENABLED=1 para ligar (mesmo
   padrao dos outros workflows).
 - Sem YOUTUBE_TOKEN/credenciais, o script loga e retorna 1 (nao quebra CI).
 
@@ -48,16 +48,19 @@ def _own_channel_id(service) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Atualiza a identidade do Pata Jazz (about/keywords)")
+    parser = argparse.ArgumentParser(description="Atualiza a identidade do Liquid Wire (about/keywords)")
     parser.add_argument("--dry-run", action="store_true", help="Mostra a identidade-alvo sem publicar")
     parser.add_argument("--force", action="store_true", help="Ignora a trava de 1x por semana")
-    parser.add_argument("--no-guard", action="store_true", help="Ignora os guards de env (PATA_JAZZ_ENABLED/IDENTITY)")
+    parser.add_argument(
+        "--no-guard", action="store_true",
+        help="Ignora os guards de env (LIQUID_WIRE_ENABLED/IDENTITY)",
+    )
     args = parser.parse_args()
 
     configure_logging()
 
-    enabled_var = "PATA_JAZZ_ENABLED"
-    identity_var = "PATA_JAZZ_IDENTITY_ENABLED"
+    enabled_var = "LIQUID_WIRE_ENABLED"
+    identity_var = "LIQUID_WIRE_IDENTITY_ENABLED"
 
     # Guards de feature flag: 1 para ligar. Em local/CI de teste, use
     # --no-guard ou configure as env vars.

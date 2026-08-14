@@ -117,8 +117,8 @@ def test_run_agency_council_main(monkeypatch, capsys):
 
 
 def test_respond_comments_guard_and_channel_lookup(monkeypatch):
-    monkeypatch.delenv("PATA_JAZZ_ENABLED", raising=False)
-    monkeypatch.delenv("PATA_JAZZ_COMMENTS_ENABLED", raising=False)
+    monkeypatch.delenv("LIQUID_WIRE_ENABLED", raising=False)
+    monkeypatch.delenv("LIQUID_WIRE_COMMENTS_ENABLED", raising=False)
     monkeypatch.setattr("sys.argv", ["respond-comments"])
     assert respond_comments.main() == 0
 
@@ -172,7 +172,7 @@ def test_refresh_oauth_success(monkeypatch, tmp_path):
     monkeypatch.setattr(refresh_oauth_token, "_gh_secret_set", secret_set := MagicMock(return_value=0))
     monkeypatch.setenv("GH_PAT", "test-pat")
 
-    assert refresh_oauth_token.refresh_and_persist(token, "YOUTUBE_TOKEN", "pata_jazz") == 0
+    assert refresh_oauth_token.refresh_and_persist(token, "YOUTUBE_TOKEN", "liquid_wire") == 0
     credentials.refresh.assert_called_once()
     saved.assert_called_once_with(credentials, str(token))
     secret_set.assert_called_once_with("YOUTUBE_TOKEN", '{"token":"new"}', "test-pat")
@@ -181,16 +181,16 @@ def test_refresh_oauth_success(monkeypatch, tmp_path):
 def test_refresh_oauth_failure_paths(monkeypatch, tmp_path):
     token = tmp_path / "youtube_token.json"
     monkeypatch.setattr(refresh_oauth_token, "_load_token", lambda: None)
-    assert refresh_oauth_token.refresh_and_persist(token, "YOUTUBE_TOKEN", "pata_jazz") == 2
+    assert refresh_oauth_token.refresh_and_persist(token, "YOUTUBE_TOKEN", "liquid_wire") == 2
 
     monkeypatch.setattr(refresh_oauth_token, "_load_token", lambda: _fake_credentials(refresh_token=None))
-    assert refresh_oauth_token.refresh_and_persist(token, "YOUTUBE_TOKEN", "pata_jazz") == 2
+    assert refresh_oauth_token.refresh_and_persist(token, "YOUTUBE_TOKEN", "liquid_wire") == 2
 
     credentials = _fake_credentials()
     credentials.refresh.side_effect = RuntimeError("expired")
     monkeypatch.setattr(refresh_oauth_token, "_load_token", lambda: credentials)
     monkeypatch.setattr(refresh_oauth_token, "_open_issue_token_expired", opened := MagicMock())
-    assert refresh_oauth_token.refresh_and_persist(token, "YOUTUBE_TOKEN", "pata_jazz") == 1
+    assert refresh_oauth_token.refresh_and_persist(token, "YOUTUBE_TOKEN", "liquid_wire") == 1
     opened.assert_called_once()
 
 
@@ -201,12 +201,12 @@ def test_refresh_oauth_requires_pat_and_handles_cli_failure(monkeypatch, tmp_pat
     monkeypatch.setattr(refresh_oauth_token, "_save_token", MagicMock())
     monkeypatch.delenv("GH_PAT", raising=False)
     monkeypatch.setattr(refresh_oauth_token, "_open_issue_token_expired", opened := MagicMock())
-    assert refresh_oauth_token.refresh_and_persist(token, "YOUTUBE_TOKEN", "pata_jazz") == 1
+    assert refresh_oauth_token.refresh_and_persist(token, "YOUTUBE_TOKEN", "liquid_wire") == 1
     opened.assert_called_once()
 
     monkeypatch.setenv("GH_PAT", "test-pat")
     monkeypatch.setattr(refresh_oauth_token, "_gh_secret_set", MagicMock(return_value=1))
-    assert refresh_oauth_token.refresh_and_persist(token, "YOUTUBE_TOKEN", "pata_jazz") == 1
+    assert refresh_oauth_token.refresh_and_persist(token, "YOUTUBE_TOKEN", "liquid_wire") == 1
 
 
 def test_refresh_oauth_main_requires_token(monkeypatch, tmp_path):
@@ -217,7 +217,7 @@ def test_refresh_oauth_main_requires_token(monkeypatch, tmp_path):
     missing.write_text("{}")
     monkeypatch.setattr(refresh_oauth_token, "refresh_and_persist", run := MagicMock(return_value=0))
     assert refresh_oauth_token.main() == 0
-    run.assert_called_once_with(missing, "YOUTUBE_TOKEN", "pata_jazz")
+    run.assert_called_once_with(missing, "YOUTUBE_TOKEN", "liquid_wire")
 
 
 def test_gh_secret_set_sends_secret_through_stdin(monkeypatch):

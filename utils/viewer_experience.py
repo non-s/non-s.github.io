@@ -1,4 +1,4 @@
-"""Human-centred, non-manipulative attention review for Pata Jazz assets."""
+"""Human-centred, non-manipulative attention review for Liquid Wire assets."""
 
 from __future__ import annotations
 

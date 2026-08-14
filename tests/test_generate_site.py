@@ -110,7 +110,8 @@ class TestVideoObjectLd:
 
 
 class TestYoutubeFeedFallback:
-    def test_parses_public_feed_entry(self):
+    def test_parses_public_feed_entry(self, monkeypatch):
+        monkeypatch.setattr(site, "_FEED_URL", "https://www.youtube.com/feeds/videos.xml?channel_id=UC123")
         xml = b'''<?xml version="1.0"?>
         <feed xmlns="http://www.w3.org/2005/Atom"
               xmlns:yt="http://www.youtube.com/xml/schemas/2015"
@@ -134,7 +135,7 @@ class TestYoutubeFeedFallback:
             {
                 "video_id": "abc123",
                 "title": "Cozy Cat Jazz",
-                "description": "A gentle Pata Jazz pet moment with soft jazz music.",
+                "description": "A Liquid Wire generative art moment with original procedural music.",
                 "published_at": "2026-08-11T00:00:00+00:00",
                 "views": 0,
                 "likes": 0,
@@ -144,7 +145,8 @@ class TestYoutubeFeedFallback:
             }
         ]
 
-    def test_feed_failure_returns_empty_list(self):
+    def test_feed_failure_returns_empty_list(self, monkeypatch):
+        monkeypatch.setattr(site, "_FEED_URL", "https://www.youtube.com/feeds/videos.xml?channel_id=UC123")
         with patch("scripts.generate_site.urlopen", side_effect=OSError("offline")):
             assert site._youtube_feed_entries() == []
 
@@ -189,8 +191,8 @@ class TestRenderIndex:
         html = site._render_index([])
         assert html.startswith("<!doctype html>")
         assert "</html>" in html
-        assert "https://www.youtube.com/@PataJazz-n5n" in html
-        assert "Fresh Pata Jazz videos are being indexed" in html
+        assert "https://www.youtube.com/@LiquidWireStudio" in html
+        assert "Fresh Liquid Wire videos are being indexed" in html
 
     def test_includes_canonical_and_social_metadata(self):
         html = site._render_index([])

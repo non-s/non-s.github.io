@@ -46,7 +46,7 @@ def _parse_args(argv: list[str] | None = None) -> tuple[int, bool, bool]:
     """Resolve count/upload/schedule: argparse se presente, com fallback para
     env vars (BATCH_COUNT/BATCH_UPLOAD/BATCH_SCHEDULE). Mantem compatibilidade
     com workflows que injetam via environment."""
-    parser = argparse.ArgumentParser(description="Batch generator Pata Jazz (shorts)")
+    parser = argparse.ArgumentParser(description="Batch generator Liquid Wire (shorts)")
     parser.add_argument("--count", default=None, help="1..10")
     parser.add_argument("--upload", default=None, help="true|false")
     parser.add_argument("--schedule", default=None, help="true|false")
@@ -106,8 +106,8 @@ def main(argv: list[str] | None = None) -> int:
         log.info("Slots de publicação reservados: %s", [json.loads(json.dumps(s)) for s in slots])
 
     for i in range(count):
-        log.info("=== Batch %d/%d (short pata_jazz) ===", i + 1, count)
-        rc = _run([sys.executable, "generate_pata_jazz_short.py"])
+        log.info("=== Batch %d/%d (short liquid_wire) ===", i + 1, count)
+        rc = _run([sys.executable, "generate_liquid_wire_video.py", "--preset", "short"])
         if rc != 0:
             log.error("Falha ao gerar short %d", i + 1)
             return rc
@@ -129,7 +129,7 @@ def main(argv: list[str] | None = None) -> int:
                 log.error("Falha no upload %d", i + 1)
                 return rc
 
-    log.info("Batch concluido: %d shorts (pata_jazz)", count)
+    log.info("Batch concluido: %d shorts (liquid_wire)", count)
     return 0
 
 

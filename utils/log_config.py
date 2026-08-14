@@ -1,5 +1,5 @@
 """
-utils/log_config.py — configuração centralizada de logging para o Pata Jazz.
+utils/log_config.py — configuração centralizada de logging para o Liquid Wire.
 """
 
 from __future__ import annotations

@@ -1,16 +1,16 @@
 """
-utils/seo_keywords.py — SEO agressivo para o Pata Jazz.
+utils/seo_keywords.py — SEO agressivo para o Liquid Wire.
 
 Títulos, descrições e hashtags são otimizados para palavras-chave de alto
-volume real no nicho "pet relaxation music". O objetivo é dominar buscas como
-"music for cats to sleep", "calming music for anxious dogs" e "jazz for pets".
+volume real no nicho "generative art visuals". O objetivo é dominar buscas como
+"procedural animation", "ambient visuals" e "generative art music".
 
-Regras editoriais (Operação Zeus):
+Regras editoriais:
 - 100% em inglês (volume de busca global é muito maior).
 - Títulos devem espelhar o que as pessoas digitam no YouTube.
 - Usar gatilhos mentais: promessa específica, curiosidade, prova social, empatia.
 - Descrições longas (até 1500 chars) com keywords semânticas, timestamps e CTAs.
-- Hashtags em camadas: brand + animal + problema + música + formato.
+- Hashtags em camadas: brand + estilo + mood + música + formato.
 """
 
 from __future__ import annotations
@@ -38,6 +38,7 @@ _USED_TITLES_MAX = 120
 _HISTORICAL_UNSAFE_TERMS = (
     "anxiety relief", "stress relief", "calm down", "deep sleep",
     "separation anxiety", "reduce anxiety", "reduce stress",
+    "healing", "cure", "treatment", "therapy", "medical",
 )
 
 
@@ -83,12 +84,12 @@ def recent_titles() -> list[str]:
         return []
 
 
-# Palavras de marca/constantes que todo titulo carrega ("Pata", "Jazz"). Como
+# Palavras de marca/constantes que todo titulo carrega ("Liquid", "Wire"). Como
 # aparecem em 100% dos titulos, nao discriminam nada e so inflariam a
 # similaridade; sao ignoradas no anti-repeat.
 _TITLE_STOP_WORDS = frozenset({
-    "pata", "jazz", "cat", "dog", "kitten", "puppy",
-    "for", "to", "and", "the", "a", "music",
+    "liquid", "wire", "generative", "procedural", "ambient", "visual",
+    "for", "to", "and", "the", "a", "music", "art",
 })
 
 
@@ -122,89 +123,95 @@ def _title_pattern_performance_file() -> Path:
 
 
 # YouTube aceita ate 15 hashtags, mas descricoes com muitas leem como spam;
-# 8-10 cobre marca + animal + problema + musica + formato sem exagerar.
+# 8-10 cobre marca + estilo + mood + musica + formato sem exagerar.
 _MAX_HASHTAGS = 10
 
-# SEO can describe the music and the moment, but must not imply a medical or
-# behavioral outcome for an animal. These phrases are excluded from generated
-# description keyword blocks as well as the surrounding copy below.
+# SEO must not imply medical, therapeutic, or behavioral outcomes. These
+# phrases are excluded from generated description keyword blocks and copy.
 UNSUPPORTED_OUTCOME_TERMS = (
     "anxiety relief",
     "stress relief",
     "calm down",
     "deep sleep",
     "to sleep",
-    "anxious pets",
-    "anxious dogs",
-    "anxious cats",
     "reduce anxiety",
     "reduce stress",
-    "helps pets sleep",
-    "helps dogs sleep",
-    "helps cats sleep",
-    "music for cats to sleep",
-    "music for dogs to sleep",
+    "healing music",
+    "cure",
+    "treatment",
+    "therapy music",
+    "medical",
 )
 
 
 def has_unsupported_outcome_claim(text: str) -> bool:
-    """Return whether text makes a prohibited pet outcome claim."""
+    """Return whether text makes a prohibited outcome claim."""
     lowered = text.lower()
     return any(term in lowered for term in UNSUPPORTED_OUTCOME_TERMS)
 
-# Keywords de alto volume real para o nicho pet + relaxation + jazz.
+# Keywords de alto volume real para o nicho generative art + ambient visuals.
 # Fonte: buscas reais do YouTube/Google (volume aproximado, em ingles).
 HIGH_VOLUME_KEYWORDS: dict[str, object] = {
     "primary": [
-        "music for cats",
-        "music for dogs",
-        "relaxing music for cats",
-        "relaxing music for dogs",
-        "calming music for dogs",
-        "calming music for cats",
-        "music for pets",
-        "jazz for cats",
-        "jazz for dogs",
+        "generative art",
+        "procedural animation",
+        "ambient visuals",
+        "abstract video",
+        "liquid wireframe",
+        "relaxing visuals",
+        "visual art music",
+        "procedural visuals",
+        "generative visuals",
     ],
     "long_tail": [
-        "soft jazz for cats",
-        "soft jazz for dogs",
-        "instrumental music for cats",
-        "instrumental music for dogs",
-        "jazz music for pet parents",
-        "cozy cat video with jazz",
-        "cozy dog video with jazz",
-        "jazz music to relax my cat",
-        "soft jazz for pets",
-        "soothing music for pets",
-        "music for pets while owners are away",
+        "slow generative ambient visuals",
+        "procedural art for focus",
+        "ambient wireframe motion",
+        "abstract visual for studying",
+        "generative art stream",
+        "procedural visual radio",
+        "liquid wireframe flow",
+        "slowform ambient visual",
+        "calm wireframe animation",
+        "ambient loop for reading",
+        "generative art for deep work",
     ],
     "trending": [
-        "thunderstorm music for dogs",
-        "fireworks pet music",
-        "new years eve pet jazz",
-        "4th of july dog jazz",
-        "halloween pet jazz",
+        "ai generated art video",
+        "procedural music visualizer",
+        "ambient live wallpaper",
+        "generative art short",
+        "wireframe art loop",
     ],
     "emotion": [
         "relaxation",
         "peaceful",
         "tranquil",
         "calming",
-        "soothing",
+        "hypnotic",
+        "focus",
+        "late night",
     ],
-    "animal_specific": {
-        "cat": [
-            "cat night jazz",
-            "music for kittens",
-            "cat calming music",
-            "gentle jazz for cats",
+    "style_specific": {
+        "wireframe": [
+            "liquid wireframe motion",
+            "wireframe flow art",
+            "procedural wireframe",
         ],
-        "dog": [
-            "dog night jazz",
-            "music for puppies",
-            "dog calming music",
-            "gentle jazz for dogs",
+        "organic": [
+            "organic generative art",
+            "fluid mesh visual",
+            "corral growth animation",
+        ],
+        "geometric": [
+            "geometric generative art",
+            "crystal lattice visual",
+            "abstract geometry loop",
+        ],
+        "nebula": [
+            "nebula generative visual",
+            "particle cloud art",
+            "cosmic ambient visual",
         ],
     },
 }
@@ -221,101 +228,99 @@ EMOCAO_BENEFICIOS = {
 
 # CTAs otimizados para conversão (inscrição, like, comentário, sessão)
 CTAS = [
-    "🐾 Subscribe for more gentle pet and jazz moments.",
-    "🔔 Hit the bell so YouTube notifies you when the next calm track drops.",
-    "💬 Tell us which moment made you smile.",
-    "👍 Like this video — it tells YouTube to recommend it to more pet parents.",
-    "🔗 Share this with someone who enjoys calm pet videos.",
-    "📺 Watch the next one — it picks up right where this calm moment ends.",
-    "😴 Save this playlist for bedtime with your pet.",
-    "🐾 Tell us in the comments: cat person or dog person?",
+    "✨ Subscribe for more generative visuals and original music.",
+    "🔔 Hit the bell so YouTube notifies you when the next piece drops.",
+    "💬 Tell us which visual moment caught your eye.",
+    "👍 Like this video — it tells YouTube to recommend it to more art lovers.",
+    "🔗 Share this with someone who enjoys ambient visuals.",
+    "📺 Watch the next one — every piece is unique, generated from math.",
+    "🌙 Save this playlist for focus sessions or late-night calm.",
+    "🎨 Tell us in the comments: which style do you want to see next?",
 ]
 
 # Gatilhos mentais para títulos de alto CTR
 TRIGGERS = {
     "promise": [
-        "A calm {seconds}-second pause for your {animal}",
-        "A gentle moment for your {animal}",
-        "Soft music for {animal}s at rest",
-        "A quiet jazz moment for {animal}s",
+        "A calm {seconds}-second drift of generative art",
+        "A gentle visual moment for focus",
+        "Soft procedural visuals for a quiet pause",
+        "A slow ambient moment for late nights",
     ],
     "curiosity": [
-        "Why do {animal}s love this music?",
-        "A little jazz moment for your {animal}",
+        "Every piece is unique — this one is yours",
+        "A little generative moment you won't see again",
     ],
     "empathy": [
-        "For the {animal} that misses you",
-        "A gentle pause with your {animal}",
-        "For a cozy moment at home with your {animal}",
+        "For the moments between tasks",
+        "A gentle pause for your eyes and ears",
+        "For a quiet moment of abstract beauty",
     ],
     "result": [
-        "A softer moment for your {animal}",
-        "A peaceful pause with your {animal}",
-        "A gentle wind-down for pets",
+        "A softer moment of visual art",
+        "A peaceful pause with ambient sound",
+        "A gentle wind-down for the mind",
     ],
 }
 
 # Hashtags estratégicas por categoria
 HASHTAGS_POR_CATEGORIA = {
-    "brand": ["#PataJazz", "#PetJazz", "#JazzForPets"],
-    "animal": ["#Cats", "#Dogs", "#Kittens", "#Puppies", "#Pets"],
-    "problem": ["#QuietMoments", "#CozyPets", "#SoftMusic", "#PetTime"],
-    "musica": ["#Jazz", "#RelaxingMusic", "#SmoothJazz", "#MusicForPets"],
+    "brand": ["#LiquidWire", "#GenerativeArt", "#ProceduralVisuals"],
+    "style": ["#Wireframe", "#AmbientVisuals", "#AbstractArt", "#Procedural"],
+    "mood": ["#FocusMusic", "#Ambient", "#LateNight", "#CalmVisuals"],
+    "musica": ["#AmbientMusic", "#ProceduralMusic", "#Synthwave", "#LoFi"],
     "formato": ["#Shorts", "#YouTubeShorts"],
 }
 
-# Padrões de títulos de alto impacto (Operação Zeus).
+# Padrões de títulos de alto impacto.
 # 60% SEO clássico (palavra-chave na frente) e 40% gatilho mental.
 TITLE_PATTERNS: dict[str, list[str]] = {
     "short": [
         # SEO-first: palavra-chave de alto volume na frente
-        "{keyword_primary} 🐾 {emoji}",
-        "{keyword_long_tail} | a cozy {animal} moment {emoji}",
-        "{keyword_animal} | gentle {animal} + jazz {emoji}",
+        "{keyword_primary} ✨ {emoji}",
+        "{keyword_long_tail} | a generative ambient moment {emoji}",
+        "{keyword_style} | procedural visual + original music {emoji}",
         "{keyword_primary} in {seconds} seconds {emoji}",
         # Gatilhos mentais
         "{trigger} {emoji}",
-        "{scenario}? A gentle reset for your {animal} {emoji}",
-        "A gentle {keyword_style} moment with your {animal} {emoji}",
-        "A little {keyword_style} for your {animal} {emoji}",
-        "{scenario}? A quiet {animal} + jazz moment {emoji}",
-        "A quiet {animal} moment with {keyword_style} {emoji}",
-        # A5: padrões que promovem playlists temáticas explicitamente -
-        # referenciar o problema/cenario especifico aumenta CTR em buscas
-        # long-tail e direciona para a playlist correspondente.
-        "{scenario}? Calm music for {animal}s — full playlist {emoji}",
-        "The {keyword_style} playlist for cozy pet moments {emoji}",
-        "A calm playlist for your {animal} | {keyword_long_tail} {emoji}",
+        "{scenario}? A visual reset for your mind {emoji}",
+        "A generative {keyword_style} moment for focus {emoji}",
+        "A little {keyword_style} for your next break {emoji}",
+        "{scenario}? An ambient visual + original music moment {emoji}",
+        "A quiet visual moment with {keyword_style} {emoji}",
+        # A5: padrões que promovem playlists temáticas explicitamente
+        "{scenario}? Ambient visuals — full playlist {emoji}",
+        "The {keyword_style} playlist for focus sessions {emoji}",
+        "A generative art playlist | {keyword_long_tail} {emoji}",
     ],
 }
 
 # Cenários/problemas para gatilhos
 SCENARIOS = {
-    "cat": [
-        "home alone",
-        "can't sleep",
-        "anxious",
-        "hyper at night",
-        "scared of thunder",
-        "hiding under the bed",
+    "focus": [
+        "need to focus",
+        "studying",
+        "deep work",
+        "can't concentrate",
+        "writing late",
+        "need background visuals",
     ],
-    "dog": [
-        "home alone",
-        "anxious",
-        "scared of fireworks",
-        "won't stop barking",
-        "hyperactive",
-        "afraid of storms",
+    "relax": [
+        "winding down",
+        "can't sleep",
+        "stressed",
+        "need a break",
+        "late night",
+        "quiet moment",
     ],
 }
 
-# Estilos musicais para SEO
+# Estilos musicais para SEO (alinhados aos gêneros do motor musical universal)
 MUSIC_STYLE_BY_MOOD: dict[str, list[str]] = {
-    "relax": ["smooth jazz", "chill jazz", "soft jazz", "calming jazz"],
-    "fofura": ["lofi jazz", "cozy lofi jazz", "mellow lofi jazz"],
-    "diversao": ["upbeat jazz", "swing jazz", "playful jazz"],
-    "sleep": ["sleep jazz", "night jazz", "soft jazz"],
-    "anxiety": ["gentle jazz", "calming jazz", "peaceful jazz"],
+    "relax": ["ambient", "lo-fi", "calm synth", "drone ambient"],
+    "focus": ["ambient", "synthwave", "lo-fi", "minimalist"],
+    "energetic": ["electronic", "EDM", "synthwave", "funk"],
+    "sleep": ["ambient", "drone", "dark ambient", "sleep ambient"],
+    "upbeat": ["electronic", "rock", "funk", "hip-hop"],
 }
 
 
@@ -325,17 +330,17 @@ def music_style_for_mood(mood: str) -> str:
     if not options and mood:
         if "sleep" in mood:
             options = MUSIC_STYLE_BY_MOOD["sleep"]
-        elif "anxiety" in mood or "stress" in mood:
-            options = MUSIC_STYLE_BY_MOOD["anxiety"]
+        elif "focus" in mood or "study" in mood:
+            options = MUSIC_STYLE_BY_MOOD["focus"]
         elif "relax" in mood:
             options = MUSIC_STYLE_BY_MOOD["relax"]
     if not options:
-        options = ["relaxing jazz"]
+        options = ["ambient"]
     return random.choice(options)
 
 
 def trending_keywords() -> list[str]:
-    """Retorna keywords trending do nicho pet/jazz, mesclando o banco
+    """Retorna keywords trending do nicho generative art, mesclando o banco
     estatico (HIGH_VOLUME_KEYWORDS["trending"]) com keywords dinamicas
     coletadas por scripts/sync_trending.py em _data/trending_keywords.json.
 
@@ -385,91 +390,84 @@ def pick_title_pattern(kind: Literal["short"]) -> str:
     return random.choices(patterns, weights=weights, k=1)[0]
 
 
-def _animal_kind(animal: str) -> str:
-    """Retorna 'cat' ou 'dog' para animal."""
-    a = animal.lower()
-    if "cat" in a or "kitten" in a:
-        return "cat"
-    if "dog" in a or "puppy" in a:
-        return "dog"
-    return "cat"  # fallback
+def _style_kind(style: str) -> str:
+    """Retorna a categoria de estilo visual ('wireframe', 'organic', etc.)."""
+    s = style.lower()
+    for kind in ("wireframe", "organic", "geometric", "nebula"):
+        if kind in s:
+            return kind
+    return "wireframe"  # fallback
 
 
-def _keywords_for_animal(keywords: list[str], animal: str) -> list[str]:
-    """Filtra termos que prometem musica para o animal errado.
+def _keywords_for_style(keywords: list[str], style: str) -> list[str]:
+    """Filtra termos que não pertencem ao estilo visual atual.
 
-    Um titulo de gato com "music for dogs" parece automatizado e prejudica
-    satisfacao do espectador. Termos genericos ("for pets") continuam
-    elegiveis, mas referencias explicitas ao outro animal sao removidas.
+    Um título de wireframe com 'organic growth' parece inconsistente. Termos
+    genéricos ('generative art') continuam elegíveis.
     """
-    kind = _animal_kind(animal)
-    forbidden = ("dog", "dogs", "puppy", "puppies") if kind == "cat" else ("cat", "cats", "kitten", "kittens")
-    filtered = [keyword for keyword in keywords if not any(word in keyword.lower() for word in forbidden)]
+    kind = _style_kind(style)
+    other_kinds = [k for k in ("wireframe", "organic", "geometric", "nebula") if k != kind]
+    filtered = [keyword for keyword in keywords if not any(k in keyword.lower() for k in other_kinds)]
     return filtered or keywords
 
 
-def _format_trigger(trigger: str, animal: str, seconds: int = 30) -> str:
+def _format_trigger(trigger: str, style: str, seconds: int = 30) -> str:
     """Preenche variáveis do gatilho."""
-    problem = random.choice(["anxious", "stressed", "hyper", "scared"])
     return (
-        trigger.replace("{animal}", animal)
+        trigger.replace("{style}", style)
         .replace("{seconds}", str(seconds))
-        .replace("{problem}", problem)
     )
 
 
 def _format_pattern_with_seo(
     pattern: str,
-    animal: str,
+    scene: str,
     estilo_musical: str,
     emoji: str,
     mood: str = "relax",
     seconds: int = 30,
 ) -> str:
     """Preenche variáveis SEO + gatilhos no padrão de título."""
-    kind = _animal_kind(animal)
+    kind = _style_kind(scene)
 
     # Escolhe palavras-chave de alto volume
     primary_keywords = HIGH_VOLUME_KEYWORDS["primary"]
     long_tail_keywords = HIGH_VOLUME_KEYWORDS["long_tail"]
     assert isinstance(primary_keywords, list)
     assert isinstance(long_tail_keywords, list)
-    primary = random.choice(_keywords_for_animal(primary_keywords, animal))
-    # 25% de chance: usar uma trending keyword dinamica (do sync_trending)
-    # em vez de long_tail estatica - reflete o que esta bombando em busca
-    # real do YouTube no momento, aumentando CTR em buscas em alta.
+    primary = random.choice(_keywords_for_style(primary_keywords, scene))
+    # 25% de chance: usar uma trending keyword dinamica
     trending = trending_keywords()
     if trending and random.random() < 0.25:  # noqa: S311 - nao e seguranca
-        long_tail = random.choice(_keywords_for_animal(trending, animal))
+        long_tail = random.choice(_keywords_for_style(trending, scene))
     else:
-        long_tail = random.choice(_keywords_for_animal(long_tail_keywords, animal))
-    animal_specific = HIGH_VOLUME_KEYWORDS["animal_specific"]
-    assert isinstance(animal_specific, dict)
-    animal_keywords = animal_specific.get(kind, [])
-    assert isinstance(animal_keywords, list)
-    keyword_animal = random.choice(animal_keywords) if animal_keywords else f"{animal} music"
+        long_tail = random.choice(_keywords_for_style(long_tail_keywords, scene))
+    style_specific = HIGH_VOLUME_KEYWORDS["style_specific"]
+    assert isinstance(style_specific, dict)
+    style_keywords = style_specific.get(kind, [])
+    assert isinstance(style_keywords, list)
+    keyword_style = random.choice(style_keywords) if style_keywords else f"{scene} art"
 
     # Gatilhos
     trigger_category = random.choice(list(TRIGGERS.keys()))
     trigger = random.choice(TRIGGERS[trigger_category])
-    trigger_text = _format_trigger(trigger, animal, seconds)
+    trigger_text = _format_trigger(trigger, scene, seconds)
 
     # Cenário/problema
-    scenario = random.choice(SCENARIOS.get(kind, SCENARIOS["cat"]))
-    problem_word = random.choice(["anxious", "stressed", "restless", "scared", "hyper"])
+    scenario = random.choice(SCENARIOS.get(mood, SCENARIOS["relax"]))
 
     try:
         title = pattern.format(
             keyword_primary=primary,
             keyword_long_tail=long_tail,
-            keyword_animal=keyword_animal,
-            keyword_style=estilo_musical,
-            animal=animal,
+            keyword_style=keyword_style,
+            keyword_scene=keyword_style,
+            style=estilo_musical,
+            scene=scene,
             emoji=emoji,
             seconds=seconds,
             trigger=trigger_text,
             scenario=scenario,
-            problem=problem_word,
             mood=mood,
         )
     except KeyError:
@@ -479,7 +477,7 @@ def _format_pattern_with_seo(
 
 
 def generate_title_with_pattern(
-    animal: str,
+    scene: str,
     acao: str,
     estilo_musical: str,
     kind: Literal["short"],
@@ -493,7 +491,7 @@ def generate_title_with_pattern(
 
     seconds = duracao * 60 if duracao else 30
     title = _format_pattern_with_seo(
-        chosen, animal, estilo_musical, emoji, mood=acao or "relax", seconds=seconds
+        chosen, scene, estilo_musical, emoji, mood=acao or "relax", seconds=seconds
     )
 
     # Anti-repeat: evita títulos quase duplicados
@@ -501,7 +499,7 @@ def generate_title_with_pattern(
         for _attempt in range(5):
             chosen = pick_title_pattern(kind)
             title = _format_pattern_with_seo(
-                chosen, animal, estilo_musical, emoji, mood=acao or "relax", seconds=seconds
+                chosen, scene, estilo_musical, emoji, mood=acao or "relax", seconds=seconds
             )
             if not title_is_too_repetitive(title):
                 break
@@ -515,7 +513,7 @@ def generate_title_with_pattern(
     long_tail_keywords = HIGH_VOLUME_KEYWORDS["long_tail"]
     assert isinstance(primary_keywords, list)
     assert isinstance(long_tail_keywords, list)
-    all_keywords = _keywords_for_animal(primary_keywords + long_tail_keywords, animal)
+    all_keywords = _keywords_for_style(primary_keywords + long_tail_keywords, scene)
     has_strong_keyword = any(kw in title_lower for kw in all_keywords)
     if not has_strong_keyword:
         keyword = random.choice(all_keywords)
@@ -534,7 +532,7 @@ def generate_title_with_pattern(
 
 
 def generate_title(
-    animal: str,
+    scene: str,
     acao: str,
     estilo_musical: str,
     kind: Literal["short"],
@@ -543,7 +541,7 @@ def generate_title(
 ) -> str:
     """Gera título otimizado usando padrões de alta performance."""
     title, _pattern = generate_title_with_pattern(
-        animal=animal,
+        scene=scene,
         acao=acao,
         estilo_musical=estilo_musical,
         kind=kind,
@@ -554,37 +552,41 @@ def generate_title(
 
 
 def generate_hashtags(
-    animal: str,
+    scene: str,
     categoria: str = "relaxation",
     kind: Literal["short"] = "short",
 ) -> list[str]:
     """Gera conjunto estratégico de hashtags em camadas.
 
-    Orçamento: brand(2) + animal(2) + problema(2) + música(2) + formato(2) = 10.
+    Orçamento: brand(2) + style(2) + mood(2) + música(2) + formato(2) = 10.
     """
     hashtags: list[str] = []
 
     # Brand
     hashtags.extend(HASHTAGS_POR_CATEGORIA["brand"][:2])
 
-    # Animal
-    a = animal.lower()
-    if "cat" in a or "kitten" in a:
-        hashtags.extend(["#Cats", "#CatLover"])
-    elif "dog" in a or "puppy" in a:
-        hashtags.extend(["#Dogs", "#DogLover"])
+    # Style
+    s = scene.lower()
+    if "wireframe" in s or "wire" in s:
+        hashtags.extend(["#Wireframe", "#WireframeArt"])
+    elif "organic" in s or "coral" in s or "fluid" in s:
+        hashtags.extend(["#OrganicArt", "#FluidArt"])
+    elif "geometric" in s or "crystal" in s:
+        hashtags.extend(["#GeometricArt", "#AbstractGeometry"])
+    elif "nebula" in s or "particle" in s:
+        hashtags.extend(["#NebulaArt", "#ParticleArt"])
     else:
-        hashtags.extend(HASHTAGS_POR_CATEGORIA["animal"][:2])
+        hashtags.extend(HASHTAGS_POR_CATEGORIA["style"][:2])
 
-    # Problema/Cenário
-    if categoria in ("relaxation", "sleep"):
-        hashtags.extend(["#QuietMoments", "#SoftMusic"])
-    elif categoria in ("anxiety", "stress"):
-        hashtags.extend(["#GentleJazz", "#CozyPets"])
-    elif categoria in ("fun", "diversao"):
-        hashtags.extend(["#HappyPets", "#FunPets"])
+    # Mood/Cenário
+    if categoria in ("relaxation", "sleep", "ambient"):
+        hashtags.extend(["#Ambient", "#CalmVisuals"])
+    elif categoria in ("focus", "study"):
+        hashtags.extend(["#FocusMusic", "#DeepWork"])
+    elif categoria in ("energetic", "upbeat"):
+        hashtags.extend(["#Electronic", "#Synthwave"])
     else:
-        hashtags.extend(HASHTAGS_POR_CATEGORIA["problem"][:2])
+        hashtags.extend(HASHTAGS_POR_CATEGORIA["mood"][:2])
 
     # Música
     hashtags.extend(HASHTAGS_POR_CATEGORIA["musica"][:2])
@@ -595,28 +597,27 @@ def generate_hashtags(
     return list(dict.fromkeys(hashtags))[:_MAX_HASHTAGS]
 
 
-def _select_description_keywords(animal: str, mood: str) -> list[str]:
+def _select_description_keywords(scene: str, mood: str) -> list[str]:
     """Escolhe keywords semânticas para descrição longa."""
-    kind = _animal_kind(animal)
+    kind = _style_kind(scene)
     primary_keywords = HIGH_VOLUME_KEYWORDS["primary"]
     long_tail_keywords = HIGH_VOLUME_KEYWORDS["long_tail"]
-    animal_specific = HIGH_VOLUME_KEYWORDS["animal_specific"]
+    style_specific = HIGH_VOLUME_KEYWORDS["style_specific"]
     assert isinstance(primary_keywords, list)
     assert isinstance(long_tail_keywords, list)
-    assert isinstance(animal_specific, dict)
+    assert isinstance(style_specific, dict)
     keywords: list[str] = []
     keywords.extend(primary_keywords)
     keywords.extend(long_tail_keywords)
-    # Trending keywords dinamicas (do sync_trending.py) - aumenta CTR em
-    # buscas que estao em alta no momento.
+    # Trending keywords dinamicas (do sync_trending.py)
     keywords.extend(trending_keywords())
-    animal_specific_keywords = animal_specific.get(kind, [])
-    assert isinstance(animal_specific_keywords, list)
-    keywords.extend(animal_specific_keywords)
-    if mood in ("sleep", "relax"):
-        keywords.extend(["soft night jazz", "quiet pet music", "relaxing bedtime jazz"])
-    if mood in ("anxiety", "stress"):
-        keywords.extend(["gentle pet music", "soft jazz at home", "quiet instrumental music"])
+    style_specific_keywords = style_specific.get(kind, [])
+    assert isinstance(style_specific_keywords, list)
+    keywords.extend(style_specific_keywords)
+    if mood in ("sleep", "relax", "ambient"):
+        keywords.extend(["dark ambient", "night ambient visual", "slow drift ambient"])
+    if mood in ("focus", "study"):
+        keywords.extend(["focus ambient", "procedural art for studying", "deep work visuals"])
     keywords = [keyword for keyword in keywords if not has_unsupported_outcome_claim(keyword)]
     random.shuffle(keywords)
     return keywords[:6]
@@ -627,7 +628,7 @@ def generate_description(
     kind: Literal["short"],
     hashtags: list[str],
     include_cta: bool = True,
-    animal: str = "cat",
+    scene: str = "wireframe",
     mood: str = "relax",
     title: str = "",
 ) -> tuple[str, str]:
@@ -635,43 +636,32 @@ def generate_description(
 
     Retorna (description, cta_text).
     """
-    # Retained call keeps the keyword-selection path observable for analytics;
-    # keywords are no longer rendered as a spam-like literal list.
-    _select_description_keywords(animal, mood)
-    keyword_block = ""
+    _select_description_keywords(scene, mood)
 
     # Introdução com hook + promessa
     intro_templates = [
-        f"{hook} 🐾 A Pata Jazz moment with real {animal} footage and instrumental jazz.",
-        f"{hook} 🎷 A calm moment for {animal}s and the humans who love them.",
-        f"{hook} 💫 A 30-second pause with a {animal} and gentle jazz.",
-        f"{hook} 🐾 A cozy {animal} moment for a quiet break or background listening.",
+        f"{hook} ✨ A Liquid Wire moment — unique generative visuals with original procedural music.",
+        f"{hook} 🎨 A calm moment of abstract art and ambient sound.",
+        f"{hook} 💫 A {30}-second drift through procedural wireframes and synthesized soundscapes.",
+        f"{hook} ✨ A generative art moment for a quiet break or focus session.",
     ]
     intro = random.choice(intro_templates)
 
     # Bloco SEO semântico
     seo_block = (
-        f"\n\n🔍 Keywords: {keyword_block}. "
-        f"This video combines real {animal} footage with smooth instrumental jazz for a cozy, quiet atmosphere at home."
-    )
-
-    # Bloco de uso/cenário
-    # Keep descriptions readable: the natural sentence below intentionally
-    # replaces the legacy literal keyword list above.
-    seo_block = (
-        f"\n\nThis video combines real {animal} footage with smooth instrumental jazz "
-        "for a cozy, quiet atmosphere at home."
+        "\n\nThis video combines procedurally generated visuals with original "
+        "synthesized music for a calm, abstract atmosphere."
     )
     use_block_templates = [
-        "\n\n✅ Enjoy this during a quiet break, while reading, or as soft background music at home.",
-        f"\n\n✅ A simple pet-and-jazz moment for cozy time with your {animal}.",
+        "\n\n✅ Enjoy this during a quiet break, while reading, or as ambient background.",
+        "\n\n✅ A generative art moment for focus time or late-night calm.",
     ]
     use_block = random.choice(use_block_templates)
 
-    # Timestamps (para shorts, ajuda no SEO e acessibilidade)
+    # Timestamps
     timestamps = (
         "\n\n🕒 00:00 Calm intro\n"
-        "00:05 Pet + jazz moment\n"
+        "00:05 Generative visual moment\n"
         "00:25 Soft outro"
     ) if kind == "short" else ""
 
@@ -687,19 +677,17 @@ def generate_description(
 
     description = f"{intro}{seo_block}{use_block}{timestamps}{cta}\n\n{hashtags_str}"
 
-    # Limita a ~1500 chars (limite útil do YouTube)
     if len(description) > 1500:
         description = description[:1497] + "..."
 
     return description, cta_text
 
 
-def optimize_for_search(title: str, description: str, animal: str | None = None) -> tuple[str, str]:
+def optimize_for_search(title: str, description: str, scene: str | None = None) -> tuple[str, str]:
     """Otimização final para busca do YouTube.
 
-    Quando o animal e conhecido, a keyword adicionada precisa se referir ao
-    mesmo publico do video. Isso preserva relevancia e evita prometer musica
-    para cachorros em um Short de gato (ou o inverso).
+    Quando o estilo visual e conhecido, a keyword adicionada precisa se referir ao
+    mesmo estilo do video.
     """
     title_lower = title.lower()
     primary_keywords = HIGH_VOLUME_KEYWORDS["primary"]
@@ -707,19 +695,19 @@ def optimize_for_search(title: str, description: str, animal: str | None = None)
     assert isinstance(primary_keywords, list)
     assert isinstance(long_tail_keywords, list)
     candidates = primary_keywords + long_tail_keywords
-    if animal:
-        candidates = _keywords_for_animal(candidates, animal)
+    if scene:
+        candidates = _keywords_for_style(candidates, scene)
     has_keyword = any(kw in title_lower for kw in candidates)
 
     if not has_keyword:
-        keyword = random.choice(_keywords_for_animal(primary_keywords, animal) if animal else primary_keywords)
+        keyword = random.choice(_keywords_for_style(primary_keywords, scene) if scene else primary_keywords)
         if len(title) + len(keyword) + 3 <= 90:
             title = f"{title} | {keyword}"
 
     # Garante termos semânticos na descrição
     related_terms = [
-        "relaxation", "meditation", "studying", "working", "focus",
-        "quiet time", "well-being", "cozy listening", "a gentle break", "background music",
+        "relaxation", "focus", "studying", "working", "ambient",
+        "quiet time", "generative art", "abstract visuals", "a gentle break", "background visuals",
     ]
     if not any(term in description.lower() for term in related_terms):
         term = random.choice(related_terms)
@@ -735,59 +723,53 @@ def optimize_for_search(title: str, description: str, animal: str | None = None)
 # hispanofono sem custo adicional (mesmo pipeline visual, so muda texto).
 # ---------------------------------------------------------------------------
 
-# Keywords de alto volume em PT-BR para o nicho pet + relaxamento + jazz.
-# Espelham HIGH_VOLUME_KEYWORDS mas em portugues, para que títulos PT-BR
-# tambem espelhem o que as pessoas digitam (volume de busca em PT e
-# significativo no YouTube, especialmente Brasil/Portugal).
+# Keywords de alto volume em PT-BR para o nicho arte generativa + ambient.
 HIGH_VOLUME_KEYWORDS_PT: dict[str, list[str]] = {
     "primary": [
-        "musica para gatos",
-        "musica para cachorros",
-        "musica relaxante para gatos",
-        "musica relaxante para cachorros",
-        "musica calmante para cachorros",
-        "musica calmante para gatos",
-        "jazz suave para pets",
-        "musica para pets",
-        "jazz para gatos",
-        "jazz para cachorros",
+        "arte generativa",
+        "visuais ambient",
+        "animacao procedural",
+        "video abstrato",
+        "wireframe liquido",
+        "visuais relaxantes",
+        "arte procedural",
+        "visualizador musical",
+        "visuais gerativos",
     ],
     "long_tail": [
-        "jazz noturno para gatos",
-        "jazz noturno para cachorros",
-        "jazz suave para cachorros",
-        "jazz para cachorro em casa",
-        "jazz suave para gatos",
-        "jazz relaxante para pets",
-        "jazz instrumental para cachorros",
-        "jazz instrumental para gatos",
+        "visuais ambient para foco",
+        "arte generativa para estudar",
+        "animacao wireframe loops",
+        "video abstrato para relaxar",
+        "arte generativa em tempo real",
+        "visual procedural para trabalho",
+        "wireframe liquido em movimento",
+        "arte generativa para foco profundo",
     ],
 }
 
-# Keywords de alto volume em ES para o nicho pet + relaxamento + jazz.
-# Mercado hispanofono e ~2x o lusofono em volume de busca no YouTube.
+# Keywords de alto volume em ES para o nicho arte generativa + ambient.
 HIGH_VOLUME_KEYWORDS_ES: dict[str, list[str]] = {
     "primary": [
-        "musica para gatos",
-        "musica para perros",
-        "musica relajante para gatos",
-        "musica relajante para perros",
-        "musica calmante para perros",
-        "musica calmante para gatos",
-        "jazz suave para mascotas",
-        "musica para mascotas",
-        "jazz para gatos",
-        "jazz para perros",
+        "arte generativa",
+        "visuales ambient",
+        "animacion procedural",
+        "video abstracto",
+        "wireframe liquido",
+        "visuales relajantes",
+        "arte procedural",
+        "visualizador musical",
+        "visuales generativos",
     ],
     "long_tail": [
-        "jazz nocturno para gatos",
-        "jazz nocturno para perros",
-        "jazz suave para perros",
-        "jazz para perros en casa",
-        "jazz suave para gatos",
-        "jazz relajante para mascotas",
-        "jazz instrumental para perros",
-        "jazz instrumental para gatos",
+        "visuales ambient para concentracion",
+        "arte generativa para estudiar",
+        "animacion wireframe loops",
+        "video abstracto para relajar",
+        "arte generativa en tiempo real",
+        "visual procedural para trabajo",
+        "wireframe liquido en movimiento",
+        "arte generativa para enfoque profundo",
     ],
 }
 

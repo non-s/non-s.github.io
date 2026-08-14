@@ -33,6 +33,7 @@ def _seed_fixtures(tmp_path, monkeypatch):
     monkeypatch.setattr(dashboard, "SCENE_PERFORMANCE_FILE", tmp_path / "scene_performance.json")
     monkeypatch.setattr(dashboard, "TITLE_PATTERN_PERFORMANCE_FILE", tmp_path / "title_pattern_performance.json")
     monkeypatch.setattr(dashboard, "VIEW_PREDICTOR_FILE", tmp_path / "view_predictor.json")
+    monkeypatch.setattr(dashboard, "QUALITY_HISTORY_FILE", tmp_path / "quality_history.json")
 
     dashboard.ANALYTICS_FILE.write_text(
         json.dumps(

@@ -29,6 +29,7 @@ def _isolate(tmp_path, monkeypatch):
     monkeypatch.setattr(dashboard, "TITLE_PATTERN_PERFORMANCE_FILE", tmp_path / "title_pattern_performance.json")
     monkeypatch.setattr(dashboard, "VIEW_PREDICTOR_FILE", tmp_path / "view_predictor.json")
     monkeypatch.setattr(dashboard, "VIDEO_TAGS_FILE", tmp_path / "video_tags.json")
+    monkeypatch.setattr(dashboard, "QUALITY_HISTORY_FILE", tmp_path / "quality_history.json")
 
 
 class TestBuildDashboardHtmlEmpty:
@@ -42,7 +43,7 @@ class TestBuildDashboardHtmlEmpty:
 
         assert html.startswith("<!doctype html>")
         assert "</html>" in html
-        assert "Pata Jazz" in html
+        assert "Liquid Wire" in html
         assert "Nenhum dado de analytics coletado ainda." in html
         assert "Sem histórico semanal ainda" in html
         assert "Sem dados suficientes ainda" in html
@@ -227,9 +228,9 @@ class TestChartsAndInteractivity:
 
         html = dashboard.build_dashboard_html()
 
-        # Um new Chart por grafico (6 graficos: views, viewsByDay, scene,
-        # title, top videos e thumbnail variants A/B/C).
-        assert html.count("new Chart(") == 6
+        # Um new Chart por grafico (7 graficos: views, viewsByDay, scene,
+        # title, top videos, thumbnail variants A/B/C e diversity scatter).
+        assert html.count("new Chart(") == 7
 
     def test_analytics_history_data_embedded_as_json(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
@@ -303,7 +304,7 @@ class TestRefreshButtonAndLiveFetch:
     def test_html_documents_weekly_update_limitation(self, tmp_path, monkeypatch):
         _isolate(tmp_path, monkeypatch)
         html = dashboard.build_dashboard_html()
-        assert "pata-jazz-analytics.yml" in html
+        assert "liquid-wire-analytics.yml" in html
         assert "semanal" in html
 
     def test_refresh_button_click_triggers_fetch(self, tmp_path, monkeypatch):

@@ -23,22 +23,17 @@ def generate_srt(hook: str, scene: str, duration: int, emoji: str) -> str:
     prompt = (
         f"Create English captions for a {duration}-second Short "
         f"about {hook} {emoji}. "
-        f"The channel is Pata Jazz (cute cats and dogs + relaxing jazz). "
+        f"The channel is Liquid Wire (generative procedural visuals with original synthesized music). "
         f"Create 4-6 short caption lines (max 40 chars each), spread across the duration. "
         f"Return ONLY the SRT format (numbered, with timestamps HH:MM:SS,mmm --> HH:MM:SS,mmm)."
     )
     out = ai_text(prompt, task="caption")
 
-    # Mesma checagem aplicada a titulo/descricao em metadata_engine.py: a
-    # legenda tambem vira texto publico (caption track do YouTube), entao
-    # nao pode escapar dessa validacao so porque passa por um caminho
-    # diferente.
     if out and " --> " in out:
         if is_safe_ai_text(out):
             return out.strip()
         log.warning("Legenda da IA rejeitada (padrao suspeito); usando fallback local.")
 
-    # Fallback: gerar SRT localmente
     return _fallback_srt(hook, duration)
 
 
@@ -55,8 +50,8 @@ def _fallback_srt(hook: str, duration: int) -> str:
     """Gera SRT simples com o hook dividido em 3 partes."""
     lines = [
         (_fmt_ts(0.0), _fmt_ts(min(3.0, duration)), hook[:40]),
-        (_fmt_ts(min(3.0, duration)), _fmt_ts(min(8.0, duration)), "Welcome to Pata Jazz"),
-        (_fmt_ts(min(8.0, duration)), _fmt_ts(float(duration)), "Cats and dogs + jazz"),
+        (_fmt_ts(min(3.0, duration)), _fmt_ts(min(8.0, duration)), "Welcome to Liquid Wire"),
+        (_fmt_ts(min(8.0, duration)), _fmt_ts(float(duration)), "Generative art + original music"),
     ]
 
     srt_lines: list[str] = []
@@ -125,7 +120,6 @@ def _ass_header(fontsize: int, play_res_x: int, play_res_y: int) -> str:
         "OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, "
         "ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, "
         "Alignment, MarginL, MarginR, MarginV, Encoding\n"
-        # Alignment=5 (center-middle, \an5); branco com outline preto + sombra.
         "Style: Default,Arial,"
         f"{fontsize},&H00FFFFFF,&H000000FF,&H00000000,&H00000000,"
         "1,0,0,0,100,100,0,0,1,3,1,5,120,120,80,1\n"
@@ -167,14 +161,14 @@ def _fallback_ass(hook: str, duration: int) -> str:
 
     hook_end = min(_HOOK_RETENTION_SECONDS, duration * 0.5)
     welcome_end = min(hook_end + 4.0, float(duration))
-    cats_end = float(duration)
+    outro_end = float(duration)
 
     events: list[str] = []
     for line in _split_hook_lines(hook):
         events.extend(_ass_line_words(0.0, hook_end, line))
-    events.extend(_ass_line_words(hook_end, welcome_end, "Welcome to Pata Jazz"))
-    if cats_end > welcome_end:
-        events.extend(_ass_line_words(welcome_end, cats_end, "Cats and dogs + jazz"))
+    events.extend(_ass_line_words(hook_end, welcome_end, "Welcome to Liquid Wire"))
+    if outro_end > welcome_end:
+        events.extend(_ass_line_words(welcome_end, outro_end, "Generative art + original music"))
 
     return header + "".join(events)
 
@@ -188,7 +182,7 @@ def generate_ass(hook: str, scene: str, duration: int, emoji: str) -> str:
     prompt = (
         f"Create English captions for a {duration}-second Short "
         f"about {hook} {emoji}. "
-        f"The channel is Pata Jazz (cute cats and dogs + relaxing jazz). "
+        f"The channel is Liquid Wire (generative procedural visuals with original synthesized music). "
         f"Create 4-6 short caption lines (max 40 chars each), spread across the duration. "
         f"Return ONLY a valid ASS (Advanced SubStation Alpha) subtitle file with "
         f"[Script Info], [V4+ Styles] and [Events] sections, one Dialogue line per caption. "
@@ -214,13 +208,11 @@ def save_ass(content: str, video_path: Path) -> Path:
 
 # ---------------------------------------------------------------------------
 # Legendas em PT-BR (segunda caption track para multiplo idioma).
-# Reaproveita o mesmo gerador da IA com prompt em portugues; fallback local
-# traduz as frases fixas. YouTube aceita multiplas caption tracks por video.
 # ---------------------------------------------------------------------------
 
 _PT_FALLBACK_LINES = [
-    ("Welcome to Pata Jazz", "Bem-vindo ao Pata Jazz"),
-    ("Cats and dogs + jazz", "Gatos e cachorros + jazz"),
+    ("Welcome to Liquid Wire", "Bem-vindo ao Liquid Wire"),
+    ("Generative art + original music", "Arte generativa + musica original"),
     ("Relax and enjoy", "Relaxe e aproveite"),
     ("Subscribe for more", "Inscreva-se para mais"),
 ]
@@ -231,7 +223,7 @@ def generate_srt_pt(hook: str, scene: str, duration: int, emoji: str) -> str:
     prompt = (
         f"Crie legendas em PORTUGUES (PT-BR) para um Short "
         f"de {duration} segundos sobre {hook} {emoji}. "
-        f"O canal e Pata Jazz (gatos e cachorros fofos + jazz relaxante). "
+        f"O canal e Liquid Wire (arte generativa procedural com musica sintetica original). "
         f"Crie 4-6 linhas curtas de legenda (max 40 chars cada), distribuidas pela duracao. "
         f"Retorne APENAS o formato SRT (numerado, com timestamps HH:MM:SS,mmm --> HH:MM:SS,mmm)."
     )
@@ -266,12 +258,7 @@ def save_srt_pt(content: str, video_path: Path) -> Path:
 
 
 def generate_chapters(duration: int) -> list[tuple[str, str]]:
-    """Gera chapters (timestamp, titulo) para a descricao do YouTube.
-
-    YouTube usa chapters quando a descricao contem linhas no formato
-    '00:00 Titulo'. Shorts sao curtos, entao 3 chapters bastam. Retorna
-    lista de (timestamp_str, titulo).
-    """
+    """Gera chapters (timestamp, titulo) para a descricao do YouTube."""
 
     def _fmt(seconds: int) -> str:
         h, rem = divmod(seconds, 3600)
@@ -281,6 +268,6 @@ def generate_chapters(duration: int) -> list[tuple[str, str]]:
     third = max(1, duration // 3)
     return [
         (_fmt(0), "Intro"),
-        (_fmt(third), "Cute moment"),
+        (_fmt(third), "Generative moment"),
         (_fmt(third * 2), "Relax & enjoy"),
     ]

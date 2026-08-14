@@ -15,12 +15,13 @@ from defusedxml import ElementTree as ET
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+from utils.channel_config import active_channel
 from utils.metadata_audit import audit_description, audit_title
 from utils.paths import data_dir
 from utils.youtube_oauth import get_youtube_service
 from utils.youtube_retry import retry_youtube_call
 
-CHANNEL_ID = "UCYAxnaW6H8g3XJMntkDXZjg"
+CHANNEL_ID = getattr(active_channel, "channel_id", "") or "UCYAxnaW6H8g3XJMntkDXZjg"
 FEED_URL = f"https://www.youtube.com/feeds/videos.xml?channel_id={CHANNEL_ID}"
 ATOM_NS = "{http://www.w3.org/2005/Atom}"
 YT_NS = "{http://www.youtube.com/xml/schemas/2015}"
@@ -87,7 +88,7 @@ def fetch_uploads_audit(service) -> list[dict[str, object]]:
 
 
 def fetch_title_audit() -> list[dict[str, object]]:
-    request = Request(FEED_URL, headers={"User-Agent": "PataJazzMetadataAudit/1.0"})
+    request = Request(FEED_URL, headers={"User-Agent": "LiquidWireMetadataAudit/1.0"})
     with urlopen(request, timeout=15) as response:  # nosec B310 - feed oficial fixo do YouTube.
         root = ET.fromstring(response.read())
 
@@ -104,7 +105,7 @@ def fetch_title_audit() -> list[dict[str, object]]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Audita metadados publicos do canal Pata Jazz.")
+    parser = argparse.ArgumentParser(description="Audita metadados publicos do canal Liquid Wire.")
     parser.add_argument(
         "--strict",
         action="store_true",

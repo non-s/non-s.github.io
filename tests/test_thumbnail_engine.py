@@ -48,7 +48,7 @@ class TestThumbnailEngineRealRender:
 
     def test_make_short_thumbnail_real_render(self, tmp_path):
         output = tmp_path / "short.png"
-        thumbnail_engine.make_short_thumbnail(hook="Meow Monday", emoji="🎷", output=output, brand="Pata Jazz")
+        thumbnail_engine.make_short_thumbnail(hook="Wireframe Dreams", emoji="✨", output=output, brand="Liquid Wire")
         assert output.exists()
         assert output.stat().st_size > 0
 
@@ -60,8 +60,8 @@ class TestThumbnailVariantB:
     def test_variant_b_renders_real(self, tmp_path):
         out_a = tmp_path / "thumb_a.png"
         out_b = tmp_path / "thumb_b.png"
-        thumbnail_engine.make_short_thumbnail(hook="Meow Monday", emoji="🎷", output=out_a, variant="A")
-        thumbnail_engine.make_short_thumbnail(hook="Meow Monday", emoji="🎷", output=out_b, variant="B")
+        thumbnail_engine.make_short_thumbnail(hook="Wireframe Dreams", emoji="✨", output=out_a, variant="A")
+        thumbnail_engine.make_short_thumbnail(hook="Wireframe Dreams", emoji="✨", output=out_b, variant="B")
         assert out_a.exists() and out_a.stat().st_size > 0
         assert out_b.exists() and out_b.stat().st_size > 0
 
@@ -117,8 +117,8 @@ class TestThumbnailVariantC:
     def test_variant_c_renders_real(self, tmp_path):
         out_a = tmp_path / "thumb_a.png"
         out_c = tmp_path / "thumb_c.png"
-        thumbnail_engine.make_short_thumbnail(hook="Meow Monday", emoji="🎷", output=out_a, variant="A")
-        thumbnail_engine.make_short_thumbnail(hook="Meow Monday", emoji="🎷", output=out_c, variant="C")
+        thumbnail_engine.make_short_thumbnail(hook="Wireframe Dreams", emoji="✨", output=out_a, variant="A")
+        thumbnail_engine.make_short_thumbnail(hook="Wireframe Dreams", emoji="✨", output=out_c, variant="C")
         assert out_a.exists() and out_a.stat().st_size > 0
         assert out_c.exists() and out_c.stat().st_size > 0
 
@@ -168,7 +168,7 @@ class TestThumbnailEngine:
         output = tmp_path / "test_short_thumb.png"
 
         # Não deve levantar exceção
-        thumbnail_engine.make_short_thumbnail(hook="Meow Monday", emoji="🎷", output=output, brand="Pata Jazz")
+        thumbnail_engine.make_short_thumbnail(hook="Wireframe Dreams", emoji="✨", output=output, brand="Liquid Wire")
 
         mock_image.assert_called()
 

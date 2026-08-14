@@ -20,6 +20,7 @@ class ChannelConfig:
     scene_categories: dict[str, list[str]]
     hourly_mood: dict[int, str]
     default_description: str
+    channel_id: str = ""
 
 
 LIQUID_WIRE: ChannelConfig = ChannelConfig(
@@ -79,6 +80,7 @@ LIQUID_WIRE: ChannelConfig = ChannelConfig(
         "soundscapes for focus, rest, and late-night calm. Original procedural "
         "visuals. No stock footage."
     ),
+    channel_id="UCYAxnaW6H8g3XJMntkDXZjg",
 )
 
 

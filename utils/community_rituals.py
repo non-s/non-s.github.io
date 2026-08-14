@@ -1,4 +1,4 @@
-"""Recurring, voluntary community rituals for the single Pata Jazz channel."""
+"""Recurring, voluntary community rituals for the Liquid Wire channel."""
 
 from __future__ import annotations
 
@@ -6,46 +6,47 @@ from datetime import date
 
 _RITUALS = (
     {
-        "id": "reset-room-monday",
-        "name": "Reset Room Monday",
-        "viewer_intent": "a gentle reset for the week",
-        "community_prompt": "What small ritual would make this week feel lighter?",
+        "id": "reset-monday",
+        "name": "Reset Monday",
+        "viewer_intent": "a gentle visual reset for the week",
+        "community_prompt": "What small visual would make this week feel lighter?",
     },
     {
         "id": "tiny-ritual-tuesday",
         "name": "Tiny Ritual Tuesday",
-        "viewer_intent": "noticing the small habits that make home feel familiar",
-        "community_prompt": "Tell us one tiny ritual your pet never skips.",
+        "viewer_intent": "noticing the small generative details that make each piece unique",
+        "community_prompt": "Tell us one tiny visual detail you noticed in today's piece.",
     },
     {
-        "id": "rainy-window-wednesday",
-        "name": "Rainy Window Wednesday",
-        "viewer_intent": "a quiet midweek pause",
-        "community_prompt": "Choose the next window mood: SUN, RAIN, or NIGHT.",
+        "id": "midweek-pause-wednesday",
+        "name": "Midweek Pause Wednesday",
+        "viewer_intent": "a quiet midweek ambient break",
+        "community_prompt": "Choose the next ambient mood: FLOW, WIRE, or NIGHT.",
     },
     {
-        "id": "companion-thursday",
-        "name": "Companion Thursday",
-        "viewer_intent": "gentle company while studying, reading or resting",
-        "community_prompt": "What are you keeping company with today?",
+        "id": "focus-thursday",
+        "name": "Focus Thursday",
+        "viewer_intent": "gentle company while studying, reading or working",
+        "community_prompt": "What are you focusing on today?",
     },
     {
         "id": "golden-hour-friday",
         "name": "Golden Hour Friday",
-        "viewer_intent": "a warm transition into the weekend",
-        "community_prompt": "Comment CAT or DOG to help choose a future Golden Hour session.",
+        "name_alt": "Glow Friday",
+        "viewer_intent": "a warm transition into the weekend with brighter visuals",
+        "community_prompt": "Comment GEOMETRIC or ORGANIC to help choose a future Friday piece.",
     },
     {
         "id": "slow-saturday",
         "name": "Slow Saturday",
-        "viewer_intent": "a slower, playful weekend moment",
-        "community_prompt": "What would your ideal slow Saturday sound like?",
+        "viewer_intent": "a slower, deeper generative drift",
+        "community_prompt": "What would your ideal slow Saturday visual feel like?",
     },
     {
         "id": "nest-session-sunday",
         "name": "Nest Session Sunday",
-        "viewer_intent": "a calm landing before a new week",
-        "community_prompt": "What feeling should next Sunday's nest have?",
+        "viewer_intent": "a calm ambient landing before a new week",
+        "community_prompt": "What feeling should next Sunday's ambient piece have?",
     },
 )
 

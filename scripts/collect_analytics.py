@@ -1,5 +1,5 @@
 """
-scripts/collect_analytics.py — coleta metricas dos videos do canal Pata Jazz.
+scripts/collect_analytics.py — coleta metricas dos videos do canal Liquid Wire.
 
 Usa a YouTube Data API para buscar views, likes, comentarios e duracao dos
 videos recentes. Salva um relatorio em _data/analytics.json para analise.
@@ -839,7 +839,7 @@ def main(argv: list[str] | None = None) -> int:
     configure_logging()
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-    parser = argparse.ArgumentParser(description="Coleta analytics do canal Pata Jazz")
+    parser = argparse.ArgumentParser(description="Coleta analytics do canal Liquid Wire")
     parser.add_argument(
         "--snapshot-only",
         action="store_true",

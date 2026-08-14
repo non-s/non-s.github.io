@@ -1,0 +1,149 @@
+"""Per-frame post-processing effects for the Liquid Wire engine.
+
+Every function takes and returns a ``PIL.Image.Image`` (RGB or RGBA) of the same
+size, using only numpy/PIL/stdlib so no new dependencies are introduced.
+``apply_all`` dispatches based on a ``post`` profile dict where each effect has
+a boolean ``enabled`` flag and a float ``intensity`` in [0, 1].
+"""
+
+from __future__ import annotations
+
+import numpy as np
+from PIL import Image, ImageFilter
+
+
+def _to_rgb(img: Image.Image) -> Image.Image:
+    return img.convert("RGB") if img.mode != "RGB" else img
+
+
+def _restore_mode(img: Image.Image, original: Image.Image) -> Image.Image:
+    if original.mode == "RGBA":
+        rgb = img.convert("RGB")
+        alpha = original.split()[-1] if original.mode == "RGBA" else None
+        if alpha is not None:
+            return Image.merge("RGBA", (*rgb.split(), alpha))
+    return img
+
+
+def bloom(img: Image.Image, threshold: float = 0.7, blur_radius: float = 15, intensity: float = 0.6) -> Image.Image:
+    """Extract bright pixels, blur them, and screen-blend back onto the image."""
+    base = _to_rgb(img)
+    arr = np.asarray(base, dtype=np.float32) / 255.0
+    luminance = arr.mean(axis=2)
+    mask = (luminance > threshold).astype(np.float32)[..., None]
+    bright = (arr * mask * 255.0).clip(0, 255).astype(np.uint8)
+    if int(mask.sum()) == 0:
+        # Nothing bright enough: early-out to avoid wasted work.
+        return _restore_mode(base, img)
+    bright_img = Image.fromarray(bright, "RGB").filter(ImageFilter.GaussianBlur(max(0.1, float(blur_radius))))
+    bright_arr = np.asarray(bright_img, dtype=np.float32) / 255.0
+    blended = arr + bright_arr * float(intensity)
+    blended = np.clip(blended, 0.0, 1.0)
+    out = Image.fromarray((blended * 255.0).astype(np.uint8), "RGB")
+    return _restore_mode(out, img)
+
+
+def depth_of_field(img: Image.Image, focus_radius: float = 0.3, blur_strength: float = 8) -> Image.Image:
+    """Radial blur away from the centre; the inner ``focus_radius`` stays sharp."""
+    base = _to_rgb(img)
+    w, h = base.size
+    blurred = base.filter(ImageFilter.GaussianBlur(float(blur_strength)))
+    yy, xx = np.ogrid[:h, :w]
+    cx, cy = w * 0.5, h * 0.5
+    dist = np.sqrt(((xx - cx) / (w * 0.5)) ** 2 + ((yy - cy) / (h * 0.5)) ** 2)
+    feather = np.clip((dist - focus_radius) / max(1e-3, 1.0 - focus_radius), 0.0, 1.0).astype(np.float32)
+    sharp_arr = np.asarray(base, dtype=np.float32)
+    blur_arr = np.asarray(blurred, dtype=np.float32)
+    mask = feather[..., None]
+    blended = sharp_arr * (1.0 - mask) + blur_arr * mask
+    out = Image.fromarray(blended.astype(np.uint8), "RGB")
+    return _restore_mode(out, img)
+
+
+def film_grain(img: Image.Image, intensity: float = 0.04) -> Image.Image:
+    """Add subtle Poisson-like noise across the frame."""
+    base = _to_rgb(img)
+    arr = np.asarray(base, dtype=np.float32)
+    rng = np.random.default_rng(0)  # static seed keeps grain stable per frame
+    # Poisson-shaped noise via normal approximation of Poisson(lambda) centering.
+    noise = rng.normal(0.0, 1.0, arr.shape).astype(np.float32)
+    grain = (np.sqrt(np.maximum(arr, 0.0)) * noise) * float(intensity) * 255.0
+    out_arr = np.clip(arr + grain, 0.0, 255.0).astype(np.uint8)
+    out = Image.fromarray(out_arr, "RGB")
+    return _restore_mode(out, img)
+
+
+def chromatic_aberration(img: Image.Image, strength: float = 2.0) -> Image.Image:
+    """Offset RGB channels radially from the centre so edges split colour."""
+    base = _to_rgb(img)
+    w, h = base.size
+    arr = np.asarray(base, dtype=np.float32)
+    # Build a per-pixel coordinate grid (h, w).
+    xs = np.arange(w, dtype=np.float32)[None, :] * np.ones((h, 1), dtype=np.float32)
+    ys = np.arange(h, dtype=np.float32)[:, None] * np.ones((1, w), dtype=np.float32)
+    cx, cy = w * 0.5, h * 0.5
+    dx = (xs - cx) / (w * 0.5)
+    dy = (ys - cy) / (h * 0.5)
+    shift_x = (dx * float(strength)).astype(np.float32)
+    shift_y = (dy * float(strength)).astype(np.float32)
+    # Red channel pulled outward, blue channel pushed inward (or vice versa).
+    ix_r = np.clip(np.round(xs + shift_x).astype(np.int64), 0, w - 1)
+    iy_r = np.clip(np.round(ys + shift_y).astype(np.int64), 0, h - 1)
+    ix_b = np.clip(np.round(xs - shift_x).astype(np.int64), 0, w - 1)
+    iy_b = np.clip(np.round(ys - shift_y).astype(np.int64), 0, h - 1)
+    r = arr[..., 0][iy_r, ix_r]
+    b = arr[..., 2][iy_b, ix_b]
+    out_arr = np.stack([r, arr[..., 1], b], axis=-1)
+    out_arr = np.clip(out_arr, 0.0, 255.0).astype(np.uint8)
+    out = Image.fromarray(out_arr, "RGB")
+    return _restore_mode(out, img)
+
+
+def vignette(img: Image.Image, strength: float = 0.3) -> Image.Image:
+    """Radial darkening toward the corners."""
+    base = _to_rgb(img)
+    w, h = base.size
+    arr = np.asarray(base, dtype=np.float32)
+    yy, xx = np.ogrid[:h, :w]
+    cx, cy = w * 0.5, h * 0.5
+    dist = np.sqrt(((xx - cx) / (w * 0.5)) ** 2 + ((yy - cy) / (h * 0.5)) ** 2)
+    falloff = np.clip(dist, 0.0, 1.4) ** 2
+    factor = (1.0 - float(strength) * falloff)[..., None].astype(np.float32)
+    out_arr = np.clip(arr * factor, 0.0, 255.0).astype(np.uint8)
+    out = Image.fromarray(out_arr, "RGB")
+    return _restore_mode(out, img)
+
+
+def apply_all(img: Image.Image, profile: dict) -> Image.Image:
+    """Apply the post-processing stack defined by ``profile['post']``.
+
+    Each effect entry is ``{"enabled": bool, "intensity": float}`` where
+    ``intensity`` in [0, 1] scales the effect's strength. Effects are applied in
+    a fixed order chosen for visual stability: chromatic aberration, bloom,
+    depth of field, film grain, vignette.
+    """
+    post = profile.get("post") if isinstance(profile, dict) else None
+    if not isinstance(post, dict):
+        return img
+    out = img
+
+    ca = post.get("chromatic_aberration")
+    if isinstance(ca, dict) and ca.get("enabled") and ca.get("intensity", 0.0) > 0.0:
+        out = chromatic_aberration(out, strength=2.0 * float(ca.get("intensity", 1.0)))
+
+    bl = post.get("bloom")
+    if isinstance(bl, dict) and bl.get("enabled") and bl.get("intensity", 0.0) > 0.0:
+        out = bloom(out, intensity=0.6 * float(bl.get("intensity", 1.0)))
+
+    dof = post.get("depth_of_field")
+    if isinstance(dof, dict) and dof.get("enabled") and dof.get("intensity", 0.0) > 0.0:
+        out = depth_of_field(out, blur_strength=8.0 * float(dof.get("intensity", 1.0)))
+
+    fg = post.get("film_grain")
+    if isinstance(fg, dict) and fg.get("enabled") and fg.get("intensity", 0.0) > 0.0:
+        out = film_grain(out, intensity=0.04 * float(fg.get("intensity", 1.0)))
+
+    vg = post.get("vignette")
+    if isinstance(vg, dict) and vg.get("enabled") and vg.get("intensity", 0.0) > 0.0:
+        out = vignette(out, strength=0.3 * float(vg.get("intensity", 1.0)))
+    return out

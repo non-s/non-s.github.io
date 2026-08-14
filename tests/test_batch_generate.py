@@ -35,7 +35,7 @@ class TestMainGeneration:
 
         assert code == 0
         calls = [call.args[0] for call in mock_run.call_args_list]
-        assert any("generate_pata_jazz_short.py" in cmd for cmd in calls)
+        assert any("generate_liquid_wire_video.py" in cmd for cmd in calls)
         upload_calls = [cmd for cmd in calls if "upload_youtube.py" in cmd]
         assert len(upload_calls) == 1
         assert "--language" in upload_calls[0]

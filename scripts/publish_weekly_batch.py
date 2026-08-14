@@ -10,7 +10,7 @@ job "generate" do workflow) - os outros 29 nunca tem video_id ainda, entao
 os proximos ~5 dias de publish fazem inserts normais mesmo, nao updates.
 
 Este script e parte do lote semanal: e disparado uma vez por dia pelo
-workflow pata-jazz-weekly.yml ate que todos os 35 videos estejam publicos.
+workflow liquid-wire-weekly.yml ate que todos os 35 videos estejam publicos.
 """
 
 from __future__ import annotations
@@ -58,7 +58,7 @@ def _find_unpublished_videos(prefix: str = "") -> list[tuple[Path, dict]]:
     erros repetidos. Apos atingir o limite, o video e considerado
     "permanentemente falhado" e skipado.
     """
-    pattern = f"{prefix}*.json" if prefix else "pata_jazz_*.json"
+    pattern = f"{prefix}*.json" if prefix else "liquid_wire_*.json"
     candidates = sorted(OUTPUT_DIR.glob(pattern), key=lambda p: p.stat().st_mtime)
     unpublished: list[tuple[Path, dict]] = []
     for meta_path in candidates:
@@ -89,7 +89,7 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "en") 
     apenas atualiza o privacyStatus para public (custa ~50 unidades).
     """
     privacy = os.environ.get("YOUTUBE_PRIVACY", "public")
-    title = str(meta.get("title", "Pata Jazz"))[:100]
+    title = str(meta.get("title", "Liquid Wire"))[:100]
     description = str(meta.get("description", ""))[:5000]
     tags = _build_tags(meta.get("scene", ""), meta.get("hashtags"))
 
@@ -165,7 +165,7 @@ def main() -> int:
     try:
         service = get_youtube_service()
     except Exception as exc:
-        log.error("Erro ao autenticar YouTube (pata_jazz): %s", exc)
+        log.error("Erro ao autenticar YouTube (liquid_wire): %s", exc)
         return 1
 
     unpublished = _find_unpublished_videos()

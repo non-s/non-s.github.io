@@ -124,7 +124,7 @@ class TestGenerateAss:
 
 class TestSaveAss:
     def test_save_ass_writes_ass_extension(self, tmp_path: Path):
-        video = tmp_path / "pata_jazz_001.mp4"
+        video = tmp_path / "liquid_wire_001.mp4"
         video.write_bytes(b"\x00")
         ass_content = "[Script Info]\n[Events]\n"
         ass_path = caption_engine.save_ass(ass_content, video)

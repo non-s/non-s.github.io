@@ -30,7 +30,7 @@ def _write_video(output_dir: Path, stem: str, meta: dict) -> Path:
 class TestFindUnpublishedVideos:
     def test_finds_video_without_published_flag(self, tmp_path, monkeypatch):
         monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
-        _write_video(tmp_path, "pata_jazz_short_1", {"title": "A"})
+        _write_video(tmp_path, "liquid_wire_short_1", {"title": "A"})
 
         result = publish_weekly_batch._find_unpublished_videos()
 
@@ -39,7 +39,7 @@ class TestFindUnpublishedVideos:
 
     def test_skips_already_published(self, tmp_path, monkeypatch):
         monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
-        _write_video(tmp_path, "pata_jazz_short_1", {"title": "A", "published": True})
+        _write_video(tmp_path, "liquid_wire_short_1", {"title": "A", "published": True})
 
         result = publish_weekly_batch._find_unpublished_videos()
 
@@ -49,7 +49,7 @@ class TestFindUnpublishedVideos:
         """video_id presente (upload private feito) tambem conta como
         'ja processado', mesmo sem published=True ainda."""
         monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
-        _write_video(tmp_path, "pata_jazz_short_1", {"title": "A", "video_id": "abc123"})
+        _write_video(tmp_path, "liquid_wire_short_1", {"title": "A", "video_id": "abc123"})
 
         result = publish_weekly_batch._find_unpublished_videos()
 
@@ -57,7 +57,7 @@ class TestFindUnpublishedVideos:
 
     def test_skips_meta_without_matching_video_file(self, tmp_path, monkeypatch):
         monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
-        (tmp_path / "pata_jazz_short_1.json").write_text(json.dumps({"title": "A"}), encoding="utf-8")
+        (tmp_path / "liquid_wire_short_1.json").write_text(json.dumps({"title": "A"}), encoding="utf-8")
 
         result = publish_weekly_batch._find_unpublished_videos()
 
@@ -65,8 +65,8 @@ class TestFindUnpublishedVideos:
 
     def test_skips_corrupted_json(self, tmp_path, monkeypatch):
         monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
-        (tmp_path / "pata_jazz_short_1.mp4").write_bytes(b"x")
-        (tmp_path / "pata_jazz_short_1.json").write_text("not json{{{", encoding="utf-8")
+        (tmp_path / "liquid_wire_short_1.mp4").write_bytes(b"x")
+        (tmp_path / "liquid_wire_short_1.json").write_text("not json{{{", encoding="utf-8")
 
         result = publish_weekly_batch._find_unpublished_videos()
 
@@ -74,10 +74,10 @@ class TestFindUnpublishedVideos:
 
     def test_orders_by_modification_time(self, tmp_path, monkeypatch):
         monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
-        _write_video(tmp_path, "pata_jazz_short_2", {"title": "second"})
-        _write_video(tmp_path, "pata_jazz_short_1", {"title": "first_by_mtime"})
+        _write_video(tmp_path, "liquid_wire_short_2", {"title": "second"})
+        _write_video(tmp_path, "liquid_wire_short_1", {"title": "first_by_mtime"})
 
-        mtimes = {"pata_jazz_short_2": 100.0, "pata_jazz_short_1": 200.0}
+        mtimes = {"liquid_wire_short_2": 100.0, "liquid_wire_short_1": 200.0}
         real_stat = Path.stat
 
         def _fake_stat(self, *args, **kwargs):
@@ -293,7 +293,7 @@ class TestMain:
         monkeypatch.setattr(publish_weekly_batch, "get_youtube_service", lambda: service)
         monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
         monkeypatch.setattr(publish_weekly_batch.time, "sleep", lambda s: None)
-        vp = _write_video(tmp_path, "pata_jazz_short_1", {"title": "A"})
+        vp = _write_video(tmp_path, "liquid_wire_short_1", {"title": "A"})
         monkeypatch.setattr(publish_weekly_batch, "_publish_video", lambda *a, **k: "vid1")
         assert publish_weekly_batch.main() == 0
         saved = json.loads(vp.with_suffix(".json").read_text(encoding="utf-8"))
@@ -306,7 +306,7 @@ class TestMain:
         monkeypatch.setattr(publish_weekly_batch, "get_youtube_service", lambda: service)
         monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
         monkeypatch.setattr(publish_weekly_batch.time, "sleep", lambda s: None)
-        vp = _write_video(tmp_path, "pata_jazz_short_1", {"title": "A"})
+        vp = _write_video(tmp_path, "liquid_wire_short_1", {"title": "A"})
         monkeypatch.setattr(publish_weekly_batch, "_publish_video", lambda *a, **k: None)
         assert publish_weekly_batch.main() == 0
         saved = json.loads(vp.with_suffix(".json").read_text(encoding="utf-8"))
@@ -318,7 +318,7 @@ class TestMain:
         monkeypatch.setattr(publish_weekly_batch, "get_youtube_service", lambda: service)
         monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
         monkeypatch.setattr(publish_weekly_batch.time, "sleep", lambda s: None)
-        vp = _write_video(tmp_path, "pata_jazz_short_1", {"title": "A"})
+        vp = _write_video(tmp_path, "liquid_wire_short_1", {"title": "A"})
         monkeypatch.setattr(publish_weekly_batch, "_publish_video", MagicMock(side_effect=RuntimeError("boom")))
         monkeypatch.setattr(publish_weekly_batch, "log_exception_to_file", lambda *a, **k: None)
         assert publish_weekly_batch.main() == 0
@@ -329,7 +329,7 @@ class TestMain:
         monkeypatch.setattr(publish_weekly_batch, "OUTPUT_DIR", tmp_path)
         _write_video(
             tmp_path,
-            "pata_jazz_short_1",
+            "liquid_wire_short_1",
             {"title": "A", "publish_attempts": publish_weekly_batch._MAX_PUBLISH_ATTEMPTS},
         )
         assert publish_weekly_batch._find_unpublished_videos() == []

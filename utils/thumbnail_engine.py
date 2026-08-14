@@ -1,9 +1,9 @@
 """
-utils/thumbnail_engine.py — cria thumbnails de CTR máximo para o Pata Jazz.
+utils/thumbnail_engine.py — cria thumbnails de CTR máximo para o Liquid Wire.
 
-Psicologia visual aplicada (Operação Zeus):
-- Rosto/animal com olhar direto + olhos destacados (gatilho de emoção).
-- Contraste extremo: fundo escuro + animal claro + texto em laranja/amarelo.
+Psicologia visual aplicada:
+- Frame extraído do vídeo generativo (sempre relevante ao conteúdo).
+- Contraste extremo: fundo escuro + visual brilhante + texto em laranja/amarelo.
 - Texto curto (máx 3 palavras), fonte pesada, legível em mobile.
 - Emoji como sinalizador visual.
 - Elementos de curiosidade: setas, círculos, expressões de surpresa.
@@ -218,7 +218,7 @@ def _vision_hook_for_frame(frame_img: Image.Image, fallback_hook: str) -> str:
             prompt = (
                 "Look at this video thumbnail frame. Write ONE short, scroll-stopping "
                 "YouTube title (max 60 chars, English, cute tone, NO clickbait, NO quotes, "
-                "NO emojis) describing what the cat or dog is doing. Return only the title text."
+                "NO emojis) describing the generative visual art. Return only the title text."
             )
             text = ai_text_with_image(prompt, tmp_path, task="thumbnail_vision")
         finally:
@@ -363,7 +363,7 @@ def make_short_thumbnail(
     hook: str,
     emoji: str,
     output: Path,
-    brand: str = "Pata Jazz",
+    brand: str = "Liquid Wire",
     video_path: Path | None = None,
     variant: str = "A",
 ) -> None:
@@ -397,7 +397,7 @@ def make_long_thumbnail(
     hook: str,
     emoji: str,
     output: Path,
-    brand: str = "Pata Jazz",
+    brand: str = "Liquid Wire",
     video_path: Path | None = None,
     variant: str = "A",
 ) -> None:
@@ -425,7 +425,7 @@ def create_all_variants(
     hook: str,
     emoji: str,
     output_dir: Path,
-    brand: str = "Pata Jazz",
+    brand: str = "Liquid Wire",
     video_path: Path | None = None,
     kind: str = "short",
 ) -> list[Path]:

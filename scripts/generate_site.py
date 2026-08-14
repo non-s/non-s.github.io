@@ -131,7 +131,7 @@ def _youtube_feed_entries(limit: int = 12) -> list[dict]:
             {
                 "video_id": video_id,
                 "title": title,
-                "description": "A gentle Liquid Wire pet moment with soft jazz music.",
+                "description": "A Liquid Wire generative art moment with original procedural music.",
                 "published_at": (item.findtext(f"{_ATOM_NS}published") or "").strip(),
                 "views": 0,
                 "likes": 0,
@@ -245,12 +245,12 @@ def _render_index(entries: list[dict]) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Liquid Wire â€” Cute cats & dogs with relaxing music</title>
+<title>Liquid Wire — Generative art &amp; original music</title>
 <meta name="description" content="All Liquid Wire videos: {desc}">
 <link rel="canonical" href="{_SITE_URL}/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Liquid Wire: Soft jazz and gentle pet moments">
-<meta property="og:description" content="Soft jazz and gentle pet moments for quieter homes.">
+<meta property="og:title" content="Liquid Wire: Generative art and original procedural music">
+<meta property="og:description" content="Procedural visuals and synthesized soundscapes — every piece unique.">
 <meta property="og:url" content="{_SITE_URL}/">
 <meta name="twitter:card" content="summary">
 <script type="application/ld+json">
@@ -282,8 +282,8 @@ def _render_index(entries: list[dict]) -> str:
 </style>
 </head>
 <body>
-  <h1>ðŸ¾ðŸŽ· Liquid Wire</h1>
-  <p>Soft jazz and gentle pet moments for quieter homes.</p>
+  <h1>✨ Liquid Wire</h1>
+  <p>Procedural visuals and synthesized soundscapes — every piece unique, generated from math.</p>
   <a class="channel-cta" href="{_CHANNEL_URL}" target="_blank" rel="noopener">Watch Liquid Wire on YouTube</a>
   {empty_state}
   <div class="grid">

@@ -3,7 +3,15 @@ from __future__ import annotations
 import cv2
 import numpy as np
 
-from utils.liquid_wire_quality import _audio_metrics, _fingerprint_distance, _frame_metrics
+from utils.liquid_wire_quality import (
+    FINGERPRINT_DIMS,
+    LEGACY_FINGERPRINT_DIMS,
+    NEAR_DUPLICATE_THRESHOLD,
+    _audio_metrics,
+    _fingerprint_distance,
+    _frame_metrics,
+    _pad_fingerprint,
+)
 
 
 def _frame(x: int, hue: int) -> np.ndarray:
@@ -11,6 +19,10 @@ def _frame(x: int, hue: int) -> np.ndarray:
     cv2.circle(hsv, (x, 90), 38, (hue, 220, 240), 3)
     cv2.line(hsv, (x - 30, 70), (x + 35, 108), ((hue + 50) % 180, 240, 220), 2)
     return cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
+
+
+def _fingerprint_frames() -> tuple:
+    return tuple(_frame_metrics([_frame(120, 10), _frame(145, 70), _frame(165, 130)])["fingerprint"])
 
 
 def test_frame_metrics_detect_a_moving_colorful_object() -> None:
@@ -46,9 +58,43 @@ def test_audio_metrics_detect_silence() -> None:
     assert metrics["silence_ratio"] == 1.0
 
 
+def test_perceptual_fingerprint_has_32_dimensions() -> None:
+    fp = _fingerprint_frames()
+    assert len(fp) == FINGERPRINT_DIMS == 32
+
+
+def test_perceptual_fingerprint_values_in_unit_range() -> None:
+    fp = _fingerprint_frames()
+    assert all(0.0 <= v <= 1.0 for v in fp)
+
+
+def test_perceptual_fingerprint_is_deterministic() -> None:
+    first = _fingerprint_frames()
+    second = _fingerprint_frames()
+    assert first == second
+    assert _fingerprint_distance(first, second) == 0.0
+
+
 def test_perceptual_fingerprint_detects_duplicates() -> None:
-    first = tuple(_frame_metrics([_frame(120, 10), _frame(145, 70), _frame(165, 130)])["fingerprint"])
-    duplicate = tuple(_frame_metrics([_frame(120, 10), _frame(145, 70), _frame(165, 130)])["fingerprint"])
+    first = _fingerprint_frames()
+    duplicate = _fingerprint_frames()
     different = tuple(_frame_metrics([_frame(80, 160), _frame(95, 160), _frame(105, 160)])["fingerprint"])
     assert _fingerprint_distance(first, duplicate) == 0.0
-    assert _fingerprint_distance(first, different) > 0.035
+    # Frente E recalibrated the near-duplicate threshold to 0.04 for 32 dims.
+    assert _fingerprint_distance(first, different) > NEAR_DUPLICATE_THRESHOLD
+
+
+def test_pad_fingerprint_lifts_legacy_20_to_32() -> None:
+    legacy = tuple(0.1 * i for i in range(LEGACY_FINGERPRINT_DIMS))
+    padded = _pad_fingerprint(legacy)
+    assert len(padded) == FINGERPRINT_DIMS
+    assert padded[:LEGACY_FINGERPRINT_DIMS] == legacy
+    assert padded[LEGACY_FINGERPRINT_DIMS:] == (0.0,) * (FINGERPRINT_DIMS - LEGACY_FINGERPRINT_DIMS)
+
+
+def test_fingerprint_distance_compares_legacy_and_full() -> None:
+    legacy = tuple(0.1 * i for i in range(LEGACY_FINGERPRINT_DIMS))
+    full = legacy + (0.0,) * (FINGERPRINT_DIMS - LEGACY_FINGERPRINT_DIMS)
+    # A legacy 20-dim fingerprint padded with zeros must match a 32-dim
+    # fingerprint that shares the same first 20 dims and zero tails.
+    assert _fingerprint_distance(legacy, full) == 0.0

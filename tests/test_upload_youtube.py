@@ -14,6 +14,13 @@ import pytest
 
 import upload_youtube
 
+_PRODUCTION_CONTRACT: dict = {
+    "visual_source": "procedural_python",
+    "audio_source": "synthetic_python",
+    "quality_report": {"passed": True, "issues": [], "fingerprint": [0] * 20},
+    "generator_profile": {"engine_version": "2.1.0"},
+}
+
 
 @pytest.fixture(autouse=True)
 def _isolate_video_tags_file(tmp_path, monkeypatch):
@@ -24,7 +31,7 @@ def _isolate_video_tags_file(tmp_path, monkeypatch):
     monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tmp_path / "video_tags.json")
 
 
-def _write_video_with_meta(output_dir: Path, meta: dict, stem: str = "pata_jazz_short_20260101") -> None:
+def _write_video_with_meta(output_dir: Path, meta: dict, stem: str = "liquid_wire_short_20260101") -> None:
     video_path = output_dir / f"{stem}.mp4"
     video_path.write_bytes(b"fake video bytes")
     # thumbnail/caption default to "" -> Path("") == Path(".") which
@@ -32,6 +39,7 @@ def _write_video_with_meta(output_dir: Path, meta: dict, stem: str = "pata_jazz_
     # como arquivo. Aponta pra um caminho que garantidamente nao existe.
     meta.setdefault("thumbnail", str(output_dir / "no-such-thumbnail.png"))
     meta.setdefault("caption", str(output_dir / "no-such-caption.srt"))
+    meta.update(_PRODUCTION_CONTRACT)
     (output_dir / f"{stem}.json").write_text(json.dumps(meta), encoding="utf-8")
 
 
@@ -105,11 +113,11 @@ class TestUploadVideoSurvivesOptionalStepFailures:
             patch("upload_youtube._retry_youtube_call", side_effect=fake_retry),
             patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add,
         ):
-            video_id = upload_youtube.upload_video(prefix="pata_jazz_")
+            video_id = upload_youtube.upload_video(prefix="liquid_wire_")
 
         assert video_id == "vid-ok"
-        # Execucao continuou apos a falha do thumbnail: playlist ainda foi chamada (animal+mood+kind).
-        assert mock_add.call_count == 3
+        # Execucao continuou apos a falha do thumbnail: playlist ainda foi chamada (mood+kind).
+        assert mock_add.call_count == 2
 
     def test_runtime_error_from_caption_retry_exhaustion_does_not_crash(self, tmp_path, monkeypatch):
         service = self._setup(tmp_path, monkeypatch)
@@ -124,10 +132,10 @@ class TestUploadVideoSurvivesOptionalStepFailures:
             patch("upload_youtube._retry_youtube_call", side_effect=fake_retry),
             patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add,
         ):
-            video_id = upload_youtube.upload_video(prefix="pata_jazz_")
+            video_id = upload_youtube.upload_video(prefix="liquid_wire_")
 
         assert video_id == "vid-ok"
-        assert mock_add.call_count == 3
+        assert mock_add.call_count == 2
 
 
 class TestUploadVideoPlaylists:
@@ -152,17 +160,16 @@ class TestUploadVideoPlaylists:
             patch("upload_youtube.get_youtube_service", return_value=service),
             patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add,
         ):
-            video_id = upload_youtube.upload_video(prefix="pata_jazz_")
+            video_id = upload_youtube.upload_video(prefix="liquid_wire_")
 
         assert video_id == "vid123"
-        assert mock_add.call_count == 3
+        assert mock_add.call_count == 2
         calls = mock_add.call_args_list
-        assert calls[0].kwargs.get("mood") == "cat_playlist"
-        assert calls[1].kwargs.get("mood") == "relax"
-        assert calls[2].kwargs.get("kind") == "short"
+        assert calls[0].kwargs.get("mood") == "relax"
+        assert calls[1].kwargs.get("kind") == "short"
 
     def test_skips_mood_playlist_when_mood_missing(self, tmp_path, monkeypatch):
-        """Sem meta['mood'], ainda adiciona a playlist por animal e por kind."""
+        """Sem meta['mood'], ainda adiciona a playlist por kind."""
         monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
         monkeypatch.setattr(upload_youtube.ffmpeg_helpers, "get_video_duration", lambda path: 30.0)
         _write_video_with_meta(
@@ -182,12 +189,11 @@ class TestUploadVideoPlaylists:
             patch("upload_youtube.get_youtube_service", return_value=service),
             patch("utils.youtube_post_upload.add_video_to_playlist") as mock_add,
         ):
-            upload_youtube.upload_video(prefix="pata_jazz_")
+            upload_youtube.upload_video(prefix="liquid_wire_")
 
-        assert mock_add.call_count == 2
+        assert mock_add.call_count == 1
         calls = mock_add.call_args_list
-        assert calls[0].kwargs.get("mood") == "cat_playlist"
-        assert calls[1].kwargs.get("kind") == "short"
+        assert calls[0].kwargs.get("kind") == "short"
 
     def test_playlist_failure_does_not_fail_upload(self, tmp_path, monkeypatch):
         """Falha ao adicionar a playlist e so um warning - upload_video ainda
@@ -212,13 +218,13 @@ class TestUploadVideoPlaylists:
             patch("upload_youtube.get_youtube_service", return_value=service),
             patch("utils.youtube_post_upload.add_video_to_playlist", side_effect=RuntimeError("api down")),
         ):
-            video_id = upload_youtube.upload_video(prefix="pata_jazz_")
+            video_id = upload_youtube.upload_video(prefix="liquid_wire_")
 
         assert video_id == "vid789"
 
     def test_returns_none_when_no_video_found(self, tmp_path, monkeypatch):
         monkeypatch.setattr(upload_youtube, "OUTPUT_DIR", tmp_path)
-        assert upload_youtube.upload_video(prefix="pata_jazz_") is None
+        assert upload_youtube.upload_video(prefix="liquid_wire_") is None
 
 
 class TestRecordVideoTags:
@@ -233,20 +239,20 @@ class TestRecordVideoTags:
         upload_youtube._record_video_tags(
             "vid1",
             {
-                "scene": "cat",
-                "hook": "Cute Cat",
-                "mood": "fofura",
+                "scene": "calm wireframe flow",
+                "hook": "Calm wireframe",
+                "mood": "focus",
                 "kind": "short",
-                "title_pattern": "{emoji} {adjetivo} {animal}",
+                "title_pattern": "{emoji} {style} {scene}",
             },
         )
 
         data = json.loads(tags_file.read_text(encoding="utf-8"))
-        assert data["vid1"]["scene"] == "cat"
-        assert data["vid1"]["hook"] == "Cute Cat"
-        assert data["vid1"]["mood"] == "fofura"
+        assert data["vid1"]["scene"] == "calm wireframe flow"
+        assert data["vid1"]["hook"] == "Calm wireframe"
+        assert data["vid1"]["mood"] == "focus"
         assert data["vid1"]["kind"] == "short"
-        assert data["vid1"]["title_pattern"] == "{emoji} {adjetivo} {animal}"
+        assert data["vid1"]["title_pattern"] == "{emoji} {style} {scene}"
         assert "uploaded_at" in data["vid1"]
 
     def test_title_pattern_defaults_to_empty_string_when_missing(self, tmp_path, monkeypatch):
@@ -362,7 +368,7 @@ class TestRecordVideoTags:
             patch("upload_youtube.get_youtube_service", return_value=service),
             patch("utils.youtube_post_upload.add_video_to_playlist"),
         ):
-            video_id = upload_youtube.upload_video(prefix="pata_jazz_")
+            video_id = upload_youtube.upload_video(prefix="liquid_wire_")
 
         assert video_id == "vid_e2e"
         data = json.loads(tags_file.read_text(encoding="utf-8"))
@@ -396,7 +402,7 @@ class TestQuotaGuard:
             patch("upload_youtube.get_youtube_service", return_value=service),
             patch("upload_youtube.daily_total", return_value=upload_youtube.ALERT_THRESHOLD),
         ):
-            video_id = upload_youtube.upload_video(prefix="pata_jazz_")
+            video_id = upload_youtube.upload_video(prefix="liquid_wire_")
 
         assert video_id is None
         service.videos().insert.assert_not_called()
@@ -410,6 +416,6 @@ class TestQuotaGuard:
             patch("upload_youtube.daily_total", return_value=100),
             patch("utils.youtube_post_upload.add_video_to_playlist"),
         ):
-            video_id = upload_youtube.upload_video(prefix="pata_jazz_")
+            video_id = upload_youtube.upload_video(prefix="liquid_wire_")
 
         assert video_id == "vid-ok"

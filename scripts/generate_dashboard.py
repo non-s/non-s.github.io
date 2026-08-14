@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import logging
+import math
 import sys
 import urllib.error
 import urllib.request
@@ -28,6 +29,13 @@ from utils.paths import data_dir
 
 log = logging.getLogger(__name__)
 
+# Pure-stdlib math helpers used by the Frente E PCA implementation so the
+# dashboard stays dependency-free (no numpy required).
+_math_sqrt = math.sqrt
+_math_atan2 = math.atan2
+_math_cos = math.cos
+_math_sin = math.sin
+
 DATA_DIR = data_dir()
 DASHBOARD_DIR = ROOT / "_dashboard"
 
@@ -37,8 +45,17 @@ SCENE_PERFORMANCE_FILE = DATA_DIR / "scene_performance.json"
 TITLE_PATTERN_PERFORMANCE_FILE = DATA_DIR / "title_pattern_performance.json"
 VIEW_PREDICTOR_FILE = DATA_DIR / "view_predictor.json"
 VIDEO_TAGS_FILE = DATA_DIR / "video_tags.json"
+QUALITY_HISTORY_FILE = DATA_DIR / "quality_history.json"
 
 _MAX_HISTORY_ROWS = 12
+# Frente E — diversity dashboard: number of recent quality_history entries
+# used to build the perceptual-diversity PCA scatter plot.
+_DIVERSITY_SAMPLE = 200
+# Pairwise distance below which two videos are considered perceptually
+# clustered; if any 5 videos share such a tight neighbourhood we surface a
+# diversity warning.
+_DIVERSITY_CLUSTER_DISTANCE = 0.1
+_DIVERSITY_CLUSTER_SIZE = 5
 
 # Chart.js 4.x via jsdelivr (CDN estavel, sem build). SRI calculado a partir
 # do arquivo oficial da versao; fallback offline copiado para _dashboard/.
@@ -336,7 +353,7 @@ def _build_scene_hour_matrix(predictor: dict) -> dict:
 
 def _heatmap_color(intensity: float) -> str:
     """Retorna background-color CSS baseado na intensidade [0,1] — escala
-    laranja (accent Pata Jazz) sobre fundo escuro."""
+    laranja (accent Liquid Wire) sobre fundo escuro."""
     if intensity <= 0:
         return "#2a2a40"
     # Interpola de #2a2a40 (fundo) ate #f4a261 (accent) por canal.
@@ -452,6 +469,269 @@ def _build_thumbnail_variant_dataset(video_tags: dict) -> dict:
     return {"labels": ["A", "B", "C"], "counts": [counts["A"], counts["B"], counts["C"]]}
 
 
+# ---------------------------------------------------------------------------
+# Frente E — Diversidade perceptual verificavel
+# ---------------------------------------------------------------------------
+
+
+def _load_quality_history(limit: int = _DIVERSITY_SAMPLE) -> list[dict]:
+    """Load the most recent quality_history entries (each with a 32-dim
+    fingerprint and a genre/family label). Returns [] when the file is
+    absent or corrupt so the dashboard degrades gracefully.
+    """
+    try:
+        data = _load_json(QUALITY_HISTORY_FILE, [])
+    except Exception:
+        return []
+    if not isinstance(data, list):
+        return []
+    return [entry for entry in data[-limit:] if isinstance(entry, dict)]
+
+
+def _covariance_matrix(matrix: list[list[float]]) -> list[list[float]]:
+    """Pure-stdlib covariance matrix (sample covariance, ddof=0) of a
+    (n_samples x n_features) matrix.
+    """
+    n = len(matrix)
+    if n == 0:
+        return []
+    n_features = len(matrix[0])
+    means = [0.0] * n_features
+    for row in matrix:
+        for j in range(n_features):
+            means[j] += row[j]
+    means = [m / n for m in means]
+    cov = [[0.0] * n_features for _ in range(n_features)]
+    for row in matrix:
+        for i in range(n_features):
+            di = row[i] - means[i]
+            for j in range(i, n_features):
+                cov[i][j] += di * (row[j] - means[j])
+    inv_n = 1.0 / n
+    for i in range(n_features):
+        for j in range(n_features):
+            cov[i][j] *= inv_n
+    # Symmetrise (we only filled the upper triangle).
+    for i in range(n_features):
+        for j in range(i):
+            cov[i][j] = cov[j][i]
+    return cov
+
+
+def _jacobi_eigen(cov: list[list[float]], max_iter: int = 1000, tol: float = 1e-12) -> list[tuple[float, list[float]]]:
+    """Jacobi eigenvalue algorithm for a symmetric matrix.
+
+    Returns a list of (eigenvalue, eigenvector) pairs sorted by eigenvalue
+    descending. Pure stdlib (no numpy) so the dashboard stays stdlib-only.
+    """
+    n = len(cov)
+    if n == 0:
+        return []
+    a = [row[:] for row in cov]
+    v = [[1.0 if i == j else 0.0 for j in range(n)] for i in range(n)]
+    for _ in range(max_iter):
+        # Find the largest off-diagonal element.
+        p, q = 0, 1
+        max_off = 0.0
+        for i in range(n):
+            for j in range(i + 1, n):
+                if abs(a[i][j]) > max_off:
+                    max_off = abs(a[i][j])
+                    p, q = i, j
+        if max_off < tol:
+            break
+        app = a[p][p]
+        aqq = a[q][q]
+        apq = a[p][q]
+        if abs(apq) < 1e-15:
+            continue
+        phi = 0.5 * _math_atan2(2.0 * apq, aqq - app)
+        cos = _math_cos(phi)
+        sin = _math_sin(phi)
+        # Rotate.
+        for i in range(n):
+            aip = a[i][p]
+            aiq = a[i][q]
+            a[i][p] = cos * aip - sin * aiq
+            a[i][q] = sin * aip + cos * aiq
+        for j in range(n):
+            apj = a[p][j]
+            aqj = a[q][j]
+            a[p][j] = cos * apj - sin * aqj
+            a[q][j] = sin * apj + cos * aqj
+        for i in range(n):
+            vip = v[i][p]
+            viq = v[i][q]
+            v[i][p] = cos * vip - sin * viq
+            v[i][q] = sin * vip + cos * viq
+    eigvals = [a[i][i] for i in range(n)]
+    eigvecs = [[v[i][k] for i in range(n)] for k in range(n)]
+    pairs = list(zip(eigvals, eigvecs, strict=False))
+    pairs.sort(key=lambda kv: kv[0], reverse=True)
+    return pairs
+
+
+def _pca_2d(points: list[list[float]]) -> list[list[float]]:
+    """Project a list of N-dim points onto their first 2 principal components.
+
+    Implements PCA via a pure-stdlib covariance + Jacobi eigendecomposition
+    (no numpy/sklearn) so the dashboard stays stdlib-only. Returns a list of
+    [x, y] 2-d coordinates, one per input point. Empty input -> [].
+    """
+    if not points:
+        return []
+    n_features = len(points[0])
+    if n_features == 0:
+        return [[0.0, 0.0] for _ in points]
+    cov = _covariance_matrix(points)
+    if not cov:
+        return [[0.0, 0.0] for _ in points]
+    pairs = _jacobi_eigen(cov)
+    # Top 2 eigenvectors (each length n_features).
+    comps = [vec for _, vec in pairs[:2]]
+    # Centre the data.
+    means = [0.0] * n_features
+    for row in points:
+        for j in range(n_features):
+            means[j] += row[j]
+    means = [m / len(points) for m in means]
+    coords: list[list[float]] = []
+    for row in points:
+        centred = [row[j] - means[j] for j in range(n_features)]
+        if comps and comps[0]:
+            x = sum(centred[j] * comps[0][j] for j in range(n_features))
+        else:
+            x = 0.0
+        if len(comps) > 1 and comps[1]:
+            y = sum(centred[j] * comps[1][j] for j in range(n_features))
+        else:
+            y = 0.0
+        coords.append([float(x), float(y)])
+    return coords
+
+
+def _pairwise_distances(points: list[list[float]]) -> list[list[float]]:
+    """Euclidean distance matrix for a list of N-dim points (pure stdlib)."""
+    n = len(points)
+    if n == 0:
+        return []
+    dist: list[list[float]] = [[0.0] * n for _ in range(n)]
+    for i in range(n):
+        for j in range(i + 1, n):
+            s = 0.0
+            for k in range(len(points[i])):
+                d = points[i][k] - points[j][k]
+                s += d * d
+            dist[i][j] = dist[j][i] = _math_sqrt(s)
+    return dist
+
+
+def _has_dense_cluster(distances: list[list[float]], threshold: float, size: int) -> bool:
+    """Return True if any `size` videos are pairwise within `threshold`."""
+    n = len(distances)
+    if n < size:
+        return False
+    for i in range(n):
+        neighbours = sum(
+            1 for j in range(n) if j != i and distances[i][j] <= threshold
+        )
+        if neighbours >= size - 1:
+            return True
+    return False
+
+
+def _build_diversity_dataset(history: list[dict]) -> dict:
+    """Build the JSON dataset consumed by the diversity scatter chart.
+
+    Each entry contributes its 32-dim fingerprint (legacy 20-dim entries are
+    zero-padded), its genre label and the 2D PCA-projected coordinates. Also
+    reports the number of unique genres, the average pairwise distance and
+    whether a dense cluster warning should be shown.
+    """
+    entries: list[dict] = []
+    fingerprints: list[list[float]] = []
+    genres: list[str] = []
+    for item in history:
+        fp = item.get("fingerprint")
+        if not isinstance(fp, list) or not fp:
+            continue
+        fp32 = list(fp) + [0.0] * max(0, 32 - len(fp))
+        fp32 = [float(v) for v in fp32[:32]]
+        genre = str(item.get("genre") or item.get("family") or "unknown")
+        fingerprints.append(fp32)
+        genres.append(genre)
+        entries.append({"genre": genre})
+    if not fingerprints:
+        return {
+            "points": [],
+            "genres": [],
+            "genre_counts": {},
+            "unique_genres": 0,
+            "avg_distance": 0.0,
+            "cluster_warning": False,
+            "n": 0,
+        }
+    coords = _pca_2d(fingerprints)
+    distances = _pairwise_distances(fingerprints)
+    # Average of the upper-triangular pairwise distances.
+    n = len(fingerprints)
+    upper = [distances[i][j] for i in range(n) for j in range(i + 1, n)]
+    avg_distance = sum(upper) / len(upper) if upper else 0.0
+    cluster_warning = _has_dense_cluster(distances, _DIVERSITY_CLUSTER_DISTANCE, _DIVERSITY_CLUSTER_SIZE)
+    unique_genres = sorted(set(genres))
+    counts: dict[str, int] = {}
+    for g in genres:
+        counts[g] = counts.get(g, 0) + 1
+    points = [
+        {"x": coord[0], "y": coord[1], "genre": entry["genre"]}
+        for coord, entry in zip(coords, entries, strict=False)
+    ]
+    return {
+        "points": points,
+        "genres": unique_genres,
+        "genre_counts": counts,
+        "unique_genres": len(unique_genres),
+        "avg_distance": round(avg_distance, 5),
+        "cluster_warning": cluster_warning,
+        "n": len(points),
+    }
+
+
+def _render_diversity_section(history: list[dict]) -> str:
+    """Render the static HTML (cards + warning) for the perceptual diversity
+    section. The scatter plot itself is drawn client-side by Chart.js from
+    the DIVERSITY_DS JSON blob.
+    """
+    dataset = _build_diversity_dataset(history)
+    if not dataset["n"]:
+        return (
+            "<p class='empty'>Sem histórico de qualidade ainda — a diversidade "
+            "perceptual aparece após os primeiros vídeos aprovados pelo gate.</p>"
+        )
+    warning = ""
+    if dataset["cluster_warning"]:
+        warning = (
+            '<p class="empty" style="color:#e76f51">⚠ Aviso de diversidade: '
+            f"{_DIVERSITY_CLUSTER_SIZE} vídeos ou mais estão a menos de "
+            f"{_DIVERSITY_CLUSTER_DISTANCE} de distância pareada — o canal "
+            "pode estar produzindo conteúdo perceptualmente repetido.</p>"
+        )
+    cards = [
+        _card("Vídeos analisados", str(dataset["n"])),
+        _card("Gêneros únicos", str(dataset["unique_genres"])),
+        _card("Distância média", f"{dataset['avg_distance']:.4f}"),
+    ]
+    return (
+        f'<div class="cards">{"".join(cards)}</div>'
+        f"{warning}"
+        f'{_chart_canvas("diversityChart", "360px")}'
+        "<p class='note'>Cada ponto é um vídeo projetado em 2D via PCA "
+        "(covariância + Jacobi, stdlib puro) sobre a impressão digital "
+        "perceptual de 32 dimensões. Cor = gênero. Pontos próximos indicam "
+        "conteúdo visualmente/audio similar.</p>"
+    )
+
+
 def _ensure_chart_js_fallback(output_dir: Path) -> None:
     """Copia uma versao offline do Chart.js para _dashboard/.
 
@@ -489,6 +769,7 @@ def build_dashboard_html() -> str:
     title_pattern_weights = _load_json(TITLE_PATTERN_PERFORMANCE_FILE, {})
     view_predictor = _load_json(VIEW_PREDICTOR_FILE, {})
     video_tags = _load_json(VIDEO_TAGS_FILE, {})
+    quality_history = _load_quality_history()
 
     generated_at = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
 
@@ -504,6 +785,7 @@ def build_dashboard_html() -> str:
     title_ds = _build_title_pattern_dataset(title_pattern_weights)
     top_ds = _build_top_videos_dataset(analytics)
     thumb_ds = _build_thumbnail_variant_dataset(video_tags)
+    diversity_ds = _build_diversity_dataset(quality_history)
 
     def _safe_json(obj) -> str:
         # Escapa "</" para evitar saida prematura de <script> e mantem JSON
@@ -517,13 +799,14 @@ def build_dashboard_html() -> str:
     title_json = _safe_json(title_ds)
     top_json = _safe_json(top_ds)
     thumb_json = _safe_json(thumb_ds)
+    diversity_json = _safe_json(diversity_ds)
 
     return rf"""<!doctype html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pata Jazz — Dashboard</title>
+<title>Liquid Wire — Dashboard</title>
 <style>
   :root {{ color-scheme: light dark; }}
   body {{
@@ -585,7 +868,7 @@ def build_dashboard_html() -> str:
 </style>
 </head>
 <body>
-  <h1 id="dash-title">🐾🎷 Pata Jazz — Dashboard</h1>
+  <h1 id="dash-title">✨ Liquid Wire — Dashboard</h1>
   <p class="subtitle" id="dash-subtitle">Gerado automaticamente a partir dos
   dados coletados por collect_analytics.py</p>
 
@@ -595,7 +878,7 @@ def build_dashboard_html() -> str:
     <span id="refresh-status" class="refresh-status"></span>
   </div>
   <p class="note">
-    Os dados em _data/ só atualizam quando o workflow pata-jazz-analytics.yml roda (semanal).
+    Os dados em _data/ só atualizam quando o workflow liquid-wire-analytics.yml roda (semanal).
     O botão "Atualizar dados" refaz o fetch de analytics.json hospedado no mesmo GitHub Pages —
     se já publicado, os gráficos refletem o último snapshot; caso contrário, mantém os dados
     embutidos na geração estática.
@@ -644,6 +927,9 @@ def build_dashboard_html() -> str:
   <h2>Heatmap cena × horário</h2>
   {_render_scene_hour_heatmap(view_predictor)}
 
+  <h2>Diversidade perceptual</h2>
+  {_render_diversity_section(quality_history)}
+
   <footer>Gerado em {generated_at}</footer>
 
   <script src="{_CHART_JS_CDN}"
@@ -658,9 +944,10 @@ def build_dashboard_html() -> str:
     var TITLE_DS = {title_json};
     var TOP_DS = {top_json};
     var THUMB_DS = {thumb_json};
-    var ACTIVE_CHANNEL = "Pata Jazz";
+    var DIVERSITY_DS = {diversity_json};
+    var ACTIVE_CHANNEL = "Liquid Wire";
 
-    // Paleta Pata Jazz.
+    // Paleta Liquid Wire.
     var ACCENT = "#f4a261";
     var ACCENT2 = "#2a9d8f";
     var GRID = "rgba(154, 154, 184, 0.15)";
@@ -838,6 +1125,46 @@ def build_dashboard_html() -> str:
       }});
     }}
 
+    function makeDiversityChart() {{
+      var ds = DIVERSITY_DS;
+      if (!ds.n || !ds.points.length) return;
+      var palette = [
+        "#f4a261", "#2a9d8f", "#e76f51", "#e9c46a", "#264653", "#8ab17d",
+        "#e63946", "#457b9d", "#a8dadc", "#f1faee", "#9d4edd", "#ff7b00",
+      ];
+      var genres = ds.genres || [];
+      var genreColor = {{}};
+      genres.forEach(function (g, i) {{ genreColor[g] = palette[i % palette.length]; }});
+      var datasetsByGenre = {{}};
+      ds.points.forEach(function (p) {{
+        var g = p.genre || "unknown";
+        if (!datasetsByGenre[g]) {{
+          datasetsByGenre[g] = {{
+            label: g, data: [], backgroundColor: genreColor[g] || ACCENT, pointRadius: 4
+          }};
+        }}
+        datasetsByGenre[g].data.push({{ x: p.x, y: p.y }});
+      }});
+      new Chart(document.getElementById("diversityChart").getContext("2d"), {{
+        type: "scatter",
+        data: {{ datasets: Object.values(datasetsByGenre) }},
+        options: {{
+          responsive: true, maintainAspectRatio: false,
+          plugins: {{ legend: {{ position: "right", labels: {{ color: TICK, boxWidth: 12, font: {{ size: 11 }} }} }} }},
+          scales: {{
+            x: {{
+              ticks: {{ color: TICK }}, grid: {{ color: GRID }},
+              title: {{ display: true, text: "PC1", color: TICK }},
+            }},
+            y: {{
+              ticks: {{ color: TICK }}, grid: {{ color: GRID }},
+              title: {{ display: true, text: "PC2", color: TICK }},
+            }},
+          }},
+        }},
+      }});
+    }}
+
     if (window.Chart) {{
       makeViewsChart();
       makeViewsByDayChart();
@@ -845,12 +1172,13 @@ def build_dashboard_html() -> str:
       makeTitlePatternChart();
       makeTopVideosChart();
       makeThumbnailVariantsChart();
+      makeDiversityChart();
     }}
 
     // Item 17: endpoint client-side opcional que busca dados ao vivo do
     // GitHub Pages (analytics.json hospedado no mesmo site). Como o GitHub
     // Pages e estatico, os dados so atualizam quando o workflow
-    // pata-jazz-analytics.yml roda (semanal) - por isso o botao e opcional
+    // liquid-wire-analytics.yml roda (semanal) - por isso o botao e opcional
     // e os graficos ja vem populados com o snapshot da geracao.
     var REFRESH_INTERVAL_MS = 60000;
     var DATA_BASE = "./";
@@ -910,7 +1238,7 @@ def build_dashboard_html() -> str:
       var url = URL.createObjectURL(blob);
       var a = document.createElement("a");
       a.href = url;
-      a.download = "pata_jazz_analytics.csv";
+      a.download = "liquid_wire_analytics.csv";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

@@ -36,15 +36,15 @@ class TestCurrentBrtHour:
 
 
 class TestMoodForNow:
-    def test_morning_is_diversao(self):
+    def test_morning_is_focus(self):
         # 6h-12h BRT = 9h-15h UTC
         with _mock_now(10):  # 7h BRT
-            assert content_strategy.mood_for_now() == "diversao"
+            assert content_strategy.mood_for_now() == "focus"
 
-    def test_afternoon_is_fofura(self):
+    def test_afternoon_is_ambient(self):
         # 12h-18h BRT = 15h-21h UTC
         with _mock_now(16):  # 13h BRT
-            assert content_strategy.mood_for_now() == "fofura"
+            assert content_strategy.mood_for_now() == "ambient"
 
     def test_night_is_relax(self):
         # 18h-24h e 0h-6h BRT = relax
@@ -58,9 +58,29 @@ class TestSceneForMood:
             for _ in range(10):  # random.choice - checa varias vezes
                 assert content_strategy.scene_for_mood(mood) in scenes
 
-    def test_unknown_mood_falls_back_to_fofura(self):
+    def test_unknown_mood_falls_back_to_ambient(self):
         scene = content_strategy.scene_for_mood("mood-que-nao-existe")
-        assert scene in content_strategy.SCENE_CATEGORIES["fofura"]
+        assert scene in content_strategy.SCENE_CATEGORIES["ambient"]
+
+
+class TestMinQualityScoreForSlot:
+    """Frente E — min_quality_score_for_slot: threshold configurable por
+    horario (manha mais exigente, madrugada mais tolerante)."""
+
+    def test_morning_requires_higher_score(self):
+        for hour in range(6, 12):
+            assert content_strategy.min_quality_score_for_slot(hour) == 0.82
+
+    def test_late_night_is_lenient(self):
+        for hour in [22, 23, 0, 1, 2, 3, 4, 5]:
+            assert content_strategy.min_quality_score_for_slot(hour) == 0.75
+
+    def test_afternoon_evening_uses_default(self):
+        for hour in list(range(12, 18)) + [18, 19, 20, 21]:
+            assert content_strategy.min_quality_score_for_slot(hour) == 0.78
+
+    def test_morning_higher_than_night(self):
+        assert content_strategy.min_quality_score_for_slot(9) > content_strategy.min_quality_score_for_slot(3)
 
 
 class TestSceneWeights:
@@ -79,9 +99,9 @@ class TestSceneWeights:
 
     def test_reads_weights_from_file(self, tmp_path, monkeypatch):
         perf_file = self._isolate(tmp_path, monkeypatch)
-        perf_file.write_text(json.dumps({"cat": 2.0}), encoding="utf-8")
+        perf_file.write_text(json.dumps({"dark liquid wire": 2.0}), encoding="utf-8")
 
-        assert content_strategy._scene_weights() == {"cat": 2.0}
+        assert content_strategy._scene_weights() == {"dark liquid wire": 2.0}
 
     def test_corrupted_file_falls_back_to_empty(self, tmp_path, monkeypatch):
         perf_file = self._isolate(tmp_path, monkeypatch)
@@ -91,7 +111,7 @@ class TestSceneWeights:
 
     def test_scene_for_mood_still_stays_within_category_when_weighted(self, tmp_path, monkeypatch):
         perf_file = self._isolate(tmp_path, monkeypatch)
-        perf_file.write_text(json.dumps({"sleepy cat": 2.5, "sleepy dog": 0.4}), encoding="utf-8")
+        perf_file.write_text(json.dumps({"dark liquid wire": 2.5, "nebula cloud": 0.4}), encoding="utf-8")
 
         for _ in range(20):
             assert content_strategy.scene_for_mood("relax") in content_strategy.SCENE_CATEGORIES["relax"]
@@ -101,10 +121,10 @@ class TestSceneWeights:
 
         random.seed(42)
         perf_file = self._isolate(tmp_path, monkeypatch)
-        perf_file.write_text(json.dumps({"sleepy cat": 2.5, "sleepy dog": 0.4}), encoding="utf-8")
+        perf_file.write_text(json.dumps({"dark liquid wire": 2.5, "nebula cloud": 0.4}), encoding="utf-8")
 
         results = [content_strategy.scene_for_mood("relax") for _ in range(200)]
-        assert results.count("sleepy cat") > results.count("sleepy dog")
+        assert results.count("dark liquid wire") > results.count("nebula cloud")
 
 
 class TestViralBoostedScenes:
@@ -135,7 +155,7 @@ class TestViralBoostedScenes:
             json.dumps(
                 [
                     {
-                        "scene": "sleepy cat",
+                        "scene": "dark liquid wire",
                         "title_pattern": "p",
                         "views": 5000,
                         "viral_factor": 50.0,
@@ -147,7 +167,7 @@ class TestViralBoostedScenes:
         )
 
         boosted = content_strategy.viral_boosted_scenes()
-        assert boosted == {"sleepy cat": content_strategy._VIRAL_BOOST}
+        assert boosted == {"dark liquid wire": content_strategy._VIRAL_BOOST}
 
     def test_old_viral_outside_window_is_ignored(self, tmp_path, monkeypatch):
         viral_file = self._isolate(tmp_path, monkeypatch)
@@ -155,7 +175,7 @@ class TestViralBoostedScenes:
         viral_file.write_text(
             json.dumps(
                 [
-                    {"scene": "sleepy cat", "detected_at": old},
+                    {"scene": "dark liquid wire", "detected_at": old},
                 ]
             ),
             encoding="utf-8",
@@ -181,7 +201,7 @@ class TestViralBoostedScenes:
         viral_file.write_text(
             json.dumps(
                 [
-                    {"scene": "sleepy cat"},  # sem detected_at
+                    {"scene": "dark liquid wire"},  # sem detected_at
                 ]
             ),
             encoding="utf-8",
@@ -195,16 +215,19 @@ class TestViralBoostedScenes:
         viral_file.write_text(
             json.dumps(
                 [
-                    {"scene": "cat", "detected_at": now},
-                    {"scene": "cat", "detected_at": now},
-                    {"scene": "dog", "detected_at": now},
+                    {"scene": "dark liquid wire", "detected_at": now},
+                    {"scene": "dark liquid wire", "detected_at": now},
+                    {"scene": "nebula cloud", "detected_at": now},
                 ]
             ),
             encoding="utf-8",
         )
 
         boosted = content_strategy.viral_boosted_scenes()
-        assert boosted == {"cat": content_strategy._VIRAL_BOOST, "dog": content_strategy._VIRAL_BOOST}
+        assert boosted == {
+            "dark liquid wire": content_strategy._VIRAL_BOOST,
+            "nebula cloud": content_strategy._VIRAL_BOOST,
+        }
 
 
 class TestSceneForMoodViralBoostIntegration:
@@ -221,19 +244,19 @@ class TestSceneForMoodViralBoostIntegration:
         viral_file = tmp_path / "viral_signals.json"
         monkeypatch.setattr(content_strategy, "_viral_signals_file", lambda: viral_file)
         # Pesos iguais pra ambas as cenas; so o boost diferencia.
-        perf_file.write_text(json.dumps({"sleepy cat": 1.0, "sleepy dog": 1.0}), encoding="utf-8")
+        perf_file.write_text(json.dumps({"dark liquid wire": 1.0, "nebula cloud": 1.0}), encoding="utf-8")
         viral_file.write_text(
             json.dumps(
                 [
-                    {"scene": "sleepy cat", "detected_at": datetime.now(UTC).isoformat()},
+                    {"scene": "dark liquid wire", "detected_at": datetime.now(UTC).isoformat()},
                 ]
             ),
             encoding="utf-8",
         )
 
         results = [content_strategy.scene_for_mood("relax") for _ in range(200)]
-        # sleepy cat tem peso 1.0 * boost(2.0) = 2.0 vs 1.0 -> escolhido ~2x mais.
-        assert results.count("sleepy cat") > results.count("sleepy dog")
+        # dark liquid wire tem peso 1.0 * boost(2.0) = 2.0 vs 1.0 -> escolhido ~2x mais.
+        assert results.count("dark liquid wire") > results.count("nebula cloud")
 
     def test_viral_boost_does_not_introduce_scene_outside_mood_list(self, tmp_path, monkeypatch):
         """Boost em cena fora da categoria do mood nao injeta ela na escolha."""
@@ -244,8 +267,8 @@ class TestSceneForMoodViralBoostIntegration:
         viral_file.write_text(
             json.dumps(
                 [
-                    # "playful dog" esta na categoria diversao, nao em relax.
-                    {"scene": "playful dog", "detected_at": datetime.now(UTC).isoformat()},
+                    # "calm wireframe flow" esta na categoria focus, nao em relax.
+                    {"scene": "calm wireframe flow", "detected_at": datetime.now(UTC).isoformat()},
                 ]
             ),
             encoding="utf-8",
@@ -266,11 +289,11 @@ class TestSceneForMoodViralBoostIntegration:
         viral_file.write_text(
             json.dumps(
                 [
-                    {"scene": "sleepy cat", "detected_at": datetime.now(UTC).isoformat()},
+                    {"scene": "dark liquid wire", "detected_at": datetime.now(UTC).isoformat()},
                 ]
             ),
             encoding="utf-8",
         )
 
         results = [content_strategy.scene_for_mood("relax") for _ in range(200)]
-        assert results.count("sleepy cat") > results.count("sleepy dog")
+        assert results.count("dark liquid wire") > results.count("nebula cloud")

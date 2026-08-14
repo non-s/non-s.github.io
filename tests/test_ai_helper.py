@@ -24,9 +24,9 @@ class TestAiHelper:
         """Testa que o prompt padrão contém as instruções corretas."""
         prompt = ai_helper._default_system_prompt()
 
-        assert "Pata Jazz" in prompt
+        assert "Liquid Wire" in prompt
         assert "English" in prompt
-        assert "cats and dogs" in prompt
+        assert "generative" in prompt
         assert "clickbait" in prompt
 
 

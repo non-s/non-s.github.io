@@ -18,17 +18,155 @@ import shutil
 import subprocess
 import wave
 from datetime import UTC, datetime
+from multiprocessing import Pool, cpu_count
 from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
 from utils.ai_helper import ai_text
-from utils.liquid_wire_composer import MODES, CompositionPlan, build_composition
+from utils.audio_mix import BUS_NAMES as MIX_BUS_NAMES
+from utils.audio_mix import Mixer
+from utils.content_strategy import current_brt_hour, min_quality_score_for_slot
+from utils.drums import DrumSequencer
+from utils.dsp.dynamics import SideChainDuck
+from utils.flow_field import FlowField, render_flow_particles
+from utils.fluid_deform import fluid_deform
+from utils.genres.registry import GENRES, get_genre
+from utils.instruments import keys as keys_instruments
+from utils.instruments import strings as strings_instruments
+from utils.instruments import synth as synth_instruments
+from utils.instruments import winds as winds_instruments
+from utils.instruments.base import Instrument
+from utils.instruments.base import NoteEvent as InstrumentNoteEvent
+from utils.liquid_wire_composer import (
+    MODES,
+    CompositionPlan,
+    build_composition,
+    build_composition_for_genre,
+)
 from utils.liquid_wire_quality import QualityGateError, QualityReport, assess_video
 from utils.liquid_wire_timeline import CreativeEvent, build_timeline, event_envelope, visual_state
+from utils.organic_growth import OrganicGrowth, render_branches
+from utils.particle_system import ParticleSystem
+from utils.particle_system import render as render_particles
 from utils.paths import data_dir
+from utils.post_process import apply_all as apply_post
 from utils.state_lock import state_lock
+
+# Registry mapping the instrument class names used by genre presets to the
+# corresponding ``Instrument`` subclass. The genre presets store a string name
+# (e.g. "AcousticPiano"); this table resolves it to the actual class so the
+# synth engine can instantiate it for each instrument role.
+INSTRUMENT_REGISTRY: dict[str, type[Instrument]] = {
+    "AcousticPiano": keys_instruments.AcousticPiano,
+    "ElectricPiano": keys_instruments.ElectricPiano,
+    "Organ": keys_instruments.Organ,
+    "Clavinet": keys_instruments.Clavinet,
+    "Harpsichord": keys_instruments.Harpsichord,
+    "StringEnsemble": strings_instruments.StringEnsemble,
+    "BrassSection": strings_instruments.BrassSection,
+    "AcousticGuitar": strings_instruments.AcousticGuitar,
+    "DistortedGuitar": strings_instruments.DistortedGuitar,
+    "BassGuitar": strings_instruments.BassGuitar,
+    "Sitar": strings_instruments.Sitar,
+    "Pad": synth_instruments.Pad,
+    "Lead": synth_instruments.Lead,
+    "SubBass": synth_instruments.SubBass,
+    "SynthBass": synth_instruments.SynthBass,
+    "Bell": synth_instruments.Bell,
+    "Mallet": synth_instruments.Mallet,
+    "Choir": synth_instruments.Choir,
+    "Flute": winds_instruments.Flute,
+    "Kalimba": winds_instruments.Kalimba,
+}
+
+# Map instrument-role names used in a GenrePreset to the canonical mixer bus.
+# Roles not listed here fall back to a heuristic based on their name.
+ROLE_TO_BUS: dict[str, str] = {
+    "lead": "lead",
+    "pad": "pads",
+    "pads": "pads",
+    "bass": "bass",
+    "drums": "drums",
+    "drone": "bass",
+    "bell": "fx",
+    "reverb_heavy": "pads",
+    "strings": "lead",
+    "brass": "lead",
+    "choir": "pads",
+    "timpani": "percussion",
+    "rhythm": "guitar",
+    "guitar": "guitar",
+    "organ": "keys",
+    "piano": "keys",
+    "pluck": "lead",
+}
+
+# Saturation presets approximated inline (kept lightweight so the new engine
+# remains pure-Python with no external convolution assets). Each entry maps a
+# saturation style name from the genre presets to a drive/clip pair.
+_SATURATION_PRESETS: dict[str, tuple[float, float]] = {
+    "tape": (1.35, 0.72),
+    "tube": (1.25, 0.78),
+    "analog": (1.30, 0.75),
+    "warm": (1.20, 0.80),
+    "soft": (1.15, 0.85),
+    "tight": (1.40, 0.70),
+    "clean": (1.05, 0.92),
+}
+
+
+def _bus_for_role(role: str) -> str:
+    """Resolve an instrument-role name to a canonical mixer bus name."""
+    role_l = role.lower()
+    if role_l in ROLE_TO_BUS and ROLE_TO_BUS[role_l] in MIX_BUS_NAMES:
+        return ROLE_TO_BUS[role_l]
+    # Heuristic fallbacks so unknown roles still route to a valid bus.
+    if "bass" in role_l:
+        return "bass"
+    if "drum" in role_l or "perc" in role_l:
+        return "drums"
+    if "pad" in role_l or "choir" in role_l:
+        return "pads"
+    if "guitar" in role_l or "rhythm" in role_l:
+        return "guitar"
+    if "key" in role_l or "organ" in role_l or "piano" in role_l:
+        return "keys"
+    return "lead"
+
+
+# Map genre instrument-role names to the composition voice they should play.
+# The composer produces four voices: "bass", "motif" (melody), "pad" (harmony),
+# and "gesture" (event-driven accents). Multiple genre roles can share the same
+# voice — e.g. cinematic "strings" and "brass" both play the motif, layered —
+# which creates a richer arrangement without requiring per-part composition.
+ROLE_VOICE_MAPPING: dict[str, str] = {
+    # Bass-type roles → bass voice.
+    "bass": "bass",
+    "drone": "bass",
+    "timpani": "bass",
+    # Lead / melodic roles → motif voice (plus gesture accents).
+    "lead": "motif",
+    "strings": "motif",
+    "brass": "motif",
+    "piano": "motif",
+    "pluck": "motif",
+    "organ": "motif",
+    "rhythm": "motif",
+    "guitar": "motif",
+    # Pad / harmonic roles → pad voice.
+    "pad": "pad",
+    "pads": "pad",
+    "choir": "pad",
+    "reverb_heavy": "pad",
+    "bell": "pad",
+}
+
+
+def _voice_for_role(role: str) -> str:
+    """Return the composition voice that feeds ``role`` (defaults to motif)."""
+    return ROLE_VOICE_MAPPING.get(role.lower(), "motif")
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "_videos"
@@ -51,14 +189,30 @@ OBJECT_FAMILIES = (
     "knot",
     "hourglass",
     "coral",
+    "flow_field",
+    "particle_swarm",
+    "fluid_surface",
+    "coral_growth",
+    "crystal_lattice",
+    "nebula_cloud",
 )
 
 GENERATOR_HISTORY_LIMIT = 5000
-QUALITY_HISTORY_LIMIT = 2000
+QUALITY_HISTORY_LIMIT = 5000
+
+# Supersampling factor: frames render at SS_FACTOR x resolution then downscale
+# to the nominal 1080p output with LANCZOS for crisp anti-aliasing.
+SS_FACTOR = 2
 
 
 def _dimensions_for_preset(preset: str) -> tuple[int, int]:
-    return (720, 1280) if preset == "short" else (1280, 720)
+    # 1080p: 9:16 short (1080x1920) or 16:9 long/live-test (1920x1080).
+    return (1080, 1920) if preset == "short" else (1920, 1080)
+
+
+# Families rendered through the dedicated special path instead of the mesh
+# `_surface()` pipeline. They draw 2D particles/branches/fields directly.
+SPECIAL_FAMILIES = frozenset({"flow_field", "particle_swarm", "coral_growth", "nebula_cloud"})
 
 
 def _history_file() -> Path:
@@ -101,13 +255,139 @@ def _recent_quality_fingerprints(limit: int = 96) -> list[tuple[float, ...]]:
             fingerprints.append(tuple(float(value) for value in values))
     return fingerprints
 
+
+# ---------------------------------------------------------------------------
+# Style drift: a rotating subset of 3-4 genres that evolves weekly. The
+# current subset is persisted in ``_data/style_drift.json`` so every video in
+# a given week draws from the same family of genres, then the subset rotates
+# to a new set of genres every 7 days. This keeps the channel's sound
+# evolving slowly without ever jumping to a completely random genre per video.
+# ---------------------------------------------------------------------------
+
+_STYLE_DRIFT_FILE = "style_drift.json"
+_STYLE_DRIFT_ROTATION_DAYS = 7
+_STYLE_DRIFT_SUBSET_SIZE = 4
+
+
+def _style_drift_path() -> Path:
+    return data_dir() / _STYLE_DRIFT_FILE
+
+
+def _today_date() -> str:
+    return datetime.now(UTC).strftime("%Y-%m-%d")
+
+
+def _days_between(start: str, end: str) -> int:
+    try:
+        a = datetime.strptime(start, "%Y-%m-%d").toordinal()
+        b = datetime.strptime(end, "%Y-%m-%d").toordinal()
+    except ValueError:
+        return 0
+    return abs(b - a)
+
+
+def _load_style_drift() -> dict:
+    """Load the persisted style-drift state, creating it if absent.
+
+    Returns a dict with ``current_genres`` (list of genre names),
+    ``week_start`` (ISO date string) and ``rotation`` (int counter).
+    If the file does not exist (or is corrupt), a fresh state seeded from all
+    registered genres is written and returned.
+    """
+    path = _style_drift_path()
+    all_genres = sorted(GENRES.keys())
+    fallback = {
+        "current_genres": all_genres[: _STYLE_DRIFT_SUBSET_SIZE],
+        "week_start": _today_date(),
+        "rotation": 0,
+    }
+    try:
+        if path.exists():
+            data = json.loads(path.read_text(encoding="utf-8"))
+            if isinstance(data, dict) and isinstance(data.get("current_genres"), list):
+                # Only keep genres that still exist in the registry.
+                data["current_genres"] = [g for g in data["current_genres"] if g in GENRES]
+                if not data["current_genres"]:
+                    data = dict(fallback)
+                return data
+    except (OSError, json.JSONDecodeError):
+        pass
+    # Persist the fallback so subsequent calls are stable.
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(fallback, ensure_ascii=False, indent=2), encoding="utf-8")
+    except OSError:
+        pass
+    return fallback
+
+
+def _update_style_drift(force: bool = False) -> dict:
+    """Rotate the genre subset if 7+ days have passed since ``week_start``.
+
+    When ``force`` is True the rotation happens regardless of the elapsed
+    time (used by tests). The new subset is chosen deterministically from the
+    full genre list using the rotation counter as a seed so the rotation is
+    reproducible across processes.
+    """
+    path = _style_drift_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with state_lock(path):
+        data = _load_style_drift()
+        today = _today_date()
+        week_start = str(data.get("week_start", today))
+        rotation = int(data.get("rotation", 0))
+        elapsed = _days_between(week_start, today)
+        if force or elapsed >= _STYLE_DRIFT_ROTATION_DAYS:
+            rotation += 1
+            rng = np.random.default_rng(rotation * 9973)
+            all_genres = sorted(GENRES.keys())
+            # Pick 3-4 new genres. Ensure at least one differs from the
+            # previous subset so the rotation is always perceptible.
+            size = min(_STYLE_DRIFT_SUBSET_SIZE, len(all_genres))
+            previous = set(data.get("current_genres", []))
+            for _ in range(8):
+                subset = [str(g) for g in rng.choice(all_genres, size=size, replace=False)]
+                if set(subset) != previous:
+                    break
+            data = {
+                "current_genres": subset,
+                "week_start": today,
+                "rotation": rotation,
+            }
+            try:
+                path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+            except OSError:
+                pass
+        return data
+
+
+def _current_genres() -> list[str]:
+    """Return the active style-drift genre subset (rotating as needed)."""
+    data = _update_style_drift()
+    genres = [g for g in data.get("current_genres", []) if g in GENRES]
+    if not genres:
+        genres = sorted(GENRES.keys())[:_STYLE_DRIFT_SUBSET_SIZE]
+    return genres
+
+
+def _pick_genre_for_seed(seed: int) -> str:
+    """Deterministically select a genre from the current style-drift subset."""
+    subset = _current_genres()
+    if not subset:
+        subset = sorted(GENRES.keys())
+    rng = np.random.default_rng(seed ^ 0x5354594C45)
+    return str(rng.choice(subset))
+
+
 def _profile(seed: int, preset: str) -> dict:
     rng = np.random.default_rng(seed)
     family = str(rng.choice(OBJECT_FAMILIES))
+    genre_name = _pick_genre_for_seed(seed)
     return {
         "family": family,
         "seed": seed,
         "preset": preset,
+        "genre": genre_name,
         "phase": float(rng.uniform(0, 2 * np.pi)),
         "palette": {
             "base_hue": float(rng.uniform(0.0, 1.0)),
@@ -142,6 +422,17 @@ def _profile(seed: int, preset: str) -> dict:
             "beat_seconds": float(rng.uniform(0.72, 1.12)),
             "meter": int(rng.choice((3, 4, 5))),
             "density": float(rng.uniform(0.55, 1.0)),
+        },
+        "flow_scale": float(rng.uniform(90.0, 160.0)),
+        "fluid_speed": float(rng.uniform(0.35, 0.6)),
+        "fluid_amp": float(rng.uniform(0.14, 0.26)),
+        "growth_iterations": int(rng.integers(4, 7)),
+        "post": {
+            "bloom": {"enabled": True, "intensity": float(rng.uniform(0.4, 0.8))},
+            "depth_of_field": {"enabled": True, "intensity": float(rng.uniform(0.3, 0.7))},
+            "film_grain": {"enabled": True, "intensity": float(rng.uniform(0.5, 1.0))},
+            "chromatic_aberration": {"enabled": True, "intensity": float(rng.uniform(0.3, 0.9))},
+            "vignette": {"enabled": True, "intensity": float(rng.uniform(0.4, 0.9))},
         },
     }
 
@@ -309,6 +600,24 @@ def _surface(
         x = branches * radius * np.sin(ph) * np.cos(th)
         y = branches * radius * np.sin(ph) * np.sin(th)
         z = 1.15 * radius * np.cos(ph) + 0.18 * np.sin(6 * th)
+    elif family == "fluid_surface":
+        # Wave-deformed sphere: apply the ripple field as a radial displacement
+        # so the mesh reads as a liquid surface rippling around the form.
+        dtheta, dphi = fluid_deform(th, ph, t, profile, events)
+        ang_th = th + dtheta
+        ang_ph = ph + dphi
+        ripple = 0.30 * np.sin(6 * ang_th + 3 * ang_ph + t * 1.1)
+        x = (radius + ripple) * np.sin(ang_ph) * np.cos(ang_th)
+        y = (radius + ripple) * np.sin(ang_ph) * np.sin(ang_th)
+        z = (radius + ripple) * np.cos(ang_ph)
+    elif family == "crystal_lattice":
+        # Faceted lattice with a refraction-like colour split: the radial
+        # displacement is quantised to flat facets and a secondary offset layer
+        # produces the prismatic double-edge effect.
+        facet = np.round(radius * 4.0) / 4.0
+        x = facet * np.sin(ph) * np.cos(th)
+        y = facet * np.sin(ph) * np.sin(th)
+        z = facet * np.cos(ph)
     else:
         x = radius * np.sin(ph) * np.cos(th)
         y = radius * np.sin(ph) * np.sin(th)
@@ -372,7 +681,117 @@ def _draw_visible_polyline(
             draw.line((points[index], points[index + 1]), fill=fill, width=width)
 
 
+def _draw_frame_special(
+    index: int, frame_count: int, profile: dict, events: list[CreativeEvent], frame_dir: Path
+) -> Path:
+    """Render non-mesh families (flow field, particle swarm, coral, nebula)."""
+    t = index / FPS
+    palette = profile["palette"]
+    family = str(profile["family"])
+    canvas = Image.new("RGBA", (WIDTH, HEIGHT), "#000000ff")
+    lines = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 0))
+    glow = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(lines)
+    glow_draw = ImageDraw.Draw(glow)
+
+    if family == "flow_field":
+        # Constrain the field to a central margin so trails never reach the
+        # frame border (the quality gate rejects objects touching the edge).
+        margin = 0.10
+        fw = WIDTH * (1.0 - 2.0 * margin)
+        fh = HEIGHT * (1.0 - 2.0 * margin)
+        ox, oy = WIDTH * margin, HEIGHT * margin
+        field = FlowField(int(profile["seed"]), float(fw), float(fh), float(profile.get("flow_scale", 120.0)))
+        trails = render_flow_particles(field, t, num_particles=240, trail_length=22)
+        for ti, trail in enumerate(trails):
+            color = _rgb(ti / max(1, len(trails)), t, palette)[:3] + (170,)
+            glow_color = _rgb(ti / max(1, len(trails)), t, palette)[:3] + (60,)
+            shifted = [(ox + px, oy + py) for px, py in trail]
+            draw.line(shifted, fill=color, width=2, joint="curve")
+            glow_draw.line(shifted, fill=glow_color, width=5, joint="curve")
+
+    elif family == "particle_swarm":
+        margin = 0.08
+        fw = WIDTH * (1.0 - 2.0 * margin)
+        fh = HEIGHT * (1.0 - 2.0 * margin)
+        ox, oy = WIDTH * margin, HEIGHT * margin
+        system = ParticleSystem(int(profile["seed"]), 380, float(fw), float(fh))
+        # Warm the system forward to the current frame so motion is continuous.
+        steps = max(1, int(t / 0.033))
+        for step in range(steps):
+            system.update(dt=0.033, t=step * 0.033)
+        psx, psy = render_particles(system, profile, t, int(fw), int(fh))
+        for i in range(system.num_particles):
+            color = _rgb(i / system.num_particles, t, palette)[:3] + (210,)
+            glow_color = _rgb(i / system.num_particles, t, palette)[:3] + (80,)
+            x, y = float(psx[i]) + ox, float(psy[i]) + oy
+            dot_r = 3
+            draw.ellipse((x - dot_r, y - dot_r, x + dot_r, y + dot_r), fill=color)
+            gr = 8
+            glow_draw.ellipse((x - gr, y - gr, x + gr, y + gr), fill=glow_color)
+
+    elif family == "coral_growth":
+        iterations = int(profile.get("growth_iterations", 5))
+        growth = OrganicGrowth(int(profile["seed"]), iterations, angle_range=0.62, length_decay=0.74)
+        branches = growth.grow()
+        bsx, bsy = render_branches(branches, t, profile, WIDTH, HEIGHT)
+        n = len(branches)
+        for bi in range(n):
+            x0, y0 = float(bsx[bi * 2]), float(bsy[bi * 2])
+            x1, y1 = float(bsx[bi * 2 + 1]), float(bsy[bi * 2 + 1])
+            color = _rgb(bi / max(1, n), t, palette)[:3] + (210,)
+            glow_color = _rgb(bi / max(1, n), t, palette)[:3] + (75,)
+            width_px = max(2, int(2.5 * branches[bi].thickness))
+            draw.line((x0, y0, x1, y1), fill=color, width=width_px, joint="curve")
+            glow_draw.line((x0, y0, x1, y1), fill=glow_color, width=width_px + 6, joint="curve")
+
+    elif family == "nebula_cloud":
+        # Soft glowing particle cloud: many low-alpha blobs composited with a
+        # gaussian to simulate a cosmic nebula drifting in the void.
+        rng = np.random.default_rng(int(profile["seed"]))
+        count = 260
+        margin = 0.10
+        cx, cy = WIDTH * 0.5, HEIGHT * 0.5
+        radii = rng.uniform(0.0, min(WIDTH, HEIGHT) * 0.24, size=count)
+        angles = rng.uniform(0.0, 2.0 * math.pi, size=count)
+        per_speed = rng.uniform(0.5, 1.6, size=count)
+        # Faster per-particle drift plus radial pulsing keeps the cloud moving.
+        drift = 0.5 * t * per_speed
+        pulse = 0.10 * math.sin(t * 0.9)
+        radii_t = radii * (1.0 + pulse)
+        xs = cx + radii_t * np.cos(angles + drift)
+        ys = cy + radii_t * np.sin(angles + drift) * 0.72
+        sizes = rng.uniform(20.0, 70.0, size=count) * (1.0 + 0.15 * np.sin(t * 1.4 + angles))
+        for i in range(count):
+            color = _rgb(i / count, t, palette)[:3] + (30,)
+            x, y, radius = float(xs[i]), float(ys[i]), float(max(6.0, sizes[i]))
+            glow_draw.ellipse((x - radius, y - radius, x + radius, y + radius), fill=color)
+
+    canvas.alpha_composite(glow.filter(ImageFilter.GaussianBlur(18.0)))
+    canvas.alpha_composite(lines)
+    out = frame_dir / f"frame_{index:05d}.png"
+    canvas.convert("RGB").save(out, quality=92)
+    return out
+
+
 def _draw_frame(
+    index: int, frame_count: int, profile: dict, events: list[CreativeEvent], frame_dir: Path
+) -> Path:
+    family = str(profile["family"])
+    if family in SPECIAL_FAMILIES:
+        frame_path = _draw_frame_special(index, frame_count, profile, events, frame_dir)
+    else:
+        frame_path = _draw_frame_mesh(index, frame_count, profile, events, frame_dir)
+    # Post-processing (applied per frame, after drawing and before final save).
+    if frame_path is not None and isinstance(profile.get("post"), dict):
+        with Image.open(frame_path) as raw:
+            img = raw.convert("RGB")
+            processed = apply_post(img, profile)
+            processed.save(frame_path, quality=92)
+    return frame_path
+
+
+def _draw_frame_mesh(
     index: int, frame_count: int, profile: dict, events: list[CreativeEvent], frame_dir: Path
 ) -> Path:
     t = index / FPS
@@ -423,7 +842,7 @@ def _draw_frame(
     return out
 
 
-def _synth_audio(
+def _synth_audio_lofi(
     path: Path,
     duration: float,
     seed: int,
@@ -431,6 +850,12 @@ def _synth_audio(
     events: list[CreativeEvent] | None = None,
     composition: CompositionPlan | None = None,
 ) -> None:
+    """Backwards-compatible lo-fi piano synth (the original _synth_audio).
+
+    Kept as a dedicated function so the well-tuned ``lofi_ambient`` genre keeps
+    producing the exact same output that already passes the quality gate, while
+    every other genre routes through the new universal instrument/mixer engine.
+    """
     rng = np.random.default_rng(seed)
     count = int(duration * SAMPLE_RATE)
     t = np.linspace(0, duration, count, endpoint=False)
@@ -540,6 +965,252 @@ def _synth_audio(
         wav.writeframes(samples.tobytes())
 
 
+def _event_dynamics_envelope(duration: float, events: list[CreativeEvent]) -> np.ndarray:
+    """Build the audio-visual sync dynamics envelope from creative events.
+
+    This is the same envelope the original lo-fi path applied inline: stillness
+    ducks the music, bloom/rupture swell it. Returned as a mono float64 array
+    of length ``duration * SAMPLE_RATE`` so it can be multiplied onto the
+    mixed master bus of the new engine.
+    """
+    count = int(duration * SAMPLE_RATE)
+    t = np.linspace(0, duration, count, endpoint=False)
+    dynamics = np.ones(count, dtype=np.float64)
+    for event in events:
+        envelope = np.asarray(event_envelope(t, event), dtype=np.float64)
+        if event.kind == "stillness":
+            dynamics *= 1.0 - envelope * 0.48 * event.intensity
+        elif event.kind in {"bloom", "rupture"}:
+            dynamics *= 1.0 + envelope * 0.14 * event.intensity
+    return dynamics
+
+
+def _render_instrument_role(
+    role: str,
+    instrument_name: str,
+    notes: list,
+    seed: int,
+    sample_rate: int,
+    n: int,
+) -> np.ndarray:
+    """Render the composition voice assigned to ``role`` through its instrument.
+
+    ``notes`` are :class:`utils.liquid_wire_composer.NoteEvent` instances. The
+    voice played is determined by :func:`_voice_for_role` so multiple genre
+    roles (e.g. "strings" and "brass") can layer the same voice on different
+    instruments. Returns a mono float64 buffer of length ``n``.
+    """
+    cls = INSTRUMENT_REGISTRY.get(instrument_name)
+    if cls is None:
+        return np.zeros(n, dtype=np.float64)
+    # All registered instrument subclasses accept a ``seed`` keyword, but the
+    # base ``Instrument`` class does not declare it, so cast for the type checker.
+    instrument: Instrument = cls(seed=seed)  # type: ignore[call-arg]
+    voice = _voice_for_role(role)
+    role_notes = [ne for ne in notes if ne.voice == voice]
+    if not role_notes:
+        return np.zeros(n, dtype=np.float64)
+    buffer = np.zeros(n, dtype=np.float64)
+    max_start = duration_of_buffer(n, sample_rate)
+    for ne in role_notes:
+        if ne.start >= max_start:
+            continue
+        note_event = InstrumentNoteEvent(
+            note=int(ne.note),
+            start=float(ne.start),
+            duration=float(max(ne.duration, 0.05)),
+            velocity=float(max(ne.velocity, 0.01)),
+        )
+        rendered = instrument.render(note_event, sample_rate)
+        start_i = int(note_event.start * sample_rate)
+        end_i = min(n, start_i + rendered.size)
+        if end_i <= start_i:
+            continue
+        buffer[start_i:end_i] += rendered[: end_i - start_i]
+    return buffer
+
+
+def duration_of_buffer(n: int, sample_rate: int) -> float:
+    """Return the duration in seconds represented by ``n`` samples."""
+    return float(n) / float(sample_rate)
+
+
+def _synth_audio_universal(
+    path: Path,
+    duration: float,
+    seed: int,
+    profile: dict,
+    events: list[CreativeEvent] | None,
+    composition: CompositionPlan | None,
+) -> None:
+    """Universal genre-driven audio synthesis via the instrument/mixer engine.
+
+    1. Load the :class:`GenrePreset` from the profile's genre name.
+    2. Build a composition plan with :func:`build_composition_for_genre`.
+    3. Render each instrument role through its ``Instrument`` subclass.
+    4. Render drums via :class:`DrumSequencer` with the genre's pattern/swing.
+    5. Mix everything through :class:`Mixer` with the genre's mix config.
+    6. Apply the event-dynamics envelope (audio-visual sync) on the master bus.
+    7. Apply the genre's effects chain on the master bus.
+    8. Write a stereo 44100 Hz / 16-bit WAV.
+    """
+    genre_name = str(profile.get("genre") or "lofi_ambient")
+    genre_preset = get_genre(genre_name)
+    music = profile["music"]
+    events = events or build_timeline(seed, duration, music)
+    composition = composition or build_composition_for_genre(seed, duration, genre_preset)
+
+    sr = SAMPLE_RATE
+    n = int(duration * sr)
+
+    mixer = Mixer(sample_rate=sr)
+
+    # --- Configure buses from the genre's mix_config -----------------------
+    mix_config = genre_preset.mix_config
+    bus_configs = mix_config.get("buses", {})
+    for bus_name, params in bus_configs.items():
+        if bus_name not in MIX_BUS_NAMES:
+            continue
+        kwargs = {
+            k: v
+            for k, v in params.items()
+            if k in {"gain", "pan", "eq_low", "eq_mid", "eq_high", "reverb_send"}
+        }
+        mixer.configure_bus(bus_name, **kwargs)
+
+    # --- Configure reverb -------------------------------------------------
+    reverb_cfg = mix_config.get("reverb", {})
+    if reverb_cfg:
+        mixer.configure_reverb(**reverb_cfg)
+
+    # --- Configure master gain -------------------------------------------
+    master_cfg = mix_config.get("master", {})
+    if "gain" in master_cfg:
+        mixer.configure_master(gain=float(master_cfg["gain"]))
+
+    # --- Configure sidechain (per-genre) ---------------------------------
+    sidechain_cfg = mix_config.get("sidechain")
+    if sidechain_cfg:
+        target_bus = str(sidechain_cfg.get("target", "bass"))
+        duck = SideChainDuck(
+            source=np.zeros(n, dtype=np.float64),
+            target=np.zeros(n, dtype=np.float64),
+            threshold=float(sidechain_cfg.get("threshold", -30.0)),
+            ratio=float(sidechain_cfg.get("ratio", 6.0)),
+            attack_ms=float(sidechain_cfg.get("attack_ms", 3.0)),
+            release_ms=float(sidechain_cfg.get("release_ms", 120.0)),
+            sample_rate=sr,
+        )
+        if target_bus in MIX_BUS_NAMES:
+            mixer.configure_bus(target_bus, sidechain=duck)
+
+    # --- Render each instrument role -------------------------------------
+    # Group notes by voice for role-based rendering.
+    all_notes = list(composition.notes)
+    for role, instrument_name in genre_preset.instruments.items():
+        if role == "drums":
+            # The "drums" role entry maps to a drum pattern, not an instrument
+            # class; it is rendered separately below.
+            continue
+        rendered = _render_instrument_role(role, instrument_name, all_notes, seed, sr, n)
+        if np.max(np.abs(rendered)) > 1e-12:
+            bus_name = _bus_for_role(role)
+            mixer.add_track(f"{role}_{instrument_name}", rendered, bus_name)
+
+    # --- Render drums via DrumSequencer ----------------------------------
+    bpm = float(composition.tempo_map[0][1]) if composition.tempo_map else float(
+        np.mean(genre_preset.tempo_range)
+    )
+    beat_seconds = 60.0 / bpm
+    bar_seconds = 4.0 * beat_seconds
+    bars = max(1, int(math.ceil(duration / bar_seconds)))
+    sequencer = DrumSequencer(genre_preset.drum_pattern, swing=float(genre_preset.swing))
+    drums_rendered = sequencer.render(bpm, bars, sr)
+    # Trim/pad the drum render to the exact target length.
+    if drums_rendered.size > n:
+        drums_rendered = drums_rendered[:n]
+    elif drums_rendered.size < n:
+        drums_rendered = np.pad(drums_rendered, (0, n - drums_rendered.size))
+    if np.max(np.abs(drums_rendered)) > 1e-12:
+        mixer.add_track("drums", drums_rendered, "drums")
+
+    # --- Mix -------------------------------------------------------------
+    stereo = mixer.render(sr)  # shape (2, N)
+    if stereo.ndim != 2 or stereo.shape[0] != 2:
+        stereo = np.stack([stereo.ravel(), stereo.ravel()], axis=0)
+    mix_len = stereo.shape[1]
+    if mix_len < n:
+        stereo = np.pad(stereo, ((0, 0), (0, n - mix_len)))
+    elif mix_len > n:
+        stereo = stereo[:, :n]
+
+    left = stereo[0]
+    right = stereo[1]
+
+    # --- Apply event-dynamics envelope (audio-visual sync) ---------------
+    dynamics = _event_dynamics_envelope(duration, events)
+    left = left * dynamics
+    right = right * dynamics
+
+    # --- Stereo decorrelation -------------------------------------------
+    # The mixer produces a mostly-centred image for genres whose buses are all
+    # panned to 0. A short Haas-style delay on one channel (the same trick the
+    # lo-fi path uses) opens up the stereo field so the quality gate's
+    # stereo-width check passes without any external stereo asset.
+    haas_delay = max(1, int(sr * 0.013))
+    if haas_delay > 0 and haas_delay < left.size:
+        delayed_right = np.zeros_like(right)
+        delayed_right[haas_delay:] = right[: -haas_delay]
+        right = right * 0.84 + delayed_right * 0.16
+
+    # --- Apply the genre's effects chain on the master bus ---------------
+    saturation_style = str(mix_config.get("saturation", "soft"))
+    drive, ceiling = _SATURATION_PRESETS.get(saturation_style, (1.15, 0.85))
+    # Gentle tanh saturation + final clip to the style's ceiling.
+    left = np.tanh(left * drive) * ceiling
+    right = np.tanh(right * drive) * ceiling
+
+    # --- Fade in/out to avoid clicks -------------------------------------
+    fade = min(n // 8, sr * 3)
+    ramp = np.linspace(0, 1, fade)
+    left[:fade] *= ramp
+    left[-fade:] *= ramp[::-1]
+    right[:fade] *= ramp
+    right[-fade:] *= ramp[::-1]
+
+    # --- Final safety clip and write WAV --------------------------------
+    left = np.clip(left, -0.99, 0.99)
+    right = np.clip(right, -0.99, 0.99)
+    samples = (np.column_stack((left, right)) * 32767).astype(np.int16)
+    with wave.open(str(path), "wb") as wav:
+        wav.setnchannels(2)
+        wav.setsampwidth(2)
+        wav.setframerate(sr)
+        wav.writeframes(samples.tobytes())
+
+
+def _synth_audio(
+    path: Path,
+    duration: float,
+    seed: int,
+    profile: dict,
+    events: list[CreativeEvent] | None = None,
+    composition: CompositionPlan | None = None,
+) -> None:
+    """Synthesize the Liquid Wire soundtrack.
+
+    Dispatches to the backwards-compatible lo-fi piano path for the
+    ``lofi_ambient`` genre (preserving the exact, quality-gate-tuned output)
+    and to the universal instrument/mixer engine for every other genre. The
+    signature is unchanged so the rest of the pipeline continues to work.
+    """
+    genre_name = str(profile.get("genre") or "lofi_ambient")
+    if genre_name == "lofi_ambient":
+        _synth_audio_lofi(path, duration, seed, profile, events, composition)
+    else:
+        _synth_audio_universal(path, duration, seed, profile, events, composition)
+
+
 def _run_ffmpeg(frame_dir: Path, audio_path: Path, output: Path) -> None:
     cmd = [
         "ffmpeg",
@@ -570,6 +1241,58 @@ def _run_ffmpeg(frame_dir: Path, audio_path: Path, output: Path) -> None:
         str(output),
     ]
     subprocess.run(cmd, check=True)
+
+
+def _events_to_dicts(events: list[CreativeEvent]) -> list[dict]:
+    return [event.to_dict() for event in events]
+
+
+def _events_from_dicts(payload: list[dict]) -> list[CreativeEvent]:
+    return [CreativeEvent(**item) for item in payload]
+
+
+def _render_frame_worker(args: tuple) -> str:
+    """Top-level (picklable) worker that renders one frame.
+
+    args = (index, frame_count, profile, events_dict, frame_dir, width, height)
+    Renders at the supersampled resolution (caller sets WIDTH/HEIGHT globals),
+    then downscales to (width, height) with LANCZOS before saving.
+    """
+    index, frame_count, profile, events_dict, frame_dir, width, height = args
+    events = _events_from_dicts(events_dict)
+    # The special/mesh draw paths use module-level WIDTH/HEIGHT. In a worker
+    # process those globals default to the import-time values, so set them
+    # explicitly to the supersampled render size carried in the profile.
+    render_w = int(profile.get("_render_w", width))
+    render_h = int(profile.get("_render_h", height))
+    global WIDTH, HEIGHT
+    WIDTH, HEIGHT = render_w, render_h
+    out = _draw_frame(index, frame_count, profile, events, Path(frame_dir))
+    # Downscale to the nominal output size when supersampling.
+    if (render_w, render_h) != (width, height):
+        with Image.open(out) as img:
+            down = img.convert("RGB").resize((width, height), Image.LANCZOS)
+            down.save(out, quality=92)
+    return str(out)
+
+
+def _worker_count() -> int:
+    return min(cpu_count() or 1, 8)
+
+
+def _render_frames_parallel(
+    frame_count: int, profile: dict, events: list[CreativeEvent], frame_dir: Path, width: int, height: int
+) -> list[str]:
+    """Render all frames in parallel using a multiprocessing pool."""
+    events_dict = _events_to_dicts(events)
+    args = [
+        (i, frame_count, profile, events_dict, str(frame_dir), width, height) for i in range(frame_count)
+    ]
+    workers = _worker_count()
+    if workers <= 1 or frame_count <= 1:
+        return [_render_frame_worker(arg) for arg in args]
+    with Pool(processes=workers) as pool:
+        return pool.map(_render_frame_worker, args)
 
 
 def _metadata(output: Path, thumbnail: Path, duration: float, preset: str, profile: dict) -> dict:
@@ -645,7 +1368,10 @@ def _metadata(output: Path, thumbnail: Path, duration: float, preset: str, profi
 
 def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     global WIDTH, HEIGHT
-    WIDTH, HEIGHT = _dimensions_for_preset(preset)
+    width, height = _dimensions_for_preset(preset)
+    # Supersampling: render at SS_FACTOR x then downscale to the nominal size.
+    render_w, render_h = width * SS_FACTOR, height * SS_FACTOR
+    WIDTH, HEIGHT = render_w, render_h
     OUTPUT_DIR.mkdir(exist_ok=True)
     THUMB_DIR.mkdir(parents=True, exist_ok=True)
     if FRAME_DIR.exists():
@@ -655,20 +1381,31 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     frame_count = max(1, int(duration * FPS))
     profile = _reserve_profile(preset, seed)
     events = build_timeline(int(profile["seed"]), duration, profile["music"])
-    composition = build_composition(int(profile["seed"]), duration, profile["music"], events)
+    genre_name = str(profile.get("genre") or "lofi_ambient")
+    if genre_name == "lofi_ambient":
+        composition = build_composition(int(profile["seed"]), duration, profile["music"], events)
+    else:
+        composition = build_composition_for_genre(
+            int(profile["seed"]), duration, get_genre(genre_name)
+        )
     profile["engine_version"] = "2.1"
     profile["timeline"] = [event.to_dict() for event in events]
     profile["composition"] = composition.to_dict()
-    thumb_frame = None
-    for i in range(frame_count):
-        frame = _draw_frame(i, frame_count, profile, events, FRAME_DIR)
-        if i == min(frame_count - 1, FPS * 2):
-            thumb_frame = frame
+    # Carry the supersampled render size in the profile for the worker.
+    profile["_render_w"] = render_w
+    profile["_render_h"] = render_h
+    _render_frames_parallel(frame_count, profile, events, FRAME_DIR, width, height)
+    thumb_index = min(frame_count - 1, FPS * 2)
+    thumb_frame = FRAME_DIR / f"frame_{thumb_index:05d}.png"
     audio_path = OUTPUT_DIR / f"{stem}.wav"
     output = OUTPUT_DIR / f"{stem}.mp4"
     _synth_audio(audio_path, duration, int(profile["seed"]), profile, events, composition)
     _run_ffmpeg(FRAME_DIR, audio_path, output)
-    quality = assess_video(output, (WIDTH, HEIGHT), events, _recent_quality_fingerprints())
+    # The quality gate expects the nominal output dimensions. The minimum
+    # score is configurable per slot (Frente E): morning hours require a
+    # higher score, late night is more lenient.
+    min_score = min_quality_score_for_slot(current_brt_hour())
+    quality = assess_video(output, (width, height), events, _recent_quality_fingerprints(), min_score=min_score)
     _record_quality(profile, quality)
     if not quality.passed:
         output.unlink(missing_ok=True)
@@ -678,7 +1415,7 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
             f"Render rejected with score {quality.score:.4f}: {', '.join(quality.issues) or 'score_below_threshold'}"
         )
     thumbnail = THUMB_DIR / f"{stem}.jpg"
-    Image.open(thumb_frame or FRAME_DIR / "frame_00000.png").save(thumbnail, quality=94)
+    Image.open(thumb_frame).save(thumbnail, quality=94)
     meta = _metadata(output, thumbnail, duration, preset, profile)
     meta["quality_report"] = quality.to_dict()
     output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -687,25 +1424,103 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     return output
 
 
+def _record_dead_letter(slot: str, seed: int, error: str, profile: dict) -> None:
+    """Record a failed render in the dead-letter queue and send alert."""
+    from utils.notifier import send_alert
+    path = data_dir() / "dead_letter_queue.json"
+    with state_lock(path):
+        try:
+            queue = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+        except (OSError, json.JSONDecodeError):
+            queue = []
+        queue.append({
+            "slot": slot,
+            "seed": seed,
+            "error": error,
+            "family": profile.get("family", ""),
+            "genre": profile.get("genre", ""),
+            "timestamp": datetime.now(UTC).isoformat(),
+        })
+        # Keep last 100 entries
+        queue = queue[-100:]
+        path.write_text(json.dumps(queue, ensure_ascii=False, indent=2), encoding="utf-8")
+    send_alert(
+        f"Liquid Wire dead-letter: slot={slot} seed={seed} error={error}",
+        level="error",
+    )
+
+
+def _slot_seed() -> int:
+    """Derive a deterministic seed for the current production slot.
+
+    Uses the ``LIQUID_WIRE_SLOT`` env var when set (so a scheduled slot always
+    gets the same duration within that slot), otherwise hashes the current
+    UTC date + hour so the duration is stable for the hour but varies across
+    hours.
+    """
+    slot = os.environ.get("LIQUID_WIRE_SLOT", "").strip()
+    if slot:
+        return int(hashlib.sha256(f"slot:{slot}".encode()).hexdigest(), 16) % (2**32)
+    now = datetime.now(UTC)
+    key = now.strftime("%Y-%m-%d %H")
+    return int(hashlib.sha256(f"hour:{key}".encode()).hexdigest(), 16) % (2**32)
+
+
+def _short_duration_for_slot() -> float:
+    """Pick a deterministic short duration in [27, 60]s for the current slot."""
+    import random as _random
+
+    rng = _random.Random(_slot_seed())
+    return float(rng.uniform(27.0, 60.0))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate Liquid Wire procedural videos")
     parser.add_argument("--preset", choices=["short", "long", "live-test"], default="short")
     parser.add_argument("--duration", type=float, default=None, help="Duration in seconds")
     parser.add_argument("--seed", type=int, default=None)
-    parser.add_argument("--attempts", type=int, default=3, help="Maximum quality-gated render attempts")
+    parser.add_argument("--attempts", type=int, default=5, help="Maximum quality-gated render attempts")
     args = parser.parse_args()
-    default_durations = {"short": 35.0, "long": 180.0, "live-test": 120.0}
-    duration = args.duration if args.duration is not None else default_durations[args.preset]
+    # Shorts now vary in duration between 27-60s, deterministic per slot so a
+    # given scheduled slot always produces the same duration.
+    if args.duration is not None:
+        duration = args.duration
+    elif args.preset == "short":
+        duration = _short_duration_for_slot()
+    else:
+        duration = {"long": 180.0, "live-test": 120.0}[args.preset]
     if args.attempts < 1:
         parser.error("--attempts must be at least 1")
     output: Path | None = None
+    slot = os.environ.get("LIQUID_WIRE_SLOT", "").strip() or "adhoc"
+    last_profile: dict = {}
+    last_error = ""
     for attempt in range(1, args.attempts + 1):
         try:
             output = generate(duration=duration, preset=args.preset, seed=args.seed)
             break
         except QualityGateError as exc:
             print(f"Quality attempt {attempt}/{args.attempts} failed: {exc}")
+            last_error = str(exc)
+            # Capture the profile that just failed for the dead-letter record.
+            # generate() reserves a profile in _data/generator_history.json; we
+            # reconstruct a minimal profile from the most recent history entry
+            # so the dead-letter carries family/genre even though generate()
+            # raised before returning its profile.
+            try:
+                history = _load_history()
+                if history:
+                    last = history[-1]
+                    failed_seed = args.seed if args.seed is not None else _slot_seed()
+                    last_profile = {
+                        "family": last.get("family", ""),
+                        "genre": _pick_genre_for_seed(failed_seed),
+                    }
+            except Exception:
+                pass
             if args.seed is not None or attempt == args.attempts:
+                failed_seed = args.seed if args.seed is not None else _slot_seed()
+                _record_dead_letter(slot, failed_seed, last_error, last_profile)
                 raise
     if output is None:  # pragma: no cover - defensive invariant
         raise RuntimeError("No render was produced.")

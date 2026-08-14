@@ -2,13 +2,13 @@ from utils.viewer_experience import assess_viewer_experience
 
 
 def _story() -> dict[str, str]:
-    return {"community_prompt": "Comment CAT or DOG.", "visual_direction": "warm window light"}
+    return {"community_prompt": "Comment WIREFRAME or ORGANIC.", "visual_direction": "slow liquid wireframe motion"}
 
 
 def test_review_rewards_clear_and_participatory_asset():
     result = assess_viewer_experience(
-        title="Pata Jazz | Cozy Cat by the Window",
-        description="A real cat and instrumental jazz.",
+        title="Liquid Wire | Wireframe Dreams | ambient visuals",
+        description="Generative procedural visuals with original synthesized music.",
         story_card=_story(),
         visual={"thumbnail": {"brightness": 120, "contrast": 35}},
     )

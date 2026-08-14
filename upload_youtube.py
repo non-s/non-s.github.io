@@ -22,6 +22,7 @@ from utils import ffmpeg_helpers
 from utils.channel_config import active_channel
 from utils.content_funnel import append_related_video_cta, record_funnel_candidate
 from utils.log_config import configure_logging, log_exception_to_file
+from utils.notifier import send_alert
 from utils.paths import data_dir
 from utils.pipeline_metrics import record_pipeline_run
 from utils.quota_tracker import (
@@ -172,17 +173,98 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
 
 
 
+def wait_for_content_id_check(service, video_id: str, max_wait_minutes: int = 30) -> dict:
+    """Poll YouTube API until video processing is complete.
+
+    Checks videos.list(processingDetails, contentRating) every 2 minutes.
+    Returns dict with:
+    - "processing_complete": bool
+    - "has_claims": bool (if any content claims detected)
+    - "safe_to_publish": bool (processing complete AND no claims)
+
+    If max_wait_minutes is reached, returns processing_complete=False.
+    """
+    import time
+    from datetime import UTC, datetime, timedelta
+
+    deadline = datetime.now(UTC) + timedelta(minutes=max_wait_minutes)
+
+    while datetime.now(UTC) < deadline:
+        try:
+            response = _retry_youtube_call(
+                service.videos().list(
+                    part="processingDetails,contentRating,status",
+                    id=video_id,
+                ).execute
+            )
+            items = response.get("items", [])
+            if not items:
+                return {"processing_complete": False, "has_claims": False, "safe_to_publish": False}
+
+            item = items[0]
+            processing = item.get("processingDetails", {})
+            status = item.get("status", {})
+
+            processing_done = processing.get("processingStatus") == "terminated"
+            # Check for content claims (via contentRating or rejection)
+            rejected = status.get("rejectionReason", "")
+            has_claims = bool(rejected) or bool(processing.get("processingFailureReason"))
+
+            if processing_done:
+                return {
+                    "processing_complete": True,
+                    "has_claims": has_claims,
+                    "safe_to_publish": not has_claims,
+                }
+        except Exception as exc:
+            log.warning("Content ID check error for %s: %s", video_id, exc)
+
+        time.sleep(120)  # 2 minutes
+
+    return {"processing_complete": False, "has_claims": False, "safe_to_publish": False}
+
+
+def _update_privacy_to_public(service, video_id: str) -> bool:
+    """Flip a video's privacyStatus to public via videos.update.
+
+    Returns True on success, False on failure. Best-effort: failures are
+    logged but do not raise, since the video already exists on the channel.
+    """
+    try:
+        body = {
+            "id": video_id,
+            "status": {"privacyStatus": "public", "selfDeclaredMadeForKids": False},
+        }
+        _retry_youtube_call(
+            service.videos().update(part="status", body=body).execute
+        )
+        log.info("Video %s atualizado para public apos Content ID check.", video_id)
+        return True
+    except Exception as exc:
+        log.error("Falha ao atualizar privacy do video %s para public: %s", video_id, exc)
+        send_alert(
+            f"Liquid Wire: falha ao publicar video {video_id} apos Content ID check: {exc}",
+            level="error",
+        )
+        return False
+
+
 def upload_video(
     language: str = "en",
     privacy: str = "public",
     prefix: str = "",
     publish_at: str | None = None,
+    publish_after_check: bool = False,
 ) -> str | None:
     start_time = time.time()
     success = False
     try:
         video_id = _upload_video_inner(
-            language=language, privacy=privacy, prefix=prefix, publish_at=publish_at
+            language=language,
+            privacy=privacy,
+            prefix=prefix,
+            publish_at=publish_at,
+            publish_after_check=publish_after_check,
         )
         if video_id is not None:
             success = True
@@ -203,6 +285,7 @@ def _upload_video_inner(
     privacy: str = "public",
     prefix: str = "",
     publish_at: str | None = None,
+    publish_after_check: bool = False,
 ) -> str | None:
     found = _latest_video_meta(prefix=prefix)
     if not found:
@@ -264,6 +347,15 @@ def _upload_video_inner(
         status["publishAt"] = publish_at
         privacy = "private"  # agendado exige privacy private no upload
         status["privacyStatus"] = privacy
+    # Frente F: when --publish-after-check is requested the video is uploaded
+    # as private regardless of the requested privacy. After processing finishes
+    # and the Content ID pre-check clears, the privacy is flipped to the
+    # requested value (only "public" is actionable; unlisted/private stay as-is).
+    target_privacy = ""
+    if publish_after_check and privacy == "public":
+        target_privacy = "public"
+        privacy = "private"
+        status["privacyStatus"] = privacy
 
     # Music (10) is the safest default for ambient audio/visual sessions.
     category_id = str(meta.get("category_id", "10"))
@@ -311,6 +403,31 @@ def _upload_video_inner(
     apply_captions(service, video_id, meta, _retry_youtube_call)
     add_to_playlists(service, video_id, meta)
 
+    # Frente F — Content ID pre-check: only flip to public after processing
+    # completes with no claims/rejections. On claims or timeout the video
+    # stays private and an alert is sent so a human can review it.
+    if publish_after_check and target_privacy == "public":
+        result = wait_for_content_id_check(service, video_id)
+        if result["safe_to_publish"]:
+            _update_privacy_to_public(service, video_id)
+        elif result["has_claims"]:
+            log.error(
+                "Video %s ficou private: Content ID detectou claims/rejection.", video_id
+            )
+            send_alert(
+                f"Liquid Wire: video {video_id} mantido private - Content ID claims detectadas.",
+                level="error",
+            )
+        else:
+            log.error(
+                "Video %s ficou private: processamento nao concluiu apos tempo limite.",
+                video_id,
+            )
+            send_alert(
+                f"Liquid Wire: video {video_id} mantido private - processamento pendente apos timeout.",
+                level="error",
+            )
+
     return video_id
 
 
@@ -328,6 +445,11 @@ def main() -> int:
         default=None,
         help="ISO 8601 UTC para agendamento do vídeo no YouTube (opcional).",
     )
+    parser.add_argument(
+        "--publish-after-check",
+        action="store_true",
+        help="Upload as private, run Content ID pre-check, then flip to public if safe.",
+    )
     args = parser.parse_args()
 
     configure_logging()
@@ -338,6 +460,7 @@ def main() -> int:
             privacy=args.privacy,
             prefix=args.prefix,
             publish_at=args.publish_at,
+            publish_after_check=args.publish_after_check,
         )
         if not video_id:
             return 1

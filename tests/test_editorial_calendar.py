@@ -10,8 +10,8 @@ def test_calendar_has_one_short_per_day_and_two_weekly_long_form_slots():
     assert len(shorts) == 7
     assert len(long_form) == 2
     assert {item["date"] for item in long_form} == {"2026-08-11", "2026-08-16"}
-    assert shorts[0]["ritual"] == "reset-room-monday"
-    assert shorts[2]["ritual"] == "rainy-window-wednesday"
+    assert shorts[0]["ritual"] == "reset-monday"
+    assert shorts[2]["ritual"] == "midweek-pause-wednesday"
 
 
 def test_calendar_is_empty_for_invalid_zero_day_request():

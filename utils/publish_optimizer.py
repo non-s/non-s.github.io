@@ -1,8 +1,8 @@
 """
 utils/publish_optimizer.py — escolha inteligente de dia/hora para publicação.
 
-Estratégia da Operação Zeus:
-- Prioriza slots historicamente fortes para o nicho pet/jazz/relax.
+Estratégia:
+- Prioriza slots historicamente fortes para o nicho generative art/ambient.
 - Combina heurística de benchmark (fins de tarde/noite norte-americana e
   europeia) com dados reais de performance do canal, quando disponíveis.
 - Gera múltiplos slots candidatos para o workflow escolher sem acordar ninguém.
@@ -13,10 +13,10 @@ Métricas de entrada (quando existirem em data_dir/publish_slots.json):
 - retention: retenção média (segundos)
 - samples: número de vídeos publicados naquele slot
 
-Fallback: sem dados, usa heurística de alto desempenho para nicho pet:
+Fallback: sem dados, usa heurística de alto desempenho para nicho generative art:
 - Quinta e sexta (pré-fim de semana)
 - 17h-21h BRT (fins de tarde/noite EUA + noite Europa)
-- Domingo 10h-14h (momento de lazer + pets)
+- Domingo 10h-14h (momento de lazer + ambient)
 """
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ from utils.paths import data_dir
 log = logging.getLogger(__name__)
 
 
-# Slots heurísticos de alto CTR para nicho pet/relax (BRT)
+# Slots heurísticos de alto CTR para nicho generative art/ambient (BRT)
 _BENCHMARK_SLOTS: dict[int, list[int]] = {
     0: [10, 14, 19, 21],  # domingo
     1: [18, 20],

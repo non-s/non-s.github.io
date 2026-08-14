@@ -12,7 +12,7 @@ from utils.state_lock import state_lock
 
 _ROLES = {
     "research": "Identify only verifiable audience and format signals; cite uncertainty.",
-    "strategist": "Turn signals into one differentiated, original Pata Jazz series hypothesis.",
+    "strategist": "Turn signals into one differentiated, original Liquid Wire series hypothesis.",
     "brand_guardian": "Reject repetitive, copied, unsafe, unsupported, or off-brand ideas.",
     "growth_lead": "Define a measured Short-to-long funnel experiment that favors return viewing.",
 }
@@ -81,8 +81,9 @@ def run_daily_council() -> dict:
     visual_history = _load_recent_visual_signals()
     competitive_patterns = _load_competitive_patterns()
     research = ai_grounded_research(
-        "Research current YouTube audience interests around cozy cat or dog videos and instrumental jazz. "
-        "Return concise factual signals, not medical claims and not claims about recommendation algorithms."
+        "Research current YouTube audience interests around generative art, "
+        "procedural visuals, and ambient music. Return concise factual signals, "
+        "not medical claims and not claims about recommendation algorithms."
     )
     context = json.dumps(
         {
@@ -118,11 +119,11 @@ def run_daily_council() -> dict:
     )
     consensus = _json_object(synthesis) or {
         "decision": "review before production",
-        "proposed_series": "cozy pet jazz",
-        "short_hook_direction": "show the pet immediately",
-        "long_form_direction": "build a distinct 20-45 minute session",
+        "proposed_series": "generative ambient",
+        "short_hook_direction": "show the visual immediately",
+        "long_form_direction": "build a distinct 20-45 minute ambient session",
         "primary_metric": "average view duration",
-        "guardrails": "no medical or behavioural claims; use distinct assets",
+        "guardrails": "no medical or therapeutic claims; use distinct generative assets",
     }
     brief = {
         "generated_at": datetime.now(UTC).isoformat(),

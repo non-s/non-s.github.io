@@ -18,9 +18,9 @@ def _reset_cache():
 
 def test_find_or_create_playlist_uses_cache():
     """Playlist em cache e retornada sem buscar na API."""
-    playlist_manager._playlist_cache = {"Pata Jazz | Shorts": "PL123"}
+    playlist_manager._playlist_cache = {"Liquid Wire | Shorts": "PL123"}
     service = MagicMock()
-    pid = playlist_manager._find_or_create_playlist(service, "Pata Jazz | Shorts")
+    pid = playlist_manager._find_or_create_playlist(service, "Liquid Wire | Shorts")
     assert pid == "PL123"
     service.playlists().list.assert_not_called()
 
@@ -29,13 +29,13 @@ def test_find_or_create_playlist_searches_existing():
     """Playlist encontrada na API e adicionada ao cache."""
     service = MagicMock()
     service.playlists().list().execute.return_value = {
-        "items": [{"id": "PL456", "snippet": {"title": "Pata Jazz | Shorts"}}],
+        "items": [{"id": "PL456", "snippet": {"title": "Liquid Wire | Shorts"}}],
         "nextPageToken": "",
     }
     with patch("utils.playlist_manager._save_cache"):
-        pid = playlist_manager._find_or_create_playlist(service, "Pata Jazz | Shorts")
+        pid = playlist_manager._find_or_create_playlist(service, "Liquid Wire | Shorts")
     assert pid == "PL456"
-    assert playlist_manager._playlist_cache["Pata Jazz | Shorts"] == "PL456"
+    assert playlist_manager._playlist_cache["Liquid Wire | Shorts"] == "PL456"
 
 
 def test_find_or_create_playlist_creates_new():
@@ -44,9 +44,9 @@ def test_find_or_create_playlist_creates_new():
     service.playlists().list().execute.return_value = {"items": [], "nextPageToken": ""}
     service.playlists().insert().execute.return_value = {"id": "PL789"}
     with patch("utils.playlist_manager._save_cache"):
-        pid = playlist_manager._find_or_create_playlist(service, "Pata Jazz | Shorts")
+        pid = playlist_manager._find_or_create_playlist(service, "Liquid Wire | Shorts")
     assert pid == "PL789"
-    assert playlist_manager._playlist_cache["Pata Jazz | Shorts"] == "PL789"
+    assert playlist_manager._playlist_cache["Liquid Wire | Shorts"] == "PL789"
 
 
 def test_find_or_create_playlist_handles_api_error():
@@ -55,7 +55,7 @@ def test_find_or_create_playlist_handles_api_error():
     service.playlists().list.side_effect = Exception("API down")
     service.playlists().insert.side_effect = Exception("API down")
     with patch("utils.playlist_manager._save_cache"):
-        pid = playlist_manager._find_or_create_playlist(service, "Pata Jazz | Shorts")
+        pid = playlist_manager._find_or_create_playlist(service, "Liquid Wire | Shorts")
     assert pid == ""
 
 
@@ -68,7 +68,7 @@ def test_add_video_to_playlist_no_target():
 
 def test_add_video_to_playlist_by_kind():
     """Adiciona video a playlist por kind."""
-    playlist_manager._playlist_cache = {"Pata Jazz | Shorts": "PL1"}
+    playlist_manager._playlist_cache = {"Liquid Wire | Shorts": "PL1"}
     service = MagicMock()
     playlist_manager.add_video_to_playlist(service, "vid1", kind="short")
     service.playlistItems().insert.assert_called_once()
@@ -96,7 +96,7 @@ def test_load_cache_invalid_json():
 
 def test_add_video_to_playlist_api_error_logs(tmp_path, monkeypatch):
     """Erro ao inserir item e logado; nao propaga excecao."""
-    playlist_manager._playlist_cache = {"Pata Jazz | Shorts": "PL1"}
+    playlist_manager._playlist_cache = {"Liquid Wire | Shorts": "PL1"}
     service = MagicMock()
     called_with: list[dict] = []
 
@@ -119,9 +119,9 @@ def test_find_or_create_playlist_pagination(monkeypatch):
     service = MagicMock()
     service.playlists().list().execute.side_effect = [
         {"items": [{"id": "PL1", "snippet": {"title": "Outra"}}], "nextPageToken": "TOKEN1"},
-        {"items": [{"id": "PL2", "snippet": {"title": "Pata Jazz | Shorts"}}], "nextPageToken": ""},
+        {"items": [{"id": "PL2", "snippet": {"title": "Liquid Wire | Shorts"}}], "nextPageToken": ""},
     ]
     with patch("utils.playlist_manager._save_cache") as mock_save:
-        pid = playlist_manager._find_or_create_playlist(service, "Pata Jazz | Shorts")
+        pid = playlist_manager._find_or_create_playlist(service, "Liquid Wire | Shorts")
     assert pid == "PL2"
     assert mock_save.called

@@ -1,0 +1,29 @@
+name: Liquid Wire Analytics
+on:
+  schedule:
+    - cron: "12 2 * * 1"  # weekly Monday 02:12 UTC
+  workflow_dispatch:
+jobs:
+  analytics:
+    runs-on: ubuntu-latest
+    if: ${{ vars.LIQUID_WIRE_ENABLED == '1' }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-env
+      - uses: ./.github/actions/restore-token-and-cache
+      - name: Collect analytics
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/collect_analytics.py
+      - name: Generate dashboard
+        run: python scripts/generate_dashboard.py
+      - name: Upload dashboard artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboard
+          path: _site/
+      - name: Delete token
+        if: always()
+        run: rm -f youtube_token.json

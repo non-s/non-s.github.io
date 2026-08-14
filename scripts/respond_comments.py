@@ -2,11 +2,11 @@
 
 Parte da "humanizacao" da automacao: um canal que responde comentarios gera
 mais engajamento real (o algoritmo usa comentarios como sinal de satisfacao)
-e faz o publico voltar. Roda no workflow pata-jazz-engagement.yml (cron
+e faz o publico voltar. Roda no workflow liquid-wire-engagement.yml (cron
 horario), mas tambem aceita disparo manual.
 
 Guards:
-- PATA_JAZZ_ENABLED=1 e PATA_JAZZ_COMMENTS_ENABLED=1 para ligar (mesmo
+- LIQUID_WIRE_ENABLED=1 e LIQUID_WIRE_COMMENTS_ENABLED=1 para ligar (mesmo
   padrao dos outros workflows).
 - Sem YOUTUBE_TOKEN/credenciais, o script loga e retorna 1 (nao quebra CI).
 
@@ -50,18 +50,21 @@ def _own_channel_id(service) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Responde aos comentarios do Pata Jazz")
+    parser = argparse.ArgumentParser(description="Responde aos comentarios do Liquid Wire")
     parser.add_argument("--dry-run", action="store_true", help="Seleciona e mostra as respostas sem publicar")
     parser.add_argument(
         "--max-replies", type=int, default=_MAX_REPLIES_PER_RUN, help="Maximo de respostas por execucao"
     )
-    parser.add_argument("--no-guard", action="store_true", help="Ignora os guards de env (PATA_JAZZ_ENABLED/COMMENTS)")
+    parser.add_argument(
+        "--no-guard", action="store_true",
+        help="Ignora os guards de env (LIQUID_WIRE_ENABLED/COMMENTS)",
+    )
     args = parser.parse_args()
 
     configure_logging()
 
-    enabled_var = "PATA_JAZZ_ENABLED"
-    comments_var = "PATA_JAZZ_COMMENTS_ENABLED"
+    enabled_var = "LIQUID_WIRE_ENABLED"
+    comments_var = "LIQUID_WIRE_COMMENTS_ENABLED"
 
     # Guards de feature flag: 1 para ligar. Em local/CI de teste, use
     # --no-guard ou configure as env vars.

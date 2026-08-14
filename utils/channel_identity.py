@@ -66,7 +66,7 @@ def identity_targets(iso_week: int) -> dict:
     """
     del iso_week  # A assinatura preserva a compatibilidade com o state semanal.
     description = active_channel.default_description
-    extras = ["pet relaxation music", "calm jazz", "jazz for cats", "jazz for dogs"]
+    extras = ["generative art", "procedural music", "ambient visuals", "wireframe art"]
     keywords = list(dict.fromkeys([*active_channel.base_tags, *extras]))
     return {
         "description": str(description)[:_DESCRIPTION_LIMIT],

@@ -119,7 +119,7 @@ class TestPipelineSummary:
                         "kind": "vertical",
                         "at": "t3",
                     },
-                    {"stage": "upload", "success": True, "duration_seconds": 5, "kind": "pata_jazz", "at": "t4"},
+                    {"stage": "upload", "success": True, "duration_seconds": 5, "kind": "liquid_wire", "at": "t4"},
                 ]
             ),
             encoding="utf-8",

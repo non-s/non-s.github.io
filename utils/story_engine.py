@@ -1,4 +1,4 @@
-"""Original series and audience-participation system for Pata Jazz."""
+"""Original series and audience-participation system for Liquid Wire."""
 
 from __future__ import annotations
 
@@ -15,32 +15,46 @@ _MEMORY_LIMIT = 16
 
 _SERIES = (
     {
-        "id": "window-seat-sessions",
-        "name": "Window Seat Sessions",
-        "visual_direction": "soft daylight, a quiet pause by a window, unhurried framing",
-        "interaction": "Which should return next: Window Seat or Golden Hour?",
-        "community_prompt": "Comment WINDOW or GOLDEN so the next session is chosen by the community.",
+        "id": "wireframe-dreams",
+        "name": "Wireframe Dreams",
+        "visual_direction": "slow liquid wireframe motion, soft glow, hypnotic geometry",
+        "interaction": "Which should return next: Wireframe Dreams or Organic Bloom?",
+        "community_prompt": "Comment WIREFRAME or ORGANIC so the next piece is chosen by the community.",
     },
     {
-        "id": "tiny-rituals",
-        "name": "Tiny Rituals",
-        "visual_direction": "a small everyday pet ritual, intimate details, gentle pacing",
-        "interaction": "What is your pet's tiny daily ritual?",
-        "community_prompt": "Tell us one tiny ritual your pet never skips.",
+        "id": "organic-bloom",
+        "name": "Organic Bloom",
+        "visual_direction": "coral growth and L-system branching, living procedural forms",
+        "interaction": "What kind of organic form do you want to see next?",
+        "community_prompt": "Tell us one organic shape you'd like to see grow.",
     },
     {
-        "id": "golden-hour-paws",
-        "name": "Golden Hour Paws",
-        "visual_direction": "warm light, playful calm, a brighter late-day mood",
-        "interaction": "Team cat jazz or team dog jazz today?",
-        "community_prompt": "Comment CAT or DOG to choose a future Golden Hour session.",
+        "id": "crystal-resonance",
+        "name": "Crystal Resonance",
+        "visual_direction": "geometric lattices, refraction patterns, precise angular beauty",
+        "interaction": "Team geometric or team organic today?",
+        "community_prompt": "Comment GEOMETRIC or ORGANIC to choose a future Crystal session.",
     },
     {
-        "id": "after-rain-room",
-        "name": "After-Rain Room",
-        "visual_direction": "cozy indoor atmosphere, reflective pacing, soft instrumental texture",
-        "interaction": "What should the next cozy room feel like?",
-        "community_prompt": "Leave one word for the next room: SUN, RAIN, or NIGHT.",
+        "id": "fluid-morphogenesis",
+        "name": "Fluid Morphogenesis",
+        "visual_direction": "wave propagation, fluid deformation, slow liquid transformation",
+        "interaction": "What should the next fluid form feel like?",
+        "community_prompt": "Leave one word for the next fluid piece: WAVE, DROP, or FLOW.",
+    },
+    {
+        "id": "nebula-birth",
+        "name": "Nebula Birth",
+        "visual_direction": "particle clouds, cosmic drift, deep space ambient",
+        "interaction": "Which cosmic form should we generate next?",
+        "community_prompt": "Comment NEBULA or PARTICLE to help choose the next cosmic piece.",
+    },
+    {
+        "id": "geometric-drift",
+        "name": "Geometric Drift",
+        "visual_direction": "slow rotation, shifting polyhedra, clean mathematical motion",
+        "interaction": "What geometry should drift next?",
+        "community_prompt": "Suggest one shape: CUBE, SPHERE, TORUS, or KNOT.",
     },
 )
 
@@ -66,13 +80,11 @@ def choose_story_card(scene: str, mood: str, hook: str) -> dict[str, str]:
     return {
         **series,
         "scene": scene,
-        "mood": mood or "cozy",
+        "mood": mood or "ambient",
         "micro_story": f"{hook} becomes a small moment inside {series['name']}.",
         "ritual_id": ritual["id"],
         "ritual_name": ritual["name"],
         "viewer_intent": ritual["viewer_intent"],
-        # A weekly ritual creates continuity while the series prompt keeps
-        # individual videos distinct; never ask viewers to engage compulsively.
         "community_prompt": ritual["community_prompt"],
     }
 

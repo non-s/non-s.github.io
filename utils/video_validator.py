@@ -159,7 +159,7 @@ def validate_video(
 def validate_generated_video(
     path: Path, expected_resolution: str, expected_duration: int, expect_audio: bool = True
 ) -> VideoValidation:
-    """Valida um vídeo gerado pelo Pata Jazz a partir da string de resolução."""
+    """Valida um vídeo gerado pelo Liquid Wire a partir da string de resolução."""
     try:
         w, h = (int(x) for x in expected_resolution.split("x"))
     except ValueError:

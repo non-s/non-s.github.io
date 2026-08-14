@@ -68,7 +68,7 @@ def _find_or_create_playlist(service: Any, title: str) -> str:
     # So cria nova playlist se a busca foi bem-sucedida E nao encontrou:
     # antes, um erro transitório de API (timeout, 503) caia no except e
     # criava uma playlist duplicada toda vez que falhava - gerando canais
-    # com 5+ copias da mesma playlist "Pata Jazz | Shorts" e afins.
+    # com 5+ copias da mesma playlist "Liquid Wire | Shorts" e afins.
     found_pid: str | None = None
     try:
         page_token = ""

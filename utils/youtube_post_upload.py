@@ -132,20 +132,14 @@ def apply_captions(
 
 
 def add_to_playlists(service, video_id: str, meta: dict) -> None:
-    """Adiciona o video as playlists automaticas: por formato (kind), por mood
-    e por animal dominante (cat/dog), para aumentar sessao e recomendacoes.
+    """Adiciona o video as playlists automaticas: por formato (kind) e por mood,
+    para aumentar sessao e recomendacoes.
 
     add_video_to_playlist so adiciona a UMA playlist por chamada (mood tem
-    prioridade sobre kind, e animal tem prioridade sobre mood), entao sao
-    chamadas separadas para popular todas as playlists relevantes.
+    prioridade sobre kind), entao sao chamadas separadas para popular todas
+    as playlists relevantes.
     """
     try:
-        scene = str(meta.get("scene", "")).lower()
-        if "cat" in scene or "kitten" in scene:
-            add_video_to_playlist(service, video_id, mood="cat_playlist")
-        elif "dog" in scene or "puppy" in scene:
-            add_video_to_playlist(service, video_id, mood="dog_playlist")
-
         if meta.get("mood"):
             add_video_to_playlist(service, video_id, mood=meta["mood"])
 

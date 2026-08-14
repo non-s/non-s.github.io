@@ -1,0 +1,22 @@
+name: Liquid Wire Weekly Batch
+on:
+  schedule:
+    - cron: "30 3 * * 1"  # weekly Monday 03:30 UTC
+  workflow_dispatch:
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: ${{ vars.LIQUID_WIRE_ENABLED == '1' }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-env
+      - uses: ./.github/actions/restore-token-and-cache
+      - name: Publish weekly batch
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+          YOUTUBE_PRIVACY: public
+        run: python scripts/publish_weekly_batch.py
+      - name: Delete token
+        if: always()
+        run: rm -f youtube_token.json

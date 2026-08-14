@@ -12,7 +12,7 @@ ALLOWED_LICENSES = {"cc0", "pdm", "by", "by-sa"}
 
 def search_open_images(query: str, *, page_size: int = 5, timeout: int = 20) -> list[dict[str, str]]:
     """Find reviewable image candidates compatible with a commercial catalogue."""
-    headers = {"User-Agent": "PataJazz/1.0 (open media catalogue)"}
+    headers = {"User-Agent": "LiquidWire/1.0 (open media catalogue)"}
     token = os.environ.get("OPENVERSE_ACCESS_TOKEN", "").strip()
     if token:
         headers["Authorization"] = f"Bearer {token}"

@@ -81,7 +81,7 @@ def test_send_alert_generic_payload(monkeypatch):
     assert body == {
         "level": "error",
         "message": "drift alert",
-        "source": "pata-jazz",
+        "source": "liquid-wire",
     }
 
 

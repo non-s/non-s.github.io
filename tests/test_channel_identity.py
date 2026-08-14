@@ -52,9 +52,9 @@ class TestIdentityTargets:
     def test_keywords_include_base_tags_and_extras(self):
         target = ci.identity_targets(4)
         keywords = target["keywords"]
-        for tag in ("cat", "jazz"):
+        for tag in ("generative art", "ambient visuals"):
             assert tag in keywords
-        assert "pet relaxation music" in keywords
+        assert "wireframe art" in keywords
 
     def test_keywords_within_limit(self):
         for week in range(1, 54):
