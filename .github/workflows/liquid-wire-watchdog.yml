@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     # Audita a hora anterior; tolera ate 50 minutos de atraso do scheduler.
-    - cron: "7 * * * *"
+    - cron: "7,22,37,52 * * * *"
 
 permissions:
   actions: write
@@ -28,6 +28,7 @@ jobs:
             const hourEnd = new Date(now);
             hourEnd.setUTCMinutes(0, 0, 0);
             const hourStart = new Date(hourEnd.getTime() - 60 * 60 * 1000);
+            const targetSlot = hourStart.toISOString().slice(0, 13);
             const { data } = await github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -37,9 +38,11 @@ jobs:
             });
             const currentHour = data.workflow_runs.filter((run) => {
               const created = new Date(run.created_at);
-              return created >= hourStart && created < hourEnd &&
-                (run.display_title.includes("[scheduled:short]") ||
-                  run.display_title.includes("[recovery:short]"));
+              const scheduledForWindow = run.display_title.includes("[scheduled:short]") &&
+                created >= hourStart && created < hourEnd;
+              const recoveryForSlot = run.display_title.includes("[recovery:short]") &&
+                run.display_title.includes(`slot=${targetSlot}`);
+              return scheduledForWindow || recoveryForSlot;
             });
             const healthy = currentHour.find((run) =>
               ["queued", "in_progress", "waiting", "pending"].includes(run.status) ||
@@ -64,7 +67,7 @@ jobs:
                 preset: "short",
                 duration: "35",
                 source: "recovery",
-                slot: hourStart.toISOString().slice(0, 13),
+                slot: targetSlot,
               },
             });
             core.warning("No healthy hourly run found; dispatched one recovery Short.");
