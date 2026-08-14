@@ -5,6 +5,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from utils.quota_tracker import daily_call_count, daily_total, infer_cost, record_usage
+from utils.youtube_retry import _infer_resource_method
 
 
 def test_video_upload_uses_granular_single_unit_cost(tmp_path: Path) -> None:
@@ -36,3 +37,15 @@ def test_legacy_upload_costs_are_migrated_on_read(tmp_path: Path) -> None:
     )
     assert daily_total(file=quota) == 52
     assert daily_call_count("videos", "insert", file=quota) == 2
+
+
+def test_quota_inference_reads_bound_google_request_method() -> None:
+    class Request:
+        uri = "https://youtube.googleapis.com/upload/youtube/v3/videos?part=snippet"
+        method = "POST"
+
+        def execute(self) -> dict:
+            return {"id": "abc"}
+
+    request = Request()
+    assert _infer_resource_method(request.execute) == ("videos", "insert")

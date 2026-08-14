@@ -27,11 +27,12 @@ def _infer_resource_method(func) -> tuple[str | None, str | None]:
     (ex.: service.videos().insert(...).execute). Retorna (None, None) se
     nao for possivel inferir - chamadas que nao vem da API nao sao contadas."""
     try:
+        request = getattr(func, "__self__", None) or func
         # HttpRequest da googleapiclient tem atributo .uri com o resource
         # no path (/youtube/v3/videos) e .method (POST/GET). Mapeamos para
         # o nome do metodo (insert/list/etc) via heuristic no body/uri.
-        uri = getattr(func, "uri", "") or ""
-        http_method = (getattr(func, "method", "") or "").upper()
+        uri = getattr(request, "uri", "") or ""
+        http_method = (getattr(request, "method", "") or "").upper()
         # Ex.: https://www.googleapis.com/youtube/v3/videos?...
         parts = uri.split("/youtube/v3/", 1)
         if len(parts) != 2:
