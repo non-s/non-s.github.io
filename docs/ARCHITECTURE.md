@@ -42,3 +42,18 @@ The history file prevents accidental reuse of the same seed/signature.
 
 Legacy channel workflows, stock synchronization, and downloaded-media pipelines
 generation are no longer part of the active operation.
+# Independent scheduler fallback
+
+GitHub scheduled workflows are best-effort and can be delayed. Production has
+a second trigger registered in Windows Task Scheduler as
+`Liquid Wire Hourly Watchdog`. It runs
+`scripts/dispatch_liquid_wire_watchdog.ps1` once per hour. The script never
+uploads directly: it dispatches the idempotent GitHub watchdog, which audits a
+UTC slot and creates at most one recovery run for that slot.
+
+Operational checks:
+
+```powershell
+Get-ScheduledTaskInfo -TaskName "Liquid Wire Hourly Watchdog"
+Get-Content "$env:LOCALAPPDATA\LiquidWire\scheduler.log" -Tail 20
+```
