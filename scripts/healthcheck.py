@@ -66,13 +66,36 @@ def _check_youtube_token() -> dict[str, Any]:
 
 def _check_client_secret() -> dict[str, Any]:
     secret_path = _client_secrets_path()
-    if not secret_path:
+    if secret_path:
+        return {"name": "Google client secret", "ok": True, "info": f"{secret_path}"}
+    # Em CI, o client_secret so e necessario para o fluxo interativo
+    # flow.run_local_server (primeiro login com browser). Para renovar o
+    # access_token expirado, google-auth usa o refresh_token + client_id +
+    # client_secret que ja estao embutidos no proprio youtube_token.json.
+    # Portanto, se o token OAuth tem refresh_token, a ausencia de
+    # client_secret nao bloqueia a producao - sinalizamos como warning.
+    token_path = Path(_token_path())
+    has_refresh_token = False
+    if token_path.exists():
+        try:
+            data = json.loads(token_path.read_text(encoding="utf-8"))
+            has_refresh_token = bool(data.get("refresh_token"))
+        except Exception:
+            pass
+    if has_refresh_token:
         return {
             "name": "Google client secret",
-            "ok": False,
-            "info": "not found; set YOUTUBE_CLIENT_SECRET or YOUTUBE_CLIENT_SECRET_PATH",
+            "ok": True,
+            "info": "not found, but token has refresh_token (refresh uses embedded client_id/secret)",
         }
-    return {"name": "Google client secret", "ok": True, "info": f"{secret_path}"}
+    return {
+        "name": "Google client secret",
+        "ok": False,
+        "info": (
+            "not found and token has no refresh_token; set YOUTUBE_CLIENT_SECRET"
+            " or run utils/youtube_oauth.py locally"
+        ),
+    }
 
 
 def _check_token_scopes() -> dict[str, Any]:
