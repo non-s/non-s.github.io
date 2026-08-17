@@ -11,13 +11,19 @@ def _approved_metadata() -> dict:
         "quality_report": {
             "passed": True,
             "issues": [],
-            "fingerprint": [0.1] * 20,
+            "fingerprint": [0.1] * 32,
         },
     }
 
 
 def test_production_contract_accepts_engine_2_1_evidence() -> None:
     assert _production_contract_issues(_approved_metadata()) == []
+
+
+def test_production_contract_accepts_legacy_20_dim_fingerprint() -> None:
+    metadata = _approved_metadata()
+    metadata["quality_report"]["fingerprint"] = [0.1] * 20
+    assert _production_contract_issues(metadata) == []
 
 
 def test_production_contract_rejects_external_or_unverified_assets() -> None:
@@ -35,4 +41,11 @@ def test_production_contract_rejects_old_engine_and_missing_fingerprint() -> Non
     metadata["quality_report"]["fingerprint"] = []
     issues = _production_contract_issues(metadata)
     assert "engine_version_below_2_1" in issues
+    assert "perceptual_fingerprint_missing" in issues
+
+
+def test_production_contract_rejects_wrong_dim_fingerprint() -> None:
+    metadata = _approved_metadata()
+    metadata["quality_report"]["fingerprint"] = [0.1] * 25
+    issues = _production_contract_issues(metadata)
     assert "perceptual_fingerprint_missing" in issues

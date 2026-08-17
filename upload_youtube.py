@@ -64,7 +64,11 @@ def _production_contract_issues(meta: dict) -> list[str]:
     if version_parts < (2, 1):
         issues.append("engine_version_below_2_1")
     fingerprint = quality.get("fingerprint") if isinstance(quality, dict) else None
-    if not isinstance(fingerprint, list) or len(fingerprint) != 20:
+    # Frente E expandiu o fingerprint perceptual de 20 para 32 dim. Aceitamos
+    # ambas: 32 (engine atual) ou 20 (legacy, pre-Frente E). O proprio
+    # liquid_wire_quality.py ja normaliza legacy 20->32 via zero-padding
+    # antes de comparar, entao um video novo sempre traz 32 dims.
+    if not isinstance(fingerprint, list) or len(fingerprint) not in (20, 32):
         issues.append("perceptual_fingerprint_missing")
     return issues
 
