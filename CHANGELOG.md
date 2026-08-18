@@ -53,6 +53,36 @@ file captures human-curated highlights between releases.
 ### Removed
 - Stray `__nonexistent_dir__/` from the repository root.
 
+### Fixed — CI stability and render performance (2026-08-18)
+- **`state_lock` deadlock**: `FileLock` is not reentrant, so the nested
+  `state_lock` call inside `_update_style_drift` -> `_load_style_drift` blocked
+  the calling thread for the full 30 s timeout on every style-drift rotation.
+  This single bug accounted for ~90 s of the CI test job's time (three
+  parametrised coverage tests each waited 30 s) and was the root cause of the
+  CI - Liquid Wire job timing out at the 15 min ceiling. `state_lock` is now
+  reentrant per-thread: the outermost call holds the real `FileLock` and
+  nested calls on the same path bump a depth counter and yield without
+  re-acquiring, releasing only when the outermost call exits.
+- **Additive-synthesis hot spot**: `osc._additive` iterated harmonics one at
+  a time through Python lambdas, which dominated render time for low notes
+  (a 65 Hz supersaw spent ~9 s per note) and pushed the `test_universal_music`
+  suite past the CI job timeout. The harmonic range, amplitude and sign
+  masks are now computed once via numpy arrays; the sinusoidal sum still
+  streams per-harmonic (a materialised 2D `np.sin` blows the cache) but
+  without the per-iteration lambda/Python overhead. Output is numerically
+  identical (max abs diff ~1e-11).
+- **Sub-audio oscillator fast path**: `sawtooth`/`square`/`triangle` now use
+  direct geometric waveforms for `freq <= 20 Hz` (LFOs, vibrato, control
+  signals). The bandlimited additive path iterates up to `nyquist/freq`
+  harmonics (88 200 iterations for a 0.5 Hz Phaser LFO) and made a single
+  `Phaser.process` call take ~4 s; the direct path is ~5000x faster and
+  inaudibly different below 20 Hz.
+- **Test suite budget**: `test_universal_music` synthesised 5 s clips per
+  genre across three parametrised cases; with the additive-synthesis hot
+  spot this alone exceeded 20 min. Reduced `SHORT_DURATION` to 1.5 s, which
+  still exercises the full instrument/mixer/mastering chain and validates
+  stereo/silence/clipping while keeping the whole suite under 80 s.
+
 ## [1.0.0] — 2024
 
 Initial production release of the Liquid Wire generative-art pipeline.

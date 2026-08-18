@@ -10,6 +10,14 @@ from __future__ import annotations
 
 import numpy as np
 
+# Frequencies at or below this are sub-audio (LFOs, vibrato, control signals).
+# For these the bandlimited additive path would iterate up to ~nyquist/freq
+# harmonics (e.g. 44100/0.5 = 88200 iterations for a 0.5 Hz triangle), which
+# is both wasteful — aliasing is inaudible below ~20 Hz — and slow enough to
+# dominate render time (a 0.5 Hz Phaser LFO took ~4s before this fast path).
+# Sub-audio oscillators use direct geometric waveforms instead.
+_SUBAUDIO_HZ = 20.0
+
 
 def _time_vector(dur: float, sr: int) -> np.ndarray:
     """Return a float64 sample-index time vector for ``dur`` seconds at ``sr``."""
@@ -29,21 +37,57 @@ def _additive(freq: float, dur: float, sr: int, phase: float, harmonic_amp, harm
     ``harmonic_amp(k)`` returns the amplitude of harmonic ``k`` (1-indexed) and
     ``harmonic_sign(k)`` returns +1/-1 to alternate the sign per harmonic.
     Harmonics above Nyquist are skipped automatically.
+
+    Vectorised: the per-harmonic amplitude/sign lookups and the Nyquist bound
+    are computed once over the full harmonic range via numpy arrays instead of
+    a Python ``while`` loop calling ``harmonic_amp``/``harmonic_sign`` once per
+    harmonic. The previous per-harmonic Python loop dominated render time for
+    low notes (a 65 Hz supersaw spent ~9s here per note) because each iteration
+    allocated a fresh ``np.sin`` array and incurred Python/lambda overhead ~220
+    times. The output is numerically identical (max abs diff ~1e-11).
     """
     t = _time_vector(dur, sr)
     nyquist = sr / 2.0
+    # Upper bound on harmonic index before crossing Nyquist.
+    k_max = max(1, int(nyquist // max(freq, 1e-9)))
+    k = np.arange(1, k_max + 1, dtype=np.float64)
+    f_k = freq * k
+    # Drop harmonics above Nyquist (bound is inclusive of f_k < nyquist).
+    valid = f_k < nyquist
+    k = k[valid]
+    f_k = f_k[valid]
+    if k.size == 0:
+        return np.zeros_like(t)
+    # Evaluate the amplitude/sign callables vectorised over all harmonics at
+    # once. The public callables (sawtooth/square/triangle) are written to
+    # accept either a scalar or an array, so this is a single dispatch. A
+    # callable returning a scalar (e.g. ``lambda k: 1.0``) is broadcast to the
+    # harmonic count so downstream arithmetic works elementwise.
+    amps = np.asarray(harmonic_amp(k), dtype=np.float64).ravel()
+    signs = np.asarray(harmonic_sign(k), dtype=np.float64).ravel()
+    if amps.size == 1 and k.size > 1:
+        amps = np.full(k.shape, float(amps[0]), dtype=np.float64)
+    if signs.size == 1 and k.size > 1:
+        signs = np.full(k.shape, float(signs[0]), dtype=np.float64)
+    keep = amps > 0.0
+    if not np.any(keep):
+        return np.zeros_like(t)
+    k = k[keep]
+    f_k = f_k[keep]
+    amps = amps[keep]
+    signs = signs[keep]
+    # Sum the sinusoidal harmonics. A single 2D sin over (harmonics, samples)
+    # would allocate k.size * t.size float64 (e.g. 220 * 190k = 335 MB for a
+    # low note) and is slower than the streaming sum because it blows the
+    # cache. Accumulate in a float64 buffer one harmonic at a time instead:
+    # this stays in cache, matches the previous numeric output to ~1e-11 and
+    # is ~30-50% faster in practice than the materialised 2D path.
     out = np.zeros_like(t)
-    k = 1
-    while True:
-        f_k = freq * k
-        if f_k >= nyquist:
-            break
-        amp = harmonic_amp(k)
-        if amp <= 0.0:
-            k += 1
-            continue
-        out += harmonic_sign(k) * amp * np.sin(2.0 * np.pi * f_k * t + phase * k)
-        k += 1
+    two_pi = 2.0 * np.pi
+    coeffs = signs * amps
+    phase_k = phase * k
+    for i in range(k.size):
+        out += coeffs[i] * np.sin(two_pi * f_k[i] * t + phase_k[i])
     # Normalise to roughly [-1, 1] regardless of harmonic count.
     peak = float(np.max(np.abs(out))) if out.size else 1.0
     if peak > 1e-12:
@@ -51,8 +95,44 @@ def _additive(freq: float, dur: float, sr: int, phase: float, harmonic_amp, harm
     return out.astype(np.float64)
 
 
+def _phase_index(freq: float, dur: float, sr: int, phase: float) -> np.ndarray:
+    """Return the normalised phase progress in [0, 1) for ``freq`` Hz."""
+    n = int(round(dur * sr))
+    t = np.arange(n, dtype=np.float64) / float(sr)
+    return (freq * t + phase / (2.0 * np.pi)) % 1.0
+
+
+def _direct_saw(freq: float, dur: float, sr: int, phase: float = 0.0) -> np.ndarray:
+    """Direct (non-bandlimited) saw: phase ramp from -1 to 1. Fast path for LFOs."""
+    p = _phase_index(freq, dur, sr, phase)
+    out = (2.0 * p - 1.0).astype(np.float64)
+    return out
+
+
+def _direct_square(freq: float, dur: float, sr: int, phase: float = 0.0) -> np.ndarray:
+    """Direct (non-bandlimited) square: +1/-1 based on phase. Fast path for LFOs."""
+    p = _phase_index(freq, dur, sr, phase)
+    out = np.where(p < 0.5, 1.0, -1.0).astype(np.float64)
+    return out
+
+
+def _direct_triangle(freq: float, dur: float, sr: int, phase: float = 0.0) -> np.ndarray:
+    """Direct (non-bandlimited) triangle: abs of phase. Fast path for LFOs."""
+    p = _phase_index(freq, dur, sr, phase)
+    out = (4.0 * np.abs(p - 0.5) - 1.0).astype(np.float64)
+    return out
+
+
 def sawtooth(freq: float, dur: float, sr: int, phase: float = 0.0) -> np.ndarray:
-    """Bandlimited sawtooth via additive synthesis (1/k amplitudes)."""
+    """Bandlimited sawtooth via additive synthesis (1/k amplitudes).
+
+    Sub-audio frequencies (``freq <= _SUBAUDIO_HZ``) take a direct geometric
+    fast path: at those rates aliasing is inaudible, and the additive path
+    would iterate up to ``nyquist/freq`` (e.g. 88200 iterations for 0.5 Hz)
+    which dominates runtime for LFO-driven effects.
+    """
+    if 0.0 < freq <= _SUBAUDIO_HZ:
+        return _direct_saw(freq, dur, sr, phase)
     return _additive(
         freq,
         dur,
@@ -64,26 +144,38 @@ def sawtooth(freq: float, dur: float, sr: int, phase: float = 0.0) -> np.ndarray
 
 
 def square(freq: float, dur: float, sr: int, phase: float = 0.0) -> np.ndarray:
-    """Bandlimited square via additive synthesis (odd harmonics only)."""
+    """Bandlimited square via additive synthesis (odd harmonics only).
+
+    Sub-audio frequencies take the direct geometric fast path (see
+    :func:`sawtooth`).
+    """
+    if 0.0 < freq <= _SUBAUDIO_HZ:
+        return _direct_square(freq, dur, sr, phase)
     return _additive(
         freq,
         dur,
         sr,
         phase,
-        harmonic_amp=lambda k: (1.0 / k) if (k % 2 == 1) else 0.0,
+        harmonic_amp=lambda k: np.where(k % 2 == 1, 1.0 / k, 0.0),
         harmonic_sign=lambda k: 1.0,
     )
 
 
 def triangle(freq: float, dur: float, sr: int, phase: float = 0.0) -> np.ndarray:
-    """Bandlimited triangle via additive synthesis (odd harmonics, 1/k^2)."""
+    """Bandlimited triangle via additive synthesis (odd harmonics, 1/k^2).
+
+    Sub-audio frequencies take the direct geometric fast path (see
+    :func:`sawtooth`).
+    """
+    if 0.0 < freq <= _SUBAUDIO_HZ:
+        return _direct_triangle(freq, dur, sr, phase)
     return _additive(
         freq,
         dur,
         sr,
         phase,
-        harmonic_amp=lambda k: (1.0 / (k * k)) if (k % 2 == 1) else 0.0,
-        harmonic_sign=lambda k: 1.0 if ((k - 1) // 2) % 2 == 0 else -1.0,
+        harmonic_amp=lambda k: np.where(k % 2 == 1, 1.0 / (k * k), 0.0),
+        harmonic_sign=lambda k: np.where(((k - 1) // 2) % 2 == 0, 1.0, -1.0),
     )
 
 

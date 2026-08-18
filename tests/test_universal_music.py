@@ -22,7 +22,13 @@ from utils.genres.registry import GENRES, list_genres
 from utils.liquid_wire_timeline import build_timeline
 
 SR = liquid.SAMPLE_RATE
-SHORT_DURATION = 5.0
+# 1.5s is enough to exercise the full instrument/mixer/mastering chain (every
+# genre renders its pad/drums/bass voices and the multiband+exciter+tape
+# mastering path) while keeping the per-genre synthesis fast. At 5s the Pad
+# supersaw additive engine made each parametrised genre case take ~10-30s,
+# pushing the 14-genre x 3-cases suite past the 15min CI job timeout. 1.5s
+# still produces a real stereo WAV with non-trivial RMS and stereo width.
+SHORT_DURATION = 1.5
 
 
 def _synth_genre(tmp_path: Path, genre_name: str, seed: int = 123) -> Path:

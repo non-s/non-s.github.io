@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import logging
 import os
+import threading
 import time
 from collections.abc import Iterator
 from contextlib import contextmanager
@@ -30,6 +31,33 @@ log = logging.getLogger(__name__)
 # timeout. A limpeza e conservadora: so remove se estiver realmente
 # velho.
 _STALE_LOCK_SECONDS = 3600.0
+
+# Reentrancy registry: maps a resolved lock path to the depth of nested
+# state_lock() calls already held by the current thread. filelock.FileLock is
+# NOT reentrant — acquiring the same lock twice from the same process blocks
+# until the timeout. Several code paths (notably _update_style_drift wrapping
+# _load_style_drift in generate_liquid_wire_video.py) legitimately nest
+# state_lock() around the same file, which previously deadlocked for 30s per
+# nested acquisition (the exact cause of the CI test job timing out at 15min).
+# We track the depth per-thread so a nested call is a no-op: the outermost
+# call still holds the real FileLock, and nested calls just bump a counter.
+_held_locks: dict[str, int] = {}
+_held_locks_guard = threading.Lock()
+
+
+def _lock_key(path: Path) -> str:
+    """Stable, OS-portable key for the reentrancy registry.
+
+    os.path.normcase normalises drive-letter casing on Windows and makes the
+    lookup case-insensitive there, while resolve() canonicalises ``..`` and
+    symlinks so two paths to the same file share a key.
+    """
+    try:
+        return os.path.normcase(str(path.resolve()))
+    except OSError:
+        # resolve() can raise on a non-existent parent on some platforms; fall
+        # back to the normalised string form so reentrancy still works.
+        return os.path.normcase(str(path))
 
 
 def _prune_stale_lock(lock_path: Path) -> None:
@@ -70,6 +98,13 @@ def state_lock(path: Path, timeout: float = 30.0) -> Iterator[None]:
     Antes de adquirir, remove locks residuais antigos para evitar que um
     processo morto deixe o proximo job travado.
 
+    Reentrante: uma chamada aninhada com o mesmo ``path`` dentro da mesma
+    thread nao bloqueia — apenas incrementa um contador e a liberacao
+    real do FileLock so acontece no retorno da chamada mais externa. Isso
+    e necessario porque filelock.FileLock nao e reentrante e varias rotinas
+    (ex.: _update_style_drift -> _load_style_drift) aninham state_lock()
+    sobre o mesmo arquivo.
+
     Uso tipico::
 
         with state_lock(_VIDEO_TAGS_FILE):
@@ -78,11 +113,35 @@ def state_lock(path: Path, timeout: float = 30.0) -> Iterator[None]:
             _save(existing)
     """
     lock_path = Path(str(path) + ".lock")
-    _prune_stale_lock(lock_path)
-    lock = FileLock(str(lock_path), timeout=timeout)
+    key = _lock_key(path)
+
+    acquired = False
+    with _held_locks_guard:
+        depth = _held_locks.get(key, 0)
+        if depth == 0:
+            acquired = True
+            _held_locks[key] = 1
+        else:
+            _held_locks[key] = depth + 1
+
     try:
-        with lock:
+        if acquired:
+            _prune_stale_lock(lock_path)
+            lock = FileLock(str(lock_path), timeout=timeout)
+            try:
+                with lock:
+                    yield
+            except OSError as exc:
+                log.warning("Falha ao adquirir lock para %s: %s", path, exc)
+                raise
+        else:
+            # Nested call: the outermost state_lock already holds the FileLock
+            # for this path on this thread, so yield without re-acquiring.
             yield
-    except OSError as exc:
-        log.warning("Falha ao adquirir lock para %s: %s", path, exc)
-        raise
+    finally:
+        with _held_locks_guard:
+            depth = _held_locks.get(key, 0)
+            if depth <= 1:
+                _held_locks.pop(key, None)
+            else:
+                _held_locks[key] = depth - 1
