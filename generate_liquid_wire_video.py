@@ -281,6 +281,8 @@ def _recent_quality_fingerprints(limit: int = 96) -> list[tuple[float, ...]]:
         return []
     fingerprints: list[tuple[float, ...]] = []
     for item in history[-limit:] if isinstance(history, list) else []:
+        if isinstance(item, dict) and not item.get("passed", True):
+            continue
         values = item.get("fingerprint") if isinstance(item, dict) else None
         if isinstance(values, list) and values:
             fingerprints.append(tuple(float(value) for value in values))
@@ -1701,8 +1703,14 @@ def main() -> int:
     last_profile: dict = {}
     last_error = ""
     for attempt in range(1, args.attempts + 1):
+        if args.seed is not None or attempt == 1:
+            attempt_seed = effective_seed
+        else:
+            # Deterministically vary seed on retries so subsequent attempts generate distinct variations
+            seed_entropy = int(hashlib.sha256(f"attempt:{attempt}:{slot}".encode()).hexdigest(), 16)
+            attempt_seed = (effective_seed + attempt * 10007 + seed_entropy) % (2**32)
         try:
-            output = generate(duration=duration, preset=args.preset, seed=effective_seed)
+            output = generate(duration=duration, preset=args.preset, seed=attempt_seed)
             break
         except QualityGateError as exc:
             print(f"Quality attempt {attempt}/{args.attempts} failed: {exc}")
@@ -1713,12 +1721,12 @@ def main() -> int:
                     last = history[-1]
                     last_profile = {
                         "family": last.get("family", ""),
-                        "genre": _pick_genre_for_seed(effective_seed),
+                        "genre": _pick_genre_for_seed(attempt_seed),
                     }
             except Exception:
                 pass
             if args.seed is not None or attempt == args.attempts:
-                _record_dead_letter(slot, effective_seed, last_error, last_profile)
+                _record_dead_letter(slot, attempt_seed, last_error, last_profile)
                 raise
     if output is None:  # pragma: no cover - defensive invariant
         raise RuntimeError("No render was produced.")

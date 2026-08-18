@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import cv2
 import numpy as np
+import pytest
 
 from utils.liquid_wire_quality import (
     FINGERPRINT_DIMS,
@@ -98,3 +102,21 @@ def test_fingerprint_distance_compares_legacy_and_full() -> None:
     # A legacy 20-dim fingerprint padded with zeros must match a 32-dim
     # fingerprint that shares the same first 20 dims and zero tails.
     assert _fingerprint_distance(legacy, full) == 0.0
+
+
+def test_recent_quality_fingerprints_ignores_rejected_renders(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from generate_liquid_wire_video import _recent_quality_fingerprints
+
+    monkeypatch.setattr("generate_liquid_wire_video.data_dir", lambda: tmp_path)
+    history_file = tmp_path / "quality_history.json"
+    history = [
+        {"fingerprint": [0.1] * 32, "passed": True},
+        {"fingerprint": [0.9] * 32, "passed": False},  # Rejected render
+        {"fingerprint": [0.5] * 32, "passed": True},
+    ]
+    history_file.write_text(json.dumps(history), encoding="utf-8")
+    fps = _recent_quality_fingerprints(limit=10)
+    assert len(fps) == 2
+    assert fps[0] == (0.1,) * 32
+    assert fps[1] == (0.5,) * 32
+

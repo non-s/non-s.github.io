@@ -18,7 +18,7 @@ dependencies = [
 
 [tool.ruff]
 line-length = 120
-target-version = "py311"
+target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B"]
@@ -50,7 +50,7 @@ exclude_lines = [
 ]
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 
 [[tool.mypy.overrides]]
 module = ["googleapiclient.*", "google_auth_oauthlib.*", "PIL.*", "requests.*", "cv2", "numpy", "scipy.*"]
