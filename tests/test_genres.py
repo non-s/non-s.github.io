@@ -20,12 +20,33 @@ EXPECTED_GENRES = [
     "blues",
     "funk",
     "cinematic",
+    # Extended genres (Engine 4.0 expansion).
+    "techno",
+    "trance",
+    "dubstep",
+    "dnb",
+    "metal",
+    "country",
+    "folk",
+    "pop",
+    "soul",
+    "disco",
+    "salsa",
+    "bossa_nova",
+    "samba",
+    "afrobeat",
+    "flamenco",
+    "gamelan",
+    "vaporwave",
+    "chiptune",
+    "industrial",
+    "shoegaze",
 ]
 
 
-def test_list_genres_returns_all_twelve() -> None:
+def test_list_genres_returns_all() -> None:
     names = list_genres()
-    assert len(names) == 12
+    assert len(names) == 32
     assert set(names) == set(EXPECTED_GENRES)
 
 

@@ -37,10 +37,14 @@ from utils.fluid_deform import fluid_deform
 from utils.genres.registry import GENRES, get_genre
 from utils.instruments import advanced as advanced_instruments
 from utils.instruments import drums as drums_instruments
+from utils.instruments import drums_extended as drums_extended_instruments
 from utils.instruments import keys as keys_instruments
 from utils.instruments import strings as strings_instruments
+from utils.instruments import strings_extended as strings_extended_instruments
 from utils.instruments import synth as synth_instruments
+from utils.instruments import synth_extended as synth_extended_instruments
 from utils.instruments import winds as winds_instruments
+from utils.instruments import winds_extended as winds_extended_instruments
 from utils.instruments.base import Instrument
 from utils.instruments.base import NoteEvent as InstrumentNoteEvent
 from utils.liquid_wire_composer import (
@@ -95,6 +99,49 @@ INSTRUMENT_REGISTRY: dict[str, type[Instrument]] = {
     "Hang": advanced_instruments.Hang,
     "CrystalBow": advanced_instruments.CrystalBow,
     "WarmPad": advanced_instruments.WarmPad,
+    # Extended winds (10 new instruments).
+    "Clarinet": winds_extended_instruments.Clarinet,
+    "Oboe": winds_extended_instruments.Oboe,
+    "Saxophone": winds_extended_instruments.Saxophone,
+    "Trumpet": winds_extended_instruments.Trumpet,
+    "Trombone": winds_extended_instruments.Trombone,
+    "Harmonica": winds_extended_instruments.Harmonica,
+    "Accordion": winds_extended_instruments.Accordion,
+    "Shakuhachi": winds_extended_instruments.Shakuhachi,
+    "Ocarina": winds_extended_instruments.Ocarina,
+    "Panpipes": winds_extended_instruments.Panpipes,
+    # Extended strings (7 new instruments, physical modeling).
+    "Violin": strings_extended_instruments.Violin,
+    "Cello": strings_extended_instruments.Cello,
+    "Harp": strings_extended_instruments.Harp,
+    "Koto": strings_extended_instruments.Koto,
+    "Banjo": strings_extended_instruments.Banjo,
+    "Mandolin": strings_extended_instruments.Mandolin,
+    "Ukulele": strings_extended_instruments.Ukulele,
+    # Extended synthesizers (6 new instruments).
+    "VocoderSynth": synth_extended_instruments.VocoderSynth,
+    "WavetableSynth": synth_extended_instruments.WavetableSynth,
+    "FMSynth": synth_extended_instruments.FMSynth,
+    "GranularPad": synth_extended_instruments.GranularPad,
+    "SupersawStereo": synth_extended_instruments.SupersawStereo,
+    "ShimmerPad": synth_extended_instruments.ShimmerPad,
+    # Extended percussion (16 new instruments).
+    "Tambourine": drums_extended_instruments.Tambourine,
+    "Conga": drums_extended_instruments.Conga,
+    "Bongo": drums_extended_instruments.Bongo,
+    "Cowbell": drums_extended_instruments.Cowbell,
+    "Shaker": drums_extended_instruments.Shaker,
+    "Woodblock": drums_extended_instruments.Woodblock,
+    "Clave": drums_extended_instruments.Clave,
+    "Agogo": drums_extended_instruments.Agogo,
+    "Rimshot": drums_extended_instruments.Rimshot,
+    "Sidestick": drums_extended_instruments.Sidestick,
+    "China": drums_extended_instruments.China,
+    "Splash": drums_extended_instruments.Splash,
+    "Surdo": drums_extended_instruments.Surdo,
+    "Caixa": drums_extended_instruments.Caixa,
+    "Cuica": drums_extended_instruments.Cuica,
+    "Tamborim": drums_extended_instruments.Tamborim,
 }
 
 # Map instrument-role names used in a GenrePreset to the canonical mixer bus.
@@ -162,6 +209,7 @@ ROLE_VOICE_MAPPING: dict[str, str] = {
     "bass": "bass",
     "drone": "bass",
     "timpani": "bass",
+    "walking_bass": "bass",
     # Lead / melodic roles → motif voice (plus gesture accents).
     "lead": "motif",
     "strings": "motif",
@@ -177,6 +225,11 @@ ROLE_VOICE_MAPPING: dict[str, str] = {
     "choir": "pad",
     "reverb_heavy": "pad",
     "bell": "pad",
+    # Extended voices from composer_extended.
+    "counter_melody": "motif",
+    "arpeggio": "motif",
+    "ostinato": "motif",
+    "percussion": "bass",
 }
 
 
@@ -218,6 +271,27 @@ OBJECT_FAMILIES = (
     "torus_knot",
     "spiral_galaxy",
     "superformula",
+    # Extended visual families (20 new).
+    "mobius",
+    "klein_bottle",
+    "julia_set",
+    "sierpinski",
+    "voronoi_sphere",
+    "lissajous_3d",
+    "harmonograph",
+    "hyperbolic_tiling",
+    "smoke_plume",
+    "fire_flame",
+    "plasma_field",
+    "lightning_bolt",
+    "ink_in_water",
+    "ferrofluid",
+    "caustics",
+    "dna_helix",
+    "aurora",
+    "accretion_disk",
+    "gravitational_lens",
+    "menger_sponge",
 )
 
 GENERATOR_HISTORY_LIMIT = 5000
