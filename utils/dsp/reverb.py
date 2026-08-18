@@ -1,9 +1,11 @@
-"""Schroeder (Freeverb) and plate-style reverbs, pure numpy.
+"""Schroeder (Freeverb) and plate-style reverbs.
 
 Both reverbs generate their delay networks entirely from ``room_size`` and
-``damping`` parameters - no impulse-response files are loaded. Mono and stereo
-inputs are accepted; stereo inputs are processed with the comb/allpass banks
-per channel for a sense of width.
+``damping`` parameters - no impulse-response files are loaded. The comb and
+allpass filters use direct-form delay lines with tight inner loops (the comb
+feedback path uses a one-pole lowpass for damping). Mono and stereo inputs are
+accepted; stereo inputs are processed with the comb/allpass banks per channel
+for a sense of width.
 """
 
 from __future__ import annotations
@@ -16,46 +18,72 @@ _FREEVERB_ALLPASS = [556, 441, 341, 225]
 
 
 class _Comb:
-    """Schroeder comb filter with a one-pole lowpass in the feedback path."""
+    """Schroeder comb filter with a one-pole lowpass in the feedback path.
+
+    Implemented as a direct-form delay line with a tight inner loop. The
+    feedback damping lowpass is applied inline (one multiply-add per sample)
+    so no scipy call is needed per sample.
+    """
 
     def __init__(self, delay: int, damp: float, feedback: float) -> None:
         self.delay = max(1, int(delay))
-        self.buf = np.zeros(self.delay, dtype=np.float64)
-        self.idx = 0
         self.damp = float(np.clip(damp, 0.0, 1.0))
         self.feedback = float(np.clip(feedback, 0.0, 0.999))
+        self._buf = np.zeros(self.delay, dtype=np.float64)
+        self._idx = 0
         self._store = 0.0
 
     def process(self, x: np.ndarray) -> np.ndarray:
-        y = np.empty_like(x, dtype=np.float64)
-        for i in range(x.size):
-            out = self.buf[self.idx]
-            # One-pole lowpass in the feedback path.
-            self._store = out * (1.0 - self.damp) + self._store * self.damp
-            self.buf[self.idx] = x[i] + self._store * self.feedback
-            self.idx = (self.idx + 1) % self.delay
-            y[i] = out
-        return y
+        x = np.asarray(x, dtype=np.float64).ravel()
+        if x.size == 0:
+            return x.copy()
+        n = x.size
+        D = self.delay
+        fb = self.feedback
+        buf = self._buf
+        idx = self._idx
+        out = np.empty(n, dtype=np.float64)
+        # Process in a tight loop over the delay-line read/write. The inner
+        # work per sample is minimal (one read, one write, one mul) so this
+        # loop is the unavoidable cost of a comb filter; numpy vectorization
+        # would require strided tricks that are no faster for D ~ 1000.
+        for i in range(n):
+            delayed = buf[idx]
+            out[i] = delayed
+            # One-pole lowpass in the feedback path (stateful).
+            self._store = (1.0 - self.damp) * delayed + self.damp * self._store
+            buf[idx] = x[i] + fb * self._store
+            idx = (idx + 1) % D
+        self._idx = idx
+        return out
 
 
 class _Allpass:
-    """Schroeder allpass filter (feedback == -feedforward)."""
+    """Schroeder allpass filter via direct-form delay line; stateful."""
 
     def __init__(self, delay: int, feedback: float) -> None:
         self.delay = max(1, int(delay))
-        self.buf = np.zeros(self.delay, dtype=np.float64)
-        self.idx = 0
         self.feedback = float(np.clip(feedback, 0.0, 0.999))
+        self._buf = np.zeros(self.delay, dtype=np.float64)
+        self._idx = 0
 
     def process(self, x: np.ndarray) -> np.ndarray:
-        y = np.empty_like(x, dtype=np.float64)
-        for i in range(x.size):
-            buf_out = self.buf[self.idx]
-            out = -x[i] + buf_out
-            self.buf[self.idx] = x[i] + buf_out * self.feedback
-            self.idx = (self.idx + 1) % self.delay
-            y[i] = out
-        return y
+        x = np.asarray(x, dtype=np.float64).ravel()
+        if x.size == 0:
+            return x.copy()
+        n = x.size
+        D = self.delay
+        fb = self.feedback
+        buf = self._buf
+        idx = self._idx
+        out = np.empty(n, dtype=np.float64)
+        for i in range(n):
+            buf_out = buf[idx]
+            out[i] = -x[i] + buf_out
+            buf[idx] = x[i] + buf_out * fb
+            idx = (idx + 1) % D
+        self._idx = idx
+        return out
 
 
 def _to_channels(signal: np.ndarray) -> list[np.ndarray]:

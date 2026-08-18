@@ -114,13 +114,97 @@ def vignette(img: Image.Image, strength: float = 0.3) -> Image.Image:
     return _restore_mode(out, img)
 
 
+def hdr_tone_map(img: Image.Image, exposure: float = 1.2, shoulder: float = 0.9) -> Image.Image:
+    """HDR-style tone mapping (filmic ACES-like) for richer highlights.
+
+    Applies exposure gain then a filmic shoulder curve that smoothly
+    compresses highlights above 1.0, giving a cinematic look without
+    harsh clipping.
+    """
+    base = _to_rgb(img)
+    arr = np.asarray(base, dtype=np.float32) / 255.0
+    exposed = arr * float(exposure)
+    # ACES filmic approximation (Narkowicz 2015, simplified).
+    a = 2.51
+    b = 0.03
+    c = 2.43
+    d = 0.59
+    e = 0.14 * float(shoulder)
+    mapped = (exposed * (a * exposed + b)) / (exposed * (c * exposed + d) + e)
+    mapped = np.clip(mapped, 0.0, 1.0)
+    out = Image.fromarray((mapped * 255.0).astype(np.uint8), "RGB")
+    return _restore_mode(out, img)
+
+
+def depth_fog(img: Image.Image, fog_color: tuple = (0, 0, 0), density: float = 0.15) -> Image.Image:
+    """Atmospheric depth fog that darkens and tints the frame edges.
+
+    Simulates a volumetric fog that thickens toward the borders, adding
+    depth and atmosphere to the void around the wireframe object.
+    """
+    base = _to_rgb(img)
+    w, h = base.size
+    arr = np.asarray(base, dtype=np.float32)
+    yy, xx = np.ogrid[:h, :w]
+    cx, cy = w * 0.5, h * 0.5
+    dist = np.sqrt(((xx - cx) / (w * 0.5)) ** 2 + ((yy - cy) / (h * 0.5)) ** 2)
+    fog_factor = np.clip(dist * float(density), 0.0, 1.0).astype(np.float32)
+    fog_arr = np.array(fog_color, dtype=np.float32)
+    blended = arr * (1.0 - fog_factor[..., None]) + fog_arr * fog_factor[..., None]
+    out_arr = np.clip(blended, 0.0, 255.0).astype(np.uint8)
+    out = Image.fromarray(out_arr, "RGB")
+    return _restore_mode(out, img)
+
+
+def motion_blur(img: Image.Image, angle: float = 0.0, strength: float = 5.0) -> Image.Image:
+    """Directional motion blur via a weighted kernel approximation.
+
+    Simulates camera/object motion by smearing pixels along a direction.
+    Uses a multi-tap averaged shift for an efficient approximation of a
+    linear motion blur kernel.
+    """
+    base = _to_rgb(img)
+    if strength <= 0.5:
+        return _restore_mode(base, img)
+    w, h = base.size
+    arr = np.asarray(base, dtype=np.float32)
+    n_taps = max(3, int(strength))
+    angle_rad = float(angle) * np.pi / 180.0
+    dx = np.cos(angle_rad)
+    dy = np.sin(angle_rad)
+    accum = arr.copy()
+    for i in range(1, n_taps + 1):
+        offset = float(i) * float(strength) / float(n_taps)
+        sx = int(round(dx * offset))
+        sy = int(round(dy * offset))
+        shifted = np.zeros_like(arr)
+        x0 = max(0, sx)
+        x1 = min(w, w + sx)
+        y0 = max(0, sy)
+        y1 = min(h, h + sy)
+        sx_src = max(0, -sx)
+        sy_src = max(0, -sy)
+        shifted[y0:y1, x0:x1] = arr[sy_src : sy_src + (y1 - y0), sx_src : sx_src + (x1 - x0)]
+        accum += shifted
+    accum /= float(n_taps + 1)
+    out_arr = np.clip(accum, 0.0, 255.0).astype(np.uint8)
+    out = Image.fromarray(out_arr, "RGB")
+    return _restore_mode(out, img)
+
+
+def filmic_grain(img: Image.Image, intensity: float = 0.04) -> Image.Image:
+    """Alias for film_grain (kept for naming consistency)."""
+    return film_grain(img, intensity=intensity)
+
+
 def apply_all(img: Image.Image, profile: dict) -> Image.Image:
     """Apply the post-processing stack defined by ``profile['post']``.
 
     Each effect entry is ``{"enabled": bool, "intensity": float}`` where
     ``intensity`` in [0, 1] scales the effect's strength. Effects are applied in
     a fixed order chosen for visual stability: chromatic aberration, bloom,
-    depth of field, film grain, vignette.
+    depth of field, HDR tone mapping, depth fog, motion blur, film grain,
+    vignette.
     """
     post = profile.get("post") if isinstance(profile, dict) else None
     if not isinstance(post, dict):
@@ -138,6 +222,19 @@ def apply_all(img: Image.Image, profile: dict) -> Image.Image:
     dof = post.get("depth_of_field")
     if isinstance(dof, dict) and dof.get("enabled") and dof.get("intensity", 0.0) > 0.0:
         out = depth_of_field(out, blur_strength=8.0 * float(dof.get("intensity", 1.0)))
+
+    hdr = post.get("hdr_tone_map")
+    if isinstance(hdr, dict) and hdr.get("enabled") and hdr.get("intensity", 0.0) > 0.0:
+        out = hdr_tone_map(out, exposure=1.0 + 0.4 * float(hdr.get("intensity", 1.0)))
+
+    fog = post.get("depth_fog")
+    if isinstance(fog, dict) and fog.get("enabled") and fog.get("intensity", 0.0) > 0.0:
+        out = depth_fog(out, density=0.15 * float(fog.get("intensity", 1.0)))
+
+    mb = post.get("motion_blur")
+    if isinstance(mb, dict) and mb.get("enabled") and mb.get("intensity", 0.0) > 0.0:
+        angle = float(mb.get("angle", 0.0))
+        out = motion_blur(out, angle=angle, strength=4.0 * float(mb.get("intensity", 1.0)))
 
     fg = post.get("film_grain")
     if isinstance(fg, dict) and fg.get("enabled") and fg.get("intensity", 0.0) > 0.0:

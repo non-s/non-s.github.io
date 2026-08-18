@@ -7,8 +7,11 @@ from utils.post_process import (
     apply_all,
     bloom,
     chromatic_aberration,
+    depth_fog,
     depth_of_field,
     film_grain,
+    hdr_tone_map,
+    motion_blur,
     vignette,
 )
 
@@ -110,3 +113,64 @@ def test_apply_all_runs_enabled_effects() -> None:
     result = np.asarray(out, dtype=np.float32).mean()
     # Bloom brightens the centre, vignette darkens edges; net mean differs.
     assert abs(result - base) > 0.1 or not np.allclose(np.asarray(img), np.asarray(out))
+
+
+def test_hdr_tone_map_preserves_size() -> None:
+    img = _solid()
+    out = hdr_tone_map(img, exposure=1.3)
+    assert out.size == img.size
+    assert out.mode == "RGB"
+
+
+def test_hdr_tone_map_changes_brightness() -> None:
+    img = _solid(color=(180, 180, 180))
+    out = hdr_tone_map(img, exposure=1.5)
+    assert not np.allclose(np.asarray(img), np.asarray(out))
+
+
+def test_depth_fog_preserves_size() -> None:
+    img = _solid()
+    out = depth_fog(img, density=0.3)
+    assert out.size == img.size
+
+
+def test_depth_fog_darkens_edges() -> None:
+    img = _solid(color=(200, 200, 200))
+    out = depth_fog(img, density=0.5)
+    arr = np.asarray(out, dtype=np.float32)
+    center = arr[arr.shape[0] // 2, arr.shape[1] // 2].mean()
+    corner = arr[0, 0].mean()
+    assert corner < center
+
+
+def test_motion_blur_preserves_size() -> None:
+    img = _solid()
+    out = motion_blur(img, angle=45.0, strength=3.0)
+    assert out.size == img.size
+
+
+def test_motion_blur_smears_edges() -> None:
+    arr = np.zeros((96, 128, 3), dtype=np.uint8)
+    arr[:, 64:] = (255, 255, 255)
+    img = Image.fromarray(arr, "RGB")
+    out = motion_blur(img, angle=0.0, strength=5.0)
+    out_arr = np.asarray(out, dtype=np.float32)
+    # The sharp vertical edge at x=64 should be smeared.
+    base_edge = np.abs(np.diff(np.asarray(img, dtype=np.float32).mean(axis=2), axis=1)).max()
+    out_edge = np.abs(np.diff(out_arr.mean(axis=2), axis=1)).max()
+    assert out_edge < base_edge
+
+
+def test_apply_all_with_new_effects() -> None:
+    img = _bright_center()
+    profile = {
+        "post": {
+            "bloom": {"enabled": True, "intensity": 0.8},
+            "hdr_tone_map": {"enabled": True, "intensity": 0.5},
+            "depth_fog": {"enabled": True, "intensity": 0.4},
+            "motion_blur": {"enabled": True, "intensity": 0.3, "angle": 90.0},
+        }
+    }
+    out = apply_all(img, profile)
+    assert out.size == img.size
+    assert np.all(np.isfinite(np.asarray(out)))

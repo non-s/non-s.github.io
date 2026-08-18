@@ -11,6 +11,7 @@ import argparse
 import colorsys
 import hashlib
 import json
+import logging
 import math
 import os
 import secrets
@@ -27,12 +28,15 @@ from PIL import Image, ImageDraw, ImageFilter
 from utils.ai_helper import ai_text
 from utils.audio_mix import BUS_NAMES as MIX_BUS_NAMES
 from utils.audio_mix import Mixer
+from utils.chapter_markers import prepend_chapters
 from utils.content_strategy import current_brt_hour, min_quality_score_for_slot
 from utils.drums import DrumSequencer
 from utils.dsp.dynamics import SideChainDuck
 from utils.flow_field import FlowField, render_flow_particles
 from utils.fluid_deform import fluid_deform
 from utils.genres.registry import GENRES, get_genre
+from utils.instruments import advanced as advanced_instruments
+from utils.instruments import drums as drums_instruments
 from utils.instruments import keys as keys_instruments
 from utils.instruments import strings as strings_instruments
 from utils.instruments import synth as synth_instruments
@@ -53,6 +57,8 @@ from utils.particle_system import render as render_particles
 from utils.paths import data_dir
 from utils.post_process import apply_all as apply_post
 from utils.state_lock import state_lock
+
+log = logging.getLogger(__name__)
 
 # Registry mapping the instrument class names used by genre presets to the
 # corresponding ``Instrument`` subclass. The genre presets store a string name
@@ -79,6 +85,16 @@ INSTRUMENT_REGISTRY: dict[str, type[Instrument]] = {
     "Choir": synth_instruments.Choir,
     "Flute": winds_instruments.Flute,
     "Kalimba": winds_instruments.Kalimba,
+    "Timpani": drums_instruments.Timpani,
+    # Advanced high-fidelity instruments.
+    "GlassHarp": advanced_instruments.GlassHarp,
+    "MusicBox": advanced_instruments.MusicBox,
+    "Theremin": advanced_instruments.Theremin,
+    "PulsarSynth": advanced_instruments.PulsarSynth,
+    "Dulcimer": advanced_instruments.Dulcimer,
+    "Hang": advanced_instruments.Hang,
+    "CrystalBow": advanced_instruments.CrystalBow,
+    "WarmPad": advanced_instruments.WarmPad,
 }
 
 # Map instrument-role names used in a GenrePreset to the canonical mixer bus.
@@ -195,6 +211,13 @@ OBJECT_FAMILIES = (
     "coral_growth",
     "crystal_lattice",
     "nebula_cloud",
+    # New high-fidelity families.
+    "helix",
+    "gyroid",
+    "mandelbulb",
+    "torus_knot",
+    "spiral_galaxy",
+    "superformula",
 )
 
 GENERATOR_HISTORY_LIMIT = 5000
@@ -248,8 +271,12 @@ def _record_quality(profile: dict, report: QualityReport) -> None:
 
 def _recent_quality_fingerprints(limit: int = 96) -> list[tuple[float, ...]]:
     path = data_dir() / "quality_history.json"
+    # Read under the same lock used by _record_quality to avoid a TOCTOU race
+    # where a concurrent writer truncates the file mid-read (which would make
+    # json.loads raise and silently disable near-duplicate detection).
     try:
-        history = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+        with state_lock(path):
+            history = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
     except (OSError, json.JSONDecodeError):
         return []
     fingerprints: list[tuple[float, ...]] = []
@@ -316,10 +343,14 @@ def _load_style_drift() -> dict:
                 return data
     except (OSError, json.JSONDecodeError):
         pass
-    # Persist the fallback so subsequent calls are stable.
+    # Persist the fallback so subsequent calls are stable. Wrapped in a lock to
+    # avoid a concurrent first-run race where two processes write the fallback
+    # simultaneously and truncate each other's output.
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(fallback, ensure_ascii=False, indent=2), encoding="utf-8")
+        with state_lock(path):
+            if not path.exists():
+                path.write_text(json.dumps(fallback, ensure_ascii=False, indent=2), encoding="utf-8")
     except OSError:
         pass
     return fallback
@@ -437,6 +468,13 @@ def _profile(seed: int, preset: str) -> dict:
             "film_grain": {"enabled": True, "intensity": float(rng.uniform(0.5, 1.0))},
             "chromatic_aberration": {"enabled": True, "intensity": float(rng.uniform(0.3, 0.9))},
             "vignette": {"enabled": True, "intensity": float(rng.uniform(0.4, 0.9))},
+            "hdr_tone_map": {"enabled": True, "intensity": float(rng.uniform(0.2, 0.5))},
+            "depth_fog": {"enabled": True, "intensity": float(rng.uniform(0.2, 0.6))},
+            "motion_blur": {
+                "enabled": bool(rng.random() > 0.5),
+                "intensity": float(rng.uniform(0.2, 0.6)),
+                "angle": float(rng.uniform(0, 360)),
+            },
         },
     }
 
@@ -622,6 +660,77 @@ def _surface(
         x = facet * np.sin(ph) * np.cos(th)
         y = facet * np.sin(ph) * np.sin(th)
         z = facet * np.cos(ph)
+    elif family == "helix":
+        # Double helix: two intertwined spirals around a central axis.
+        turns = 3.0 + twist * 2.0
+        helix_angle = th * turns + t * 0.5
+        r_helix = 0.55 + 0.12 * np.sin(th * 2 + t * 0.8)
+        strand = np.sign(np.cos(th * turns * 0.5))
+        x = r_helix * radius * np.cos(helix_angle) * np.sin(ph)
+        y = radius * np.cos(ph) * 0.9
+        z = r_helix * radius * np.sin(helix_angle) * np.sin(ph) + 0.3 * strand * np.sin(ph)
+    elif family == "gyroid":
+        # Gyroid minimal surface approximation: triply periodic surface.
+        # Used as a radial displacement on a sphere for an organic lattice.
+        u = th * 2 + t * 0.3
+        v = ph * 3 - t * 0.2
+        w_param = (th + ph) * 1.5 + t * 0.15
+        gyroid = np.sin(u) * np.cos(v) + np.sin(v) * np.cos(w_param) + np.sin(w_param) * np.cos(u)
+        r_g = radius * (0.85 + 0.25 * np.tanh(gyroid * 0.8))
+        x = r_g * np.sin(ph) * np.cos(th)
+        y = r_g * np.sin(ph) * np.sin(th)
+        z = r_g * np.cos(ph)
+    elif family == "mandelbulb":
+        # Mandelbulb-inspired fractal surface (low-order approximation).
+        # Uses a power-2 iteration as a radial displacement for performance.
+        nx = np.sin(ph) * np.cos(th)
+        ny = np.sin(ph) * np.sin(th)
+        nz = np.cos(ph)
+        # 3 iterations of the mandelbulb formula (vectorized).
+        zx, zy, zz = nx, ny, nz
+        for _ in range(3):
+            r_mag = np.sqrt(zx**2 + zy**2 + zz**2 + 1e-12)
+            theta_m = np.arccos(np.clip(zz / r_mag, -1.0, 1.0))
+            phi_m = np.arctan2(zy, zx)
+            new_r = r_mag**2
+            zx = new_r * np.sin(theta_m * 2) * np.cos(phi_m * 2) + nx * 0.7
+            zy = new_r * np.sin(theta_m * 2) * np.sin(phi_m * 2) + ny * 0.7
+            zz = new_r * np.cos(theta_m * 2) + nz * 0.7
+        r_mb = np.sqrt(zx**2 + zy**2 + zz**2)
+        r_mb = np.clip(r_mb, 0.3, 2.0) * radius
+        x = r_mb * np.sin(ph) * np.cos(th)
+        y = r_mb * np.sin(ph) * np.sin(th)
+        z = r_mb * np.cos(ph)
+    elif family == "torus_knot":
+        # Torus knot (p,q)=(3,2): a single closed loop woven through a torus.
+        p, q = 3.0, 2.0
+        knot_t = th * 2 * np.pi
+        knot_r = 1.0 + 0.4 * np.cos(p * knot_t + t * 0.4)
+        knot_s = 0.3 + 0.15 * np.sin(q * knot_t + t * 0.6)
+        x = (knot_r + knot_s * radius * np.cos(ph)) * np.cos(q * knot_t)
+        y = (knot_r + knot_s * radius * np.cos(ph)) * np.sin(q * knot_t)
+        z = knot_s * radius * np.sin(ph)
+    elif family == "spiral_galaxy":
+        # Spiral galaxy: logarithmic spiral arms with radial brightness.
+        arms = 3
+        arm_angle = th + 0.5 * np.log(0.3 + ph + t * 0.05) * arms
+        r_gal = (0.3 + 0.9 * ph / np.pi) * radius
+        x = r_gal * np.cos(arm_angle + t * 0.15)
+        y = r_gal * np.sin(arm_angle + t * 0.15) * 0.5
+        z = r_gal * np.sin(ph * 4 + t * 0.3) * 0.3
+    elif family == "superformula":
+        # Gielis superformula: generates natural-looking shapes (starfish,
+        # flowers, etc.) from a compact parametric form.
+        m = 6.0 + 2.0 * np.sin(t * 0.3)
+        n1 = 0.3 * radius
+        n2 = 1.7
+        n3 = 1.7
+        sf_theta = th * m / 2.0 + t * 0.2
+        r_sf = (np.abs(np.cos(sf_theta))**n2 + np.abs(np.sin(sf_theta))**n3) ** (-1.0 / n1)
+        r_sf = np.clip(r_sf, 0.3, 2.0)
+        x = r_sf * np.sin(ph) * np.cos(th)
+        y = r_sf * np.sin(ph) * np.sin(th)
+        z = r_sf * np.cos(ph)
     else:
         x = radius * np.sin(ph) * np.cos(th)
         y = radius * np.sin(ph) * np.sin(th)
@@ -782,15 +891,26 @@ def _draw_frame(
     index: int, frame_count: int, profile: dict, events: list[CreativeEvent], frame_dir: Path
 ) -> Path:
     family = str(profile["family"])
-    if family in SPECIAL_FAMILIES:
-        frame_path = _draw_frame_special(index, frame_count, profile, events, frame_dir)
-    else:
-        frame_path = _draw_frame_mesh(index, frame_count, profile, events, frame_dir)
+    try:
+        if family in SPECIAL_FAMILIES:
+            frame_path = _draw_frame_special(index, frame_count, profile, events, frame_dir)
+        else:
+            frame_path = _draw_frame_mesh(index, frame_count, profile, events, frame_dir)
+    except Exception:
+        # Graceful degradation: if a new family crashes (e.g. numerical
+        # instability in a fractal), fall back to the simple orb family so
+        # the render completes rather than producing a corrupt video.
+        fallback_profile = dict(profile)
+        fallback_profile["family"] = "orb"
+        frame_path = _draw_frame_mesh(index, frame_count, fallback_profile, events, frame_dir)
     # Post-processing (applied per frame, after drawing and before final save).
     if frame_path is not None and isinstance(profile.get("post"), dict):
         with Image.open(frame_path) as raw:
             img = raw.convert("RGB")
-            processed = apply_post(img, profile)
+            try:
+                processed = apply_post(img, profile)
+            except Exception:
+                processed = img
             processed.save(frame_path, quality=92)
     return frame_path
 
@@ -861,6 +981,7 @@ def _synth_audio_lofi(
     every other genre routes through the new universal instrument/mixer engine.
     """
     rng = np.random.default_rng(seed)
+    _warn_audio_memory(duration, SAMPLE_RATE)
     count = int(duration * SAMPLE_RATE)
     t = np.linspace(0, duration, count, endpoint=False)
     signal = np.zeros(count, dtype=np.float64)
@@ -1039,38 +1160,37 @@ def duration_of_buffer(n: int, sample_rate: int) -> float:
     return float(n) / float(sample_rate)
 
 
-def _synth_audio_universal(
-    path: Path,
-    duration: float,
-    seed: int,
-    profile: dict,
-    events: list[CreativeEvent] | None,
-    composition: CompositionPlan | None,
-) -> None:
-    """Universal genre-driven audio synthesis via the instrument/mixer engine.
+_AUDIO_MEM_WARN_MB = 500
+# Durations above this threshold render the lofi piano path in float32 instead
+# of float64 to halve memory usage on long videos (900s can exceed 600 MB in
+# float64 across the signal, dynamics and stereo buffers).
+_AUDIO_FLOAT32_THRESHOLD_S = 300.0
 
-    1. Load the :class:`GenrePreset` from the profile's genre name.
-    2. Build a composition plan with :func:`build_composition_for_genre`.
-    3. Render each instrument role through its ``Instrument`` subclass.
-    4. Render drums via :class:`DrumSequencer` with the genre's pattern/swing.
-    5. Mix everything through :class:`Mixer` with the genre's mix config.
-    6. Apply the event-dynamics envelope (audio-visual sync) on the master bus.
-    7. Apply the genre's effects chain on the master bus.
-    8. Write a stereo 44100 Hz / 16-bit WAV.
+
+def _warn_audio_memory(duration: float, sr: int) -> None:
+    """Log a warning when the projected audio buffer exceeds a safe threshold.
+
+    Full-length audio is rendered in memory as numpy arrays. For long videos
+    (e.g. 900s at 44.1kHz stereo float64), the master bus alone is ~317 MB
+    and the full mixer (8 buses + reverb tails) can exceed 1 GB. This helper
+    estimates the master-bus footprint and warns early so OOM on
+    memory-constrained runners is diagnosed rather than silent.
     """
-    genre_name = str(profile.get("genre") or "lofi_ambient")
-    genre_preset = get_genre(genre_name)
-    music = profile["music"]
-    events = events or build_timeline(seed, duration, music)
-    composition = composition or build_composition_for_genre(seed, duration, genre_preset)
-
-    sr = SAMPLE_RATE
     n = int(duration * sr)
+    # float64 stereo = 16 bytes/sample; float32 = 8 bytes/sample.
+    bytes_per_sample = 8 if duration > _AUDIO_FLOAT32_THRESHOLD_S else 16
+    master_mb = (n * bytes_per_sample) / (1024 * 1024)
+    if master_mb > _AUDIO_MEM_WARN_MB:
+        log.warning(
+            "Audio buffer for %.0fs video ~%.0f MB (master bus). "
+            "Long videos may exceed runner memory; consider --preset live-test.",
+            duration,
+            master_mb,
+        )
 
-    mixer = Mixer(sample_rate=sr)
 
-    # --- Configure buses from the genre's mix_config -----------------------
-    mix_config = genre_preset.mix_config
+def _configure_mixer_from_genre(mixer: Mixer, mix_config: dict, n: int, sr: int) -> None:
+    """Apply bus EQ/gain/reverb/sidechain/master settings from the genre preset."""
     bus_configs = mix_config.get("buses", {})
     for bus_name, params in bus_configs.items():
         if bus_name not in MIX_BUS_NAMES:
@@ -1082,17 +1202,14 @@ def _synth_audio_universal(
         }
         mixer.configure_bus(bus_name, **kwargs)
 
-    # --- Configure reverb -------------------------------------------------
     reverb_cfg = mix_config.get("reverb", {})
     if reverb_cfg:
         mixer.configure_reverb(**reverb_cfg)
 
-    # --- Configure master gain -------------------------------------------
     master_cfg = mix_config.get("master", {})
     if "gain" in master_cfg:
         mixer.configure_master(gain=float(master_cfg["gain"]))
 
-    # --- Configure sidechain (per-genre) ---------------------------------
     sidechain_cfg = mix_config.get("sidechain")
     if sidechain_cfg:
         target_bus = str(sidechain_cfg.get("target", "bass"))
@@ -1108,29 +1225,29 @@ def _synth_audio_universal(
         if target_bus in MIX_BUS_NAMES:
             mixer.configure_bus(target_bus, sidechain=duck)
 
-    # --- Render each instrument role -------------------------------------
-    # Group notes by voice for role-based rendering.
+
+def _render_instruments(mixer: Mixer, genre_preset, composition: CompositionPlan, seed: int, sr: int, n: int) -> None:
+    """Render each non-drum instrument role and add it to the mixer."""
     all_notes = list(composition.notes)
     for role, instrument_name in genre_preset.instruments.items():
         if role == "drums":
-            # The "drums" role entry maps to a drum pattern, not an instrument
-            # class; it is rendered separately below.
             continue
         rendered = _render_instrument_role(role, instrument_name, all_notes, seed, sr, n)
         if np.max(np.abs(rendered)) > 1e-12:
             bus_name = _bus_for_role(role)
             mixer.add_track(f"{role}_{instrument_name}", rendered, bus_name)
 
-    # --- Render drums via DrumSequencer ----------------------------------
-    bpm = float(composition.tempo_map[0][1]) if composition.tempo_map else float(
-        np.mean(genre_preset.tempo_range)
-    )
+
+def _render_drums(
+    mixer: Mixer, genre_preset, composition: CompositionPlan, duration: float, sr: int, n: int
+) -> None:
+    """Render the drum pattern via DrumSequencer and add it to the mixer."""
+    bpm = float(composition.tempo_map[0][1]) if composition.tempo_map else float(np.mean(genre_preset.tempo_range))
     beat_seconds = 60.0 / bpm
     bar_seconds = 4.0 * beat_seconds
     bars = max(1, int(math.ceil(duration / bar_seconds)))
     sequencer = DrumSequencer(genre_preset.drum_pattern, swing=float(genre_preset.swing))
     drums_rendered = sequencer.render(bpm, bars, sr)
-    # Trim/pad the drum render to the exact target length.
     if drums_rendered.size > n:
         drums_rendered = drums_rendered[:n]
     elif drums_rendered.size < n:
@@ -1138,8 +1255,96 @@ def _synth_audio_universal(
     if np.max(np.abs(drums_rendered)) > 1e-12:
         mixer.add_track("drums", drums_rendered, "drums")
 
-    # --- Mix -------------------------------------------------------------
-    stereo = mixer.render(sr)  # shape (2, N)
+
+def _apply_master_processing(
+    left: np.ndarray, right: np.ndarray, mix_config: dict, events: list[CreativeEvent], duration: float, sr: int
+) -> tuple[np.ndarray, np.ndarray]:
+    """Apply event dynamics, Haas decorrelation, saturation, mastering and fade to the stereo bus."""
+    from utils.dsp.mastering import HarmonicExciter, MultibandCompressor, StereoWidener, TapeSim
+
+    dynamics = _event_dynamics_envelope(duration, events)
+    left = left * dynamics
+    right = right * dynamics
+
+    haas_delay = max(1, int(sr * 0.013))
+    if haas_delay > 0 and haas_delay < left.size:
+        delayed_right = np.zeros_like(right)
+        delayed_right[haas_delay:] = right[: -haas_delay]
+        right = right * 0.84 + delayed_right * 0.16
+
+    saturation_style = str(mix_config.get("saturation", "soft"))
+    drive, ceiling = _SATURATION_PRESETS.get(saturation_style, (1.15, 0.85))
+    left = np.tanh(left * drive) * ceiling
+    right = np.tanh(right * drive) * ceiling
+
+    # Multiband mastering compressor for tight low end and airy highs.
+    mb = MultibandCompressor(crossover_low_hz=180.0, crossover_high_hz=5000.0, sample_rate=sr)
+    left = mb.process(left)
+    right = mb.process(right)
+
+    # Harmonic exciter for presence and air (applied to each channel).
+    exciter = HarmonicExciter(crossover_hz=4000.0, drive=0.5, mix=0.18, sample_rate=sr)
+    left = exciter.process(left)
+    right = exciter.process(right)
+
+    # Tape saturation for warmth and glue.
+    tape = TapeSim(saturation=0.3, hf_loss_hz=14000.0, wow_depth=0.0015, flutter_depth=0.0006, sample_rate=sr)
+    left = tape.process(left)
+    right = tape.process(right)
+
+    # Stereo widening via mid/side.
+    stereo = np.stack([left, right], axis=0)
+    stereo = StereoWidener(width=1.25).process(stereo)
+    left, right = stereo[0], stereo[1]
+
+    fade = min(left.size // 8, sr * 3)
+    ramp = np.linspace(0, 1, fade)
+    left[:fade] *= ramp
+    left[-fade:] *= ramp[::-1]
+    right[:fade] *= ramp
+    right[-fade:] *= ramp[::-1]
+
+    left = np.clip(left, -0.99, 0.99)
+    right = np.clip(right, -0.99, 0.99)
+    return left, right
+
+
+def _write_stereo_wav(path: Path, left: np.ndarray, right: np.ndarray, sr: int) -> None:
+    """Write a 16-bit stereo PCM WAV file."""
+    samples = (np.column_stack((left, right)) * 32767).astype(np.int16)
+    with wave.open(str(path), "wb") as wav:
+        wav.setnchannels(2)
+        wav.setsampwidth(2)
+        wav.setframerate(sr)
+        wav.writeframes(samples.tobytes())
+
+
+def _synth_audio_universal(
+    path: Path,
+    duration: float,
+    seed: int,
+    profile: dict,
+    events: list[CreativeEvent] | None,
+    composition: CompositionPlan | None,
+) -> None:
+    """Universal genre-driven audio synthesis via the instrument/mixer engine."""
+    genre_name = str(profile.get("genre") or "lofi_ambient")
+    genre_preset = get_genre(genre_name)
+    music = profile["music"]
+    events = events or build_timeline(seed, duration, music)
+    composition = composition or build_composition_for_genre(seed, duration, genre_preset)
+
+    sr = SAMPLE_RATE
+    _warn_audio_memory(duration, sr)
+    n = int(duration * sr)
+    mix_config = genre_preset.mix_config
+
+    mixer = Mixer(sample_rate=sr)
+    _configure_mixer_from_genre(mixer, mix_config, n, sr)
+    _render_instruments(mixer, genre_preset, composition, seed, sr, n)
+    _render_drums(mixer, genre_preset, composition, duration, sr, n)
+
+    stereo = mixer.render(sr)
     if stereo.ndim != 2 or stereo.shape[0] != 2:
         stereo = np.stack([stereo.ravel(), stereo.ravel()], axis=0)
     mix_len = stereo.shape[1]
@@ -1148,49 +1353,8 @@ def _synth_audio_universal(
     elif mix_len > n:
         stereo = stereo[:, :n]
 
-    left = stereo[0]
-    right = stereo[1]
-
-    # --- Apply event-dynamics envelope (audio-visual sync) ---------------
-    dynamics = _event_dynamics_envelope(duration, events)
-    left = left * dynamics
-    right = right * dynamics
-
-    # --- Stereo decorrelation -------------------------------------------
-    # The mixer produces a mostly-centred image for genres whose buses are all
-    # panned to 0. A short Haas-style delay on one channel (the same trick the
-    # lo-fi path uses) opens up the stereo field so the quality gate's
-    # stereo-width check passes without any external stereo asset.
-    haas_delay = max(1, int(sr * 0.013))
-    if haas_delay > 0 and haas_delay < left.size:
-        delayed_right = np.zeros_like(right)
-        delayed_right[haas_delay:] = right[: -haas_delay]
-        right = right * 0.84 + delayed_right * 0.16
-
-    # --- Apply the genre's effects chain on the master bus ---------------
-    saturation_style = str(mix_config.get("saturation", "soft"))
-    drive, ceiling = _SATURATION_PRESETS.get(saturation_style, (1.15, 0.85))
-    # Gentle tanh saturation + final clip to the style's ceiling.
-    left = np.tanh(left * drive) * ceiling
-    right = np.tanh(right * drive) * ceiling
-
-    # --- Fade in/out to avoid clicks -------------------------------------
-    fade = min(n // 8, sr * 3)
-    ramp = np.linspace(0, 1, fade)
-    left[:fade] *= ramp
-    left[-fade:] *= ramp[::-1]
-    right[:fade] *= ramp
-    right[-fade:] *= ramp[::-1]
-
-    # --- Final safety clip and write WAV --------------------------------
-    left = np.clip(left, -0.99, 0.99)
-    right = np.clip(right, -0.99, 0.99)
-    samples = (np.column_stack((left, right)) * 32767).astype(np.int16)
-    with wave.open(str(path), "wb") as wav:
-        wav.setnchannels(2)
-        wav.setsampwidth(2)
-        wav.setframerate(sr)
-        wav.writeframes(samples.tobytes())
+    left, right = _apply_master_processing(stereo[0], stereo[1], mix_config, events, duration, sr)
+    _write_stereo_wav(path, left, right, sr)
 
 
 def _synth_audio(
@@ -1244,7 +1408,39 @@ def _run_ffmpeg(frame_dir: Path, audio_path: Path, output: Path) -> None:
         "-shortest",
         str(output),
     ]
-    subprocess.run(cmd, check=True)
+    # Timeout prevents a stalled ffmpeg from hanging the job until the GHA
+    # runner limit kills it. 15 minutes is generous for a 30-180s video at
+    # 1080p on a 2-vCPU runner; if ffmpeg hasn't finished by then it's stuck.
+    try:
+        subprocess.run(cmd, check=True, timeout=900, capture_output=True, text=True)
+    except subprocess.TimeoutExpired:
+        # Fallback: retry with a faster preset and higher CRF to salvage the
+        # render rather than failing the entire pipeline.
+        log.warning("ffmpeg timed out with preset=medium; retrying with preset=fast")
+        fallback_cmd = cmd.copy()
+        idx = fallback_cmd.index("medium")
+        fallback_cmd[idx] = "fast"
+        fallback_cmd[fallback_cmd.index("18")] = "22"
+        try:
+            subprocess.run(fallback_cmd, check=True, timeout=600, capture_output=True, text=True)
+        except (subprocess.TimeoutExpired, subprocess.CalledProcessError) as exc:
+            raise RuntimeError(f"ffmpeg failed after fallback: {exc}") from exc
+    except subprocess.CalledProcessError as exc:
+        # Log the ffmpeg stderr for diagnosis, then try a minimal fallback.
+        log.error("ffmpeg failed (rc=%d): %s", exc.returncode, (exc.stderr or "")[:500])
+        fallback_cmd = [
+            "ffmpeg", "-y", "-framerate", str(FPS),
+            "-i", str(frame_dir / "frame_%05d.png"),
+            "-i", str(audio_path),
+            "-c:v", "libx264", "-pix_fmt", "yuv420p",
+            "-preset", "ultrafast", "-crf", "23",
+            "-c:a", "aac", "-b:a", "128k",
+            "-shortest", str(output),
+        ]
+        try:
+            subprocess.run(fallback_cmd, check=True, timeout=600, capture_output=True, text=True)
+        except (subprocess.TimeoutExpired, subprocess.CalledProcessError) as exc2:
+            raise RuntimeError(f"ffmpeg failed: {exc2}") from exc2
 
 
 def _events_to_dicts(events: list[CreativeEvent]) -> list[dict]:
@@ -1343,6 +1539,7 @@ def _metadata(output: Path, thumbnail: Path, duration: float, preset: str, profi
                 description = candidate_description[:5000]
         except (json.JSONDecodeError, AttributeError):
             pass
+    description = prepend_chapters(description, duration, [CreativeEvent(**item) for item in timeline])
     return {
         "title": title,
         "description": description,
@@ -1392,7 +1589,7 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
         composition = build_composition_for_genre(
             int(profile["seed"]), duration, get_genre(genre_name)
         )
-    profile["engine_version"] = "2.1"
+    profile["engine_version"] = "3.0"
     profile["timeline"] = [event.to_dict() for event in events]
     profile["composition"] = composition.to_dict()
     # Carry the supersampled render size in the profile for the worker.
@@ -1497,34 +1694,31 @@ def main() -> int:
         parser.error("--attempts must be at least 1")
     output: Path | None = None
     slot = os.environ.get("LIQUID_WIRE_SLOT", "").strip() or "adhoc"
+    # Deterministic seed per scheduled slot: a retry/recovery run for the same
+    # slot reproduces the same video instead of burning a new random seed.
+    # Manual runs (no LIQUID_WIRE_SLOT) or --seed overrides stay explicit.
+    effective_seed = args.seed if args.seed is not None else _slot_seed()
     last_profile: dict = {}
     last_error = ""
     for attempt in range(1, args.attempts + 1):
         try:
-            output = generate(duration=duration, preset=args.preset, seed=args.seed)
+            output = generate(duration=duration, preset=args.preset, seed=effective_seed)
             break
         except QualityGateError as exc:
             print(f"Quality attempt {attempt}/{args.attempts} failed: {exc}")
             last_error = str(exc)
-            # Capture the profile that just failed for the dead-letter record.
-            # generate() reserves a profile in _data/generator_history.json; we
-            # reconstruct a minimal profile from the most recent history entry
-            # so the dead-letter carries family/genre even though generate()
-            # raised before returning its profile.
             try:
                 history = _load_history()
                 if history:
                     last = history[-1]
-                    failed_seed = args.seed if args.seed is not None else _slot_seed()
                     last_profile = {
                         "family": last.get("family", ""),
-                        "genre": _pick_genre_for_seed(failed_seed),
+                        "genre": _pick_genre_for_seed(effective_seed),
                     }
             except Exception:
                 pass
             if args.seed is not None or attempt == args.attempts:
-                failed_seed = args.seed if args.seed is not None else _slot_seed()
-                _record_dead_letter(slot, failed_seed, last_error, last_profile)
+                _record_dead_letter(slot, effective_seed, last_error, last_profile)
                 raise
     if output is None:  # pragma: no cover - defensive invariant
         raise RuntimeError("No render was produced.")

@@ -138,20 +138,29 @@ def noise_white(dur: float, sr: int, seed: int | None = None) -> np.ndarray:
 
 
 def noise_pink(dur: float, sr: int, seed: int | None = None) -> np.ndarray:
-    """Pink noise via the Voss-McCartney algorithm (sum of randomised octaves)."""
+    """Pink noise via the Voss-McCartney algorithm (sum of randomised octaves).
+
+    Vectorized: precomputes the update mask for each octave row and applies
+    all updates in a single pass over the rows (16 rows regardless of n),
+    giving O(rows * n) with numpy vectorised inner loops instead of O(n*rows)
+    with Python-level branching per sample.
+    """
     n = int(round(dur * sr))
     rng = np.random.default_rng(seed)
     # Number of octave "rows": each row updates at a different power-of-2 stride.
     rows = 16
-    # Start with all rows holding a random value; update row i every 2**i samples.
-    values = rng.standard_normal(rows)
-    out = np.empty(n, dtype=np.float64)
-    for i in range(n):
-        # Update rows whose stride divides i.
-        for r in range(rows):
-            if (i & ((1 << r) - 1)) == 0:
-                values[r] = rng.standard_normal()
-        out[i] = values.sum()
+    # For each row r, the update stride is 2**r. Precompute per-row value arrays
+    # using a vectorised resample: row r contributes a value that changes every
+    # 2**r samples. We generate one random per block and expand to length n.
+    out = np.zeros(n, dtype=np.float64)
+    for r in range(rows):
+        stride = 1 << r
+        # Number of distinct blocks for this row.
+        n_blocks = (n + stride - 1) // stride
+        values = rng.standard_normal(n_blocks)
+        # Expand each block value to `stride` samples (last block may be short).
+        row = np.repeat(values, stride)[:n]
+        out += row
     # Normalise to [-1, 1].
     peak = float(np.max(np.abs(out))) if out.size else 1.0
     if peak > 1e-12:
@@ -160,21 +169,24 @@ def noise_pink(dur: float, sr: int, seed: int | None = None) -> np.ndarray:
 
 
 def noise_brown(dur: float, sr: int, seed: int | None = None) -> np.ndarray:
-    """Brown noise: integrated white noise (random walk)."""
+    """Brown noise: integrated white noise (random walk), vectorized with cumsum."""
     n = int(round(dur * sr))
     rng = np.random.default_rng(seed)
     white = rng.standard_normal(n).astype(np.float64)
     # Leaky integrator so the walk stays bounded over long durations.
-    out = np.empty(n, dtype=np.float64)
-    acc = 0.0
+    # Implemented as a vectorized exponential moving average:
+    #   out[i] = leak * out[i-1] + white[i]
+    # This is an IIR one-pole lowpass; use scipy.signal.lfilter for C speed.
+    from scipy.signal import lfilter
+
     leak = 0.997
-    for i in range(n):
-        acc = acc * leak + white[i]
-        out[i] = acc
+    b = np.array([1.0], dtype=np.float64)
+    a = np.array([1.0, -leak], dtype=np.float64)
+    out = lfilter(b, a, white).astype(np.float64)
     peak = float(np.max(np.abs(out))) if out.size else 1.0
     if peak > 1e-12:
         out = out / peak
-    return out.astype(np.float64)
+    return out
 
 
 def fm(
