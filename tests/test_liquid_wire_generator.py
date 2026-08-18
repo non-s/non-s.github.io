@@ -65,15 +65,24 @@ def test_reserve_profile_records_unique_history(tmp_path: Path, monkeypatch) -> 
     assert [item["seed"] for item in history] == [111, second_seed]
 
 
-def test_reusing_requested_seed_fails(tmp_path: Path, monkeypatch) -> None:
+def test_reusing_requested_seed_falls_back_to_random(tmp_path: Path, monkeypatch) -> None:
+    """A duplicate requested seed falls back to a fresh random seed.
+
+    Previously _reserve_profile raised ValueError when the requested seed
+    was already in the history, which broke scheduled long-form runs
+    whose deterministic slot seed collided with an earlier short in the
+    same UTC hour, and also broke manual dispatches after any prior
+    ad-hoc render. The reservation now continues to the next loop
+    iteration with a random seed so the caller still gets a materially
+    distinct profile instead of a hard failure.
+    """
     monkeypatch.setattr(liquid, "data_dir", lambda: tmp_path)
-    liquid._reserve_profile("short", 333)
-    try:
-        liquid._reserve_profile("short", 333)
-    except ValueError as exc:
-        assert "Seed already used" in str(exc)
-    else:
-        raise AssertionError("Expected duplicate seed to fail")
+    first = liquid._reserve_profile("short", 333)
+    second = liquid._reserve_profile("short", 333)
+    # The second call must not raise; it returns a profile with a
+    # different seed/signature drawn at random.
+    assert second["signature"] != first["signature"]
+    assert second["seed"] != 333
 
 
 def test_quality_history_is_persisted_and_bounded(tmp_path: Path, monkeypatch) -> None:

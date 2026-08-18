@@ -529,8 +529,18 @@ def _reserve_profile(preset: str, requested_seed: int | None) -> dict:
             profile = _profile(seed, preset)
             signature = _signature(profile)
             if seed in used_seeds or signature in used_signatures or not _materially_distinct(profile, history):
-                if requested_seed is not None:
-                    raise ValueError(f"Seed already used: {requested_seed}")
+                # If the caller asked for a specific seed and it already exists in
+                # the history, fall through to a random seed on the next loop
+                # iteration instead of failing hard. A collision means the
+                # profile was already reserved (either the render succeeded and
+                # was published, or it failed after reservation and the seed
+                # was never released). Either way the caller wants a *new*
+                # render now, so reproducing the exact same seed is not
+                # useful; a fresh random seed gives a materially distinct
+                # video. Previously this raised ValueError, which broke
+                # scheduled long-form runs whose deterministic slot seed
+                # collided with an earlier short in the same UTC hour, and
+                # also broke manual dispatches after any prior ad-hoc render.
                 continue
             profile["signature"] = signature
             history.append(
