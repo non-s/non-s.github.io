@@ -45,12 +45,18 @@ jobs:
     name: "Generate procedural Liquid Wire video"
     if: ${{ vars.LIQUID_WIRE_ENABLED == '1' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     env:
       YOUTUBE_CHANNEL: liquid_wire
       YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY || 'public' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       LIQUID_WIRE_SLOT: ${{ inputs.slot }}
+      # CI runners have only 2 vCPUs; rendering 900 frames at 2x supersample
+      # (2160x3840) takes ~15min per attempt, which risks the job timeout.
+      # SS=1 renders directly at 1080p (still crisp via Pillow LANCZOS on the
+      # wireframe primitives) and cuts render time ~4x, keeping the pipeline
+      # safely within the 90min job budget even with quality retries.
+      LIQUID_WIRE_SS_FACTOR: "1"
     steps:
       - name: "Checkout"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -89,7 +95,7 @@ jobs:
         continue-on-error: false
       - name: "Generate procedural video"
         run: |
-          args=(--preset "${{ steps.format.outputs.preset }}" --attempts 5)
+          args=(--preset "${{ steps.format.outputs.preset }}" --attempts 3)
           if [ -n "${{ steps.format.outputs.duration }}" ]; then
             args+=(--duration "${{ steps.format.outputs.duration }}")
           fi

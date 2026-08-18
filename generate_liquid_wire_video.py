@@ -202,7 +202,11 @@ QUALITY_HISTORY_LIMIT = 5000
 
 # Supersampling factor: frames render at SS_FACTOR x resolution then downscale
 # to the nominal 1080p output with LANCZOS for crisp anti-aliasing.
-SS_FACTOR = 2
+# Configurable via LIQUID_WIRE_SS_FACTOR env var so CI (limited 2-vCPU runners)
+# can disable supersampling (SS=1) to fit the job timeout while local/dev
+# machines keep SS=2 for maximum quality. Default is 2 to preserve the
+# original behaviour for `make generate-short` and manual local runs.
+SS_FACTOR = int(os.environ.get("LIQUID_WIRE_SS_FACTOR", "2"))
 
 
 def _dimensions_for_preset(preset: str) -> tuple[int, int]:
