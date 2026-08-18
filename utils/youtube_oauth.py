@@ -75,7 +75,8 @@ def validate_token_scopes(token_path: str | None = None) -> list[str]:
             token_scopes = [token_scopes]
         token_set = {str(s) for s in token_scopes}
         return [s for s in SCOPES if s not in token_set]
-    except Exception:
+    except (OSError, json.JSONDecodeError) as exc:
+        log.warning("validate_token_scopes: falha ao ler %s: %s", path, exc)
         return list(SCOPES)
 
 ROOT = Path(__file__).resolve().parent.parent

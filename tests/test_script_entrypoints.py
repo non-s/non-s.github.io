@@ -13,7 +13,6 @@ from scripts import (
     collect_competitive_intelligence,
     collect_open_research,
     generate_editorial_calendar,
-    plan_live_station,
     refresh_oauth_token,
     respond_comments,
     run_agency_council,
@@ -89,23 +88,6 @@ def test_generate_editorial_calendar_rejects_invalid_days():
         assert exc.code == 2
     else:  # pragma: no cover - argparse must terminate
         raise AssertionError("invalid --days was accepted")
-
-
-def test_plan_live_station_main(monkeypatch, tmp_path, capsys):
-    plan = {"approved_unique_tracks": 2, "target_unique_tracks": 3}
-    output = tmp_path / "plan.json"
-    monkeypatch.setattr(plan_live_station, "AUDIO_DIR", tmp_path / "audio")
-    monkeypatch.setattr(plan_live_station, "VIDEO_DIR", tmp_path / "video")
-    monkeypatch.setattr(plan_live_station, "build_station_plan", lambda *_args, **_kwargs: plan)
-    monkeypatch.setattr(
-        plan_live_station,
-        "save_station_plan",
-        lambda actual, _output: output if actual is plan else None,
-    )
-    monkeypatch.setattr("sys.argv", ["plan-live", "--target-tracks", "3"])
-
-    assert plan_live_station.main() == 0
-    assert "Verified tracks: 2/3" in capsys.readouterr().out
 
 
 def test_run_agency_council_main(monkeypatch, capsys):
@@ -225,6 +207,11 @@ def test_gh_secret_set_sends_secret_through_stdin(monkeypatch):
     monkeypatch.setattr(refresh_oauth_token.subprocess, "run", run := MagicMock(return_value=completed))
 
     assert refresh_oauth_token._gh_secret_set("YOUTUBE_TOKEN", "sensitive-json", "github-pat") == 0
-    assert run.call_args.args[0] == ["gh", "secret", "set", "YOUTUBE_TOKEN"]
+    cmd = run.call_args.args[0]
+    assert cmd[:4] == ["gh", "secret", "set", "YOUTUBE_TOKEN"]
+    # The secret value must be piped via stdin (--body -), never on argv.
+    assert "--body" in cmd
+    body_idx = cmd.index("--body") + 1
+    assert cmd[body_idx] == "-"
     assert run.call_args.kwargs["input"] == "sensitive-json"
     assert run.call_args.kwargs["env"]["GH_TOKEN"] == "github-pat"

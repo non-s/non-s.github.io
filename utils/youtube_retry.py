@@ -21,6 +21,41 @@ log = logging.getLogger(__name__)
 _YOUTUBE_MAX_RETRIES = 3
 _YOUTUBE_BASE_BACKOFF = 2.0
 
+# YouTube returns 403 for several retryable quota/rate-limit conditions.
+# Non-retryable 403s (forbidden, channelNotVerifiedForCustomThumbnails) stay
+# terminal so we don't waste the retry budget on permanent rejections.
+_RETRYABLE_403_REASONS = frozenset(
+    {
+        "quotaExceeded",
+        "rateLimitExceeded",
+        "userRateLimitExceeded",
+        "dailyLimitExceeded",
+        "downloadSizeQuotaExceeded",
+    }
+)
+
+
+def _is_retryable_403(exc: HttpError) -> bool:
+    """True se o HttpError 403 e uma condicao transitria de quota/rate-limit."""
+    try:
+        status = exc.resp.status if hasattr(exc, "resp") else 0
+        if status != 403:
+            return False
+        reasons: list[str] = []
+        content = exc.content
+        if isinstance(content, bytes):
+            content = content.decode("utf-8", "replace")
+        import json
+
+        data = json.loads(content) if content else {}
+        for err in data.get("error", {}).get("errors", []):
+            reason = err.get("reason", "")
+            if reason:
+                reasons.append(reason)
+        return any(r in _RETRYABLE_403_REASONS for r in reasons)
+    except Exception:
+        return False
+
 
 def _infer_resource_method(func) -> tuple[str | None, str | None]:
     """Tenta extrair (resource, method) de um callable da googleapiclient
@@ -83,7 +118,7 @@ def retry_youtube_call(func, *args, **kwargs):
             return result
         except HttpError as e:
             status = e.resp.status if hasattr(e, "resp") else 0
-            if status in (409, 429, 500, 502, 503, 504):
+            if status in (409, 429, 500, 502, 503, 504) or _is_retryable_403(e):
                 wait = _YOUTUBE_BASE_BACKOFF * (2**attempt) + random.uniform(0, 1)
                 log.warning(
                     "YouTube API %s - retry em %ss (tentativa %d/%d)",

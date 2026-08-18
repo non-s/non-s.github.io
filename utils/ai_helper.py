@@ -125,6 +125,47 @@ def _throttle() -> None:
         _last_call_ts = time.time()
 
 
+def _circuit_check(caller: str) -> bool:
+    """Return True if the call may proceed, False if the circuit is open.
+
+    On half-open (past the reset deadline) it re-arms the breaker and
+    allows the call. ``caller`` is used only for log context.
+    """
+    with _gemini_lock:
+        if _gemini_circuit_open:
+            if time.time() < _gemini_circuit_open_until:
+                log.warning("Circuit breaker do Gemini aberto; pulando %s.", caller)
+                return False
+            log.info("Circuit breaker do Gemini em half-open; tentando %s novamente.", caller)
+            _reset_circuit()
+    return True
+
+
+def _reset_circuit() -> None:
+    """Clear the 429 streak and circuit-open flag (caller holds _gemini_lock)."""
+    global _gemini_circuit_open, _gemini_429_streak
+    _gemini_circuit_open = False
+    _gemini_429_streak = 0
+
+
+def _record_429(caller: str) -> None:
+    """Increment the 429 streak and open the circuit past the threshold."""
+    global _gemini_429_streak, _gemini_circuit_open, _gemini_circuit_open_until
+    with _gemini_lock:
+        _gemini_429_streak += 1
+        if _gemini_429_streak >= _GEMINI_429_CIRCUIT_THRESHOLD:
+            _gemini_circuit_open = True
+            _gemini_circuit_open_until = time.time() + _GEMINI_CIRCUIT_RESET_SECONDS
+            log.warning("Circuit breaker aberto por %ss (%s)", _GEMINI_CIRCUIT_RESET_SECONDS, caller)
+
+
+def _clear_429_streak() -> None:
+    """Reset the streak after a successful call."""
+    global _gemini_429_streak
+    with _gemini_lock:
+        _gemini_429_streak = 0
+
+
 def _record_ai_metric(task: str, latency_ms: float, fell_back: bool) -> None:
     """Registra uma metrica de chamada ao Gemini em _data/ai_metrics.json.
 
@@ -197,8 +238,6 @@ def ai_text(
     task: str = "auto",
 ) -> str:
     """Chama o Gemini e retorna o texto gerado, ou string vazia em falha."""
-    global _gemini_429_streak, _gemini_circuit_open, _gemini_circuit_open_until
-
     start_ts = time.time()
     fell_back = True
     try:
@@ -207,14 +246,8 @@ def ai_text(
             log.error("GEMINI_API_KEY nao configurada.")
             return ""
 
-        with _gemini_lock:
-            if _gemini_circuit_open:
-                if time.time() < _gemini_circuit_open_until:
-                    log.warning("Circuit breaker do Gemini aberto; pulando chamada.")
-                    return ""
-                log.info("Circuit breaker do Gemini em half-open; tentando novamente.")
-                _gemini_circuit_open = False
-                _gemini_429_streak = 0
+        if not _circuit_check("ai_text"):
+            return ""
 
         sys_msg = system or _default_system_prompt()
         _throttle()
@@ -251,19 +284,13 @@ def ai_text(
                     log.warning("Gemini sem texto util (finishReason=%s); usando fallback.", finish_reason)
                     return ""
                 text = parts[0]["text"].strip()
-                with _gemini_lock:
-                    _gemini_429_streak = 0
+                _clear_429_streak()
                 fell_back = False
                 return text
             except requests.exceptions.HTTPError as e:
                 status = e.response.status_code if e.response is not None else 0
                 if status in (429, 502, 503):
-                    with _gemini_lock:
-                        _gemini_429_streak += 1
-                        if _gemini_429_streak >= _GEMINI_429_CIRCUIT_THRESHOLD:
-                            _gemini_circuit_open = True
-                            _gemini_circuit_open_until = time.time() + _GEMINI_CIRCUIT_RESET_SECONDS
-                            log.warning("Circuit breaker aberto por %ss", _GEMINI_CIRCUIT_RESET_SECONDS)
+                    _record_429("ai_text")
                     # Backoff exponencial com jitter para 429/503
                     wait = min(_BASE_BACKOFF * (2**attempt) + random.uniform(0, 1), 8)
                     log.warning("Gemini %s - aguardando %ss (tentativa %d/%d)", status, wait, attempt + 1, _MAX_RETRIES)
@@ -311,8 +338,6 @@ def ai_text_with_image(
     (key ausente, circuit breaker, erro HTTP), retorna None — o chamador
     (thumbnail_engine) cai no hook_for_scene legado.
     """
-    global _gemini_429_streak, _gemini_circuit_open, _gemini_circuit_open_until
-
     import base64
     import mimetypes
 
@@ -335,14 +360,8 @@ def ai_text_with_image(
             log.warning("Falha ao ler imagem %s: %s", image_path, exc)
             return None
 
-        with _gemini_lock:
-            if _gemini_circuit_open:
-                if time.time() < _gemini_circuit_open_until:
-                    log.warning("Circuit breaker aberto; pulando thumbnail_vision.")
-                    return None
-                log.info("Circuit breaker half-open; tentando thumbnail_vision.")
-                _gemini_circuit_open = False
-                _gemini_429_streak = 0
+        if not _circuit_check("thumbnail_vision"):
+            return None
 
         sys_msg = _default_system_prompt()
         _throttle()
@@ -383,8 +402,7 @@ def ai_text_with_image(
                     log.warning("thumbnail_vision sem texto (finishReason=%s).", finish_reason)
                     return None
                 text = parts[0]["text"].strip()
-                with _gemini_lock:
-                    _gemini_429_streak = 0
+                _clear_429_streak()
                 if not is_safe_ai_text(text):
                     log.warning("thumbnail_vision rejeitado por is_safe_ai_text.")
                     return None
@@ -393,11 +411,7 @@ def ai_text_with_image(
             except requests.exceptions.HTTPError as e:
                 status = e.response.status_code if e.response is not None else 0
                 if status in (429, 502, 503):
-                    with _gemini_lock:
-                        _gemini_429_streak += 1
-                        if _gemini_429_streak >= _GEMINI_429_CIRCUIT_THRESHOLD:
-                            _gemini_circuit_open = True
-                            _gemini_circuit_open_until = time.time() + _GEMINI_CIRCUIT_RESET_SECONDS
+                    _record_429("thumbnail_vision")
                     wait = min(_BASE_BACKOFF * (2**attempt) + random.uniform(0, 1), 8)
                     log.warning("thumbnail_vision %s - aguardando %ss", status, wait)
                     sleep(wait)

@@ -19,6 +19,9 @@ class _DrumBase(Instrument):
 
     name = "drum_base"
 
+    def __init__(self, seed: int = 0) -> None:
+        self.seed = seed
+
     def render_hit(self, velocity: float = 1.0, duration: float = 0.5, sample_rate: int = 44100) -> np.ndarray:
         """Render a single hit. Override in subclasses."""
         raise NotImplementedError

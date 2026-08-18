@@ -29,17 +29,19 @@ log = logging.getLogger(__name__)
 # arquivo .lock abandonado pode fazer o proximo job esperar ate o
 # timeout. A limpeza e conservadora: so remove se estiver realmente
 # velho.
-_STALE_LOCK_SECONDS = 300.0
+_STALE_LOCK_SECONDS = 3600.0
 
 
 def _prune_stale_lock(lock_path: Path) -> None:
-    """Remove um arquivo de lock abandonado se ele for mais velho que
-    ``_STALE_LOCK_SECONDS``.
+    """Remove um arquivo de lock abandonado se ele for muito antigo.
 
-    Nao remove locks recentes: outro processo legitimo pode estar
-    ativamente usando o arquivo. O filelock por padrao tambem cria o
-    lock apenas durante o ``with``, entao um .lock presente e velho
-    indica falha anterior.
+    The prune threshold is intentionally high (1h) so it never fires under a
+    legitimate long-running write (e.g. quality_history rewrite on a slow
+    runner). The FileLock ``timeout`` (30s) is the primary contention guard;
+    this prune only handles the rare case of a crashed process leaving a
+    .lock file on a persistent filesystem. Deleting a lock file that another
+    process holds via flock is unsafe on some platforms (the next contender
+    acquires a new inode), so we only prune when the age is unambiguous.
     """
     try:
         if not lock_path.exists():
@@ -50,7 +52,6 @@ def _prune_stale_lock(lock_path: Path) -> None:
             log.warning("Removendo lock residuo (%d s) em %s", int(age), lock_path)
             os.remove(lock_path)
     except FileNotFoundError:
-        # Outro processo ja removeu entre exists() e remove().
         pass
     except OSError as exc:
         log.warning("Nao foi possivel remover lock residuo %s: %s", lock_path, exc)

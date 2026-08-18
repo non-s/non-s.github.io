@@ -47,17 +47,9 @@ jobs:
             echo "gh nao encontrado no runner"; exit 1
           fi
       - name: "Restaurar token YouTube"
-        env:
-          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
-        run: |
-          umask 077
-          if [ -n "$YOUTUBE_TOKEN" ]; then
-            printf '%s' "$YOUTUBE_TOKEN" > youtube_token.json
-            chmod 600 youtube_token.json
-          else
-            echo "::error::Secret YOUTUBE_TOKEN ausente."
-            exit 1
-          fi
+        uses: ./.github/actions/restore-token-and-cache
+        with:
+          youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
       - name: "Renovar token e atualizar secret"
         env:
           # Use um fine-grained PAT limitado a este repositorio. O valor do

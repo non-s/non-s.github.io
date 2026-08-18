@@ -147,8 +147,8 @@ def test_pick_genre_for_seed_is_deterministic_and_in_subset(tmp_path: Path, monk
     assert g1 in subset
 
 
-def test_pick_genre_for_seed_uses_all_genres_when_no_drift_file(monkeypatch) -> None:
-    monkeypatch.setattr(liquid, "data_dir", lambda: Path("__nonexistent_dir__"))
+def test_pick_genre_for_seed_uses_all_genres_when_no_drift_file(monkeypatch, tmp_path) -> None:
+    monkeypatch.setattr(liquid, "data_dir", lambda: tmp_path / "__nonexistent_dir__")
     # When the drift file cannot be written/read, every genre is available.
     pick = liquid._pick_genre_for_seed(5)
     assert pick in set(list_genres())

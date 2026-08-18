@@ -77,10 +77,16 @@ def refresh_and_persist(token_path: Path, secret_name: str, channel_slug: str) -
 
 
 def _gh_secret_set(name: str, value: str, gh_pat: str) -> int:
-    """Atualiza um secret do repositorio via `gh secret set`."""
-    cmd = ["gh", "secret", "set", name, "--body", value]
+    """Atualiza um secret do repositorio via `gh secret set`.
+
+    O valor do secret e enviado ao `gh` por **stdin** (``--body -``), nunca
+    pela linha de comando. Argumentos na linha de comando sao visiveis a
+    outros processos do runner via ``/proc`` e em listagens de processo,
+    o que vazaria o token OAuth.
+    """
+    cmd = ["gh", "secret", "set", name, "--body", "-"]
     env = {**os.environ, "GH_TOKEN": gh_pat}
-    proc = subprocess.run(cmd, env=env, capture_output=True, text=True)
+    proc = subprocess.run(cmd, env=env, input=value, capture_output=True, text=True)
     if proc.returncode != 0:
         print(f"::error::gh secret set stderr: {proc.stderr}")
     return proc.returncode

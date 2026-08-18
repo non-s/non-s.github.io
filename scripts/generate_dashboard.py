@@ -762,189 +762,105 @@ def _ensure_chart_js_fallback(output_dir: Path) -> None:
         log.info("Mantendo Chart.js offline existente em %s.", fallback_path)
 
 
-def build_dashboard_html() -> str:
-    analytics = _load_json(ANALYTICS_FILE, {})
-    history = _load_json(HISTORY_FILE, [])
-    scene_weights = _load_json(SCENE_PERFORMANCE_FILE, {})
-    title_pattern_weights = _load_json(TITLE_PATTERN_PERFORMANCE_FILE, {})
-    view_predictor = _load_json(VIEW_PREDICTOR_FILE, {})
-    video_tags = _load_json(VIDEO_TAGS_FILE, {})
-    quality_history = _load_quality_history()
+def _safe_json(obj) -> str:
+    # Escapa "</" para evitar saida prematura de <script> e mantem JSON
+    # valido. json.dumps ja escapa aspas/barra; so precisamos cuidar do
+    # "</" sequencia.
+    return json.dumps(obj, ensure_ascii=False).replace("</", "<\\/")
 
-    generated_at = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
 
-    # Datasets embutidos como JSON (autocontido, sem backend). html.escape nao
-    # se aplica a conteudo de <script> JSON — usamos json.dumps com
-    # ensure_ascii=False e escapamos "</" para evitar fechamento prematuro do
-    # bloco de script. Dados de _data/ (titulos do YouTube, etc.) sao
-    # escapados nos datasets de barra/doughnut (labels) via escape() antes do
-    # dumps.
-    history_ds = _build_chart_datasets(history)
-    views_by_day_ds = _build_views_by_day_dataset(analytics)
-    scene_ds = _build_scene_dataset(scene_weights)
-    title_ds = _build_title_pattern_dataset(title_pattern_weights)
-    top_ds = _build_top_videos_dataset(analytics)
-    thumb_ds = _build_thumbnail_variant_dataset(video_tags)
-    diversity_ds = _build_diversity_dataset(quality_history)
+def _build_dashboard_datasets(
+    analytics: dict,
+    history: list[dict],
+    scene_weights: dict,
+    title_pattern_weights: dict,
+    video_tags: dict,
+    quality_history: list[dict],
+) -> dict[str, str]:
+    """Build all chart datasets as JSON strings ready to embed in <script>."""
+    return {
+        "history": _safe_json(_build_chart_datasets(history)),
+        "views_by_day": _safe_json(_build_views_by_day_dataset(analytics)),
+        "scene": _safe_json(_build_scene_dataset(scene_weights)),
+        "title": _safe_json(_build_title_pattern_dataset(title_pattern_weights)),
+        "top": _safe_json(_build_top_videos_dataset(analytics)),
+        "thumb": _safe_json(_build_thumbnail_variant_dataset(video_tags)),
+        "diversity": _safe_json(_build_diversity_dataset(quality_history)),
+    }
 
-    def _safe_json(obj) -> str:
-        # Escapa "</" para evitar saida prematura de <script> e mantem JSON
-        # valido. json.dumps ja escapa aspas/barra; so precisamos cuidar do
-        # "</" sequencia.
-        return json.dumps(obj, ensure_ascii=False).replace("</", "<\\/")
 
-    history_json = _safe_json(history_ds)
-    views_by_day_json = _safe_json(views_by_day_ds)
-    scene_json = _safe_json(scene_ds)
-    title_json = _safe_json(title_ds)
-    top_json = _safe_json(top_ds)
-    thumb_json = _safe_json(thumb_ds)
-    diversity_json = _safe_json(diversity_ds)
-
-    return rf"""<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Liquid Wire — Dashboard</title>
-<style>
-  :root {{ color-scheme: light dark; }}
-  body {{
+_DASHBOARD_CSS = """
+  :root { color-scheme: light dark; }
+  body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     max-width: 960px; margin: 0 auto; padding: 24px 16px 64px;
     background: #0f0f23; color: #f8f8ff;
-  }}
-  h1 {{ font-size: 1.6rem; margin-bottom: 4px; }}
-  .subtitle {{ color: #9a9ab8; margin-top: 0; margin-bottom: 32px; font-size: 0.9rem; }}
-  h2 {{ font-size: 1.1rem; margin-top: 40px; border-bottom: 1px solid #2a2a40; padding-bottom: 8px; }}
-  .cards {{ display: flex; flex-wrap: wrap; gap: 12px; }}
-  .card {{
+  }
+  h1 { font-size: 1.6rem; margin-bottom: 4px; }
+  .subtitle { color: #9a9ab8; margin-top: 0; margin-bottom: 32px; font-size: 0.9rem; }
+  h2 { font-size: 1.1rem; margin-top: 40px; border-bottom: 1px solid #2a2a40; padding-bottom: 8px; }
+  .cards { display: flex; flex-wrap: wrap; gap: 12px; }
+  .card {
     background: rgba(26, 26, 62, 0.55); backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px); border: 1px solid rgba(244, 162, 97, 0.12);
     border-radius: 12px; padding: 16px 20px; min-width: 140px; flex: 1;
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
-  }}
-  .card-value {{ font-size: 1.5rem; font-weight: 700; color: #f4a261; }}
-  .card-label {{ font-size: 0.8rem; color: #9a9ab8; margin-top: 4px; }}
-  table {{ width: 100%; border-collapse: collapse; font-size: 0.9rem; }}
-  th, td {{ text-align: left; padding: 8px 10px; border-bottom: 1px solid #2a2a40; }}
-  th {{ color: #9a9ab8; font-weight: 600; }}
-  a {{ color: #f4a261; }}
-  .mono {{ font-family: ui-monospace, monospace; font-size: 0.8rem; }}
-  .bar-track {{ width: 100px; height: 8px; background: #2a2a40; border-radius: 4px; overflow: hidden; }}
-  .bar-fill {{ height: 100%; border-radius: 4px; }}
-  .empty {{ color: #9a9ab8; font-style: italic; }}
-  .chart-wrap {{
+  }
+  .card-value { font-size: 1.5rem; font-weight: 700; color: #f4a261; }
+  .card-label { font-size: 0.8rem; color: #9a9ab8; margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #2a2a40; }
+  th { color: #9a9ab8; font-weight: 600; }
+  a { color: #f4a261; }
+  .mono { font-family: ui-monospace, monospace; font-size: 0.8rem; }
+  .bar-track { width: 100px; height: 8px; background: #2a2a40; border-radius: 4px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; }
+  .empty { color: #9a9ab8; font-style: italic; }
+  .chart-wrap {
     background: rgba(26, 26, 62, 0.45); backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px); border: 1px solid rgba(244, 162, 97, 0.08);
     border-radius: 12px; padding: 16px; margin: 12px 0 24px;
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2); position: relative;
-  }}
-  .chart-wrap canvas {{ max-width: 100%; }}
-  .filters {{ display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0 4px; }}
-  .filters label {{ color: #9a9ab8; font-size: 0.85rem; }}
-  .filters select {{
+  }
+  .chart-wrap canvas { max-width: 100%; }
+  .filters { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0 4px; }
+  .filters label { color: #9a9ab8; font-size: 0.85rem; }
+  .filters select {
     background: #1a1a3e; color: #f8f8ff; border: 1px solid #2a2a40;
     border-radius: 6px; padding: 4px 8px; font-size: 0.85rem;
-  }}
-  footer {{ margin-top: 48px; color: #6a6a8a; font-size: 0.75rem; }}
-  .refresh-bar {{ display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 24px; }}
-  .refresh-btn {{
+  }
+  footer { margin-top: 48px; color: #6a6a8a; font-size: 0.75rem; }
+  .refresh-bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 24px; }
+  .refresh-btn {
     background: #1a1a3e; color: #f4a261; border: 1px solid rgba(244, 162, 97, 0.4);
     border-radius: 6px; padding: 6px 14px; font-size: 0.85rem; cursor: pointer;
-  }}
-  .refresh-btn:hover {{ background: #2a2a40; }}
-  .refresh-btn:disabled {{ opacity: 0.5; cursor: wait; }}
-  .refresh-status {{ color: #9a9ab8; font-size: 0.8rem; }}
-  .note {{ color: #6a6a8a; font-size: 0.75rem; margin: 8px 0 0; }}
-  .recommendations {{ display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0 24px; }}
-  .rec-card {{
+  }
+  .refresh-btn:hover { background: #2a2a40; }
+  .refresh-btn:disabled { opacity: 0.5; cursor: wait; }
+  .refresh-status { color: #9a9ab8; font-size: 0.8rem; }
+  .note { color: #6a6a8a; font-size: 0.75rem; margin: 8px 0 0; }
+  .recommendations { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0 24px; }
+  .rec-card {
     background: rgba(26, 26, 62, 0.55); border: 1px solid rgba(244, 162, 97, 0.12);
     border-radius: 12px; padding: 14px 18px; min-width: 160px; flex: 1;
     display: flex; flex-direction: column; gap: 4px;
-  }}
-  .rec-card strong {{ color: #f4a261; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }}
-  .rec-card span {{ font-size: 1.1rem; font-weight: 600; }}
-</style>
-</head>
-<body>
-  <h1 id="dash-title">✨ Liquid Wire — Dashboard</h1>
-  <p class="subtitle" id="dash-subtitle">Gerado automaticamente a partir dos
-  dados coletados por collect_analytics.py</p>
+  }
+  .rec-card strong { color: #f4a261; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .rec-card span { font-size: 1.1rem; font-weight: 600; }
+"""
 
-  <div class="refresh-bar">
-    <button id="refresh-btn" class="refresh-btn" type="button">Atualizar dados</button>
-    <button id="csv-btn" class="refresh-btn" type="button">Baixar CSV</button>
-    <span id="refresh-status" class="refresh-status"></span>
-  </div>
-  <p class="note">
-    Os dados em _data/ só atualizam quando o workflow liquid-wire-analytics.yml roda (semanal).
-    O botão "Atualizar dados" refaz o fetch de analytics.json hospedado no mesmo GitHub Pages —
-    se já publicado, os gráficos refletem o último snapshot; caso contrário, mantém os dados
-    embutidos na geração estática.
-  </p>
 
-  <h2>Resumo geral</h2>
-  {_render_summary(analytics)}
-
-  <h2>Tendência semanal</h2>
-  <div class="filters">
-    <label for="period-filter">Período:</label>
-    <select id="period-filter" aria-label="Seletor de período do gráfico de views">
-      <option value="4">Últimas 4 semanas</option>
-      <option value="12" selected>Últimas 12 semanas</option>
-      <option value="0">Tudo</option>
-    </select>
-  </div>
-  {_chart_canvas("viewsChart")}
-  {_render_history(history)}
-
-  <h2>Views por dia de publicação</h2>
-  {_chart_canvas("viewsByDayChart", "280px")}
-
-  <h2>Views por cena</h2>
-  {_chart_canvas("sceneChart")}
-  {_render_weighted_table(scene_weights, "Cena")}
-
-  <h2>Views por padrão de título</h2>
-  {_chart_canvas("titlePatternChart", "360px")}
-  {_render_weighted_table(title_pattern_weights, "Padrão")}
-
-  <h2>Top 10 vídeos</h2>
-  {_chart_canvas("topVideosChart", "320px")}
-  {_render_top_videos(analytics)}
-
-  <h2>Variações de thumbnail (A/B/C)</h2>
-  {_chart_canvas("thumbnailVariantsChart", "240px")}
-  {_render_thumbnail_variants(video_tags)}
-
-  <h2>Recomendações para o próximo short</h2>
-  {_render_recommendations(view_predictor, scene_weights, title_pattern_weights)}
-
-  <h2>Previsão de views (próximos 7 dias)</h2>
-  {_render_predicted_views(view_predictor)}
-
-  <h2>Heatmap cena × horário</h2>
-  {_render_scene_hour_heatmap(view_predictor)}
-
-  <h2>Diversidade perceptual</h2>
-  {_render_diversity_section(quality_history)}
-
-  <footer>Gerado em {generated_at}</footer>
-
-  <script src="{_CHART_JS_CDN}"
-          integrity="{_CHART_JS_SRI}"
-          crossorigin="anonymous"
-          onerror="this.onerror=null;this.src='{_CHART_JS_FALLBACK}'"></script>
-  <script>
+def _dashboard_js(ds: dict[str, str]) -> str:
+    """Build the dashboard client-side JavaScript as a string."""
+    return f"""
     // Dados embutidos (dashboard autocontido, sem backend).
-    var HISTORY_DS = {history_json};
-    var VIEWS_BY_DAY_DS = {views_by_day_json};
-    var SCENE_DS = {scene_json};
-    var TITLE_DS = {title_json};
-    var TOP_DS = {top_json};
-    var THUMB_DS = {thumb_json};
-    var DIVERSITY_DS = {diversity_json};
+    var HISTORY_DS = {ds['history']};
+    var VIEWS_BY_DAY_DS = {ds['views_by_day']};
+    var SCENE_DS = {ds['scene']};
+    var TITLE_DS = {ds['title']};
+    var TOP_DS = {ds['top']};
+    var THUMB_DS = {ds['thumb']};
+    var DIVERSITY_DS = {ds['diversity']};
     var ACTIVE_CHANNEL = "Liquid Wire";
 
     // Paleta Liquid Wire.
@@ -1210,7 +1126,7 @@ def build_dashboard_html() -> str:
           for (var i = 0; i < cards.length; i++) {{
             var label = cards[i].nextElementSibling;
             if (label && label.textContent && label.textContent.indexOf("Views totais") !== -1) {{
-              cards[i].textContent = String(analytics.total_views).replace(/(\d)(?=(\d{{3}})+$)/g, "$1.");
+              cards[i].textContent = String(analytics.total_views).replace(/(\\d)(?=(\\d{{3}})+$)/g, "$1.");
             }}
           }}
         }}
@@ -1234,7 +1150,7 @@ def build_dashboard_html() -> str:
       for (var i = 0; i < ds.labels.length; i++) {{
         rows.push(ds.labels[i] + "," + ds.total_views[i] + "," + ds.avg_views[i]);
       }}
-      var blob = new Blob([rows.join("\n")], {{ type: "text/csv;charset=utf-8;" }});
+      var blob = new Blob([rows.join("\\n")], {{ type: "text/csv;charset=utf-8;" }});
       var url = URL.createObjectURL(blob);
       var a = document.createElement("a");
       a.href = url;
@@ -1250,6 +1166,103 @@ def build_dashboard_html() -> str:
 
     // Auto-refresh a cada 60s (opcional, silencioso se falhar).
     setInterval(fetchLiveAnalytics, REFRESH_INTERVAL_MS);
+  """
+
+
+def build_dashboard_html() -> str:
+    analytics = _load_json(ANALYTICS_FILE, {})
+    history = _load_json(HISTORY_FILE, [])
+    scene_weights = _load_json(SCENE_PERFORMANCE_FILE, {})
+    title_pattern_weights = _load_json(TITLE_PATTERN_PERFORMANCE_FILE, {})
+    view_predictor = _load_json(VIEW_PREDICTOR_FILE, {})
+    video_tags = _load_json(VIDEO_TAGS_FILE, {})
+    quality_history = _load_quality_history()
+
+    generated_at = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
+
+    ds = _build_dashboard_datasets(
+        analytics, history, scene_weights, title_pattern_weights, video_tags, quality_history
+    )
+
+    return rf"""<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Liquid Wire — Dashboard</title>
+<style>{_DASHBOARD_CSS}
+</style>
+</head>
+<body>
+  <h1 id="dash-title">✨ Liquid Wire — Dashboard</h1>
+  <p class="subtitle" id="dash-subtitle">Gerado automaticamente a partir dos
+  dados coletados por collect_analytics.py</p>
+
+  <div class="refresh-bar">
+    <button id="refresh-btn" class="refresh-btn" type="button">Atualizar dados</button>
+    <button id="csv-btn" class="refresh-btn" type="button">Baixar CSV</button>
+    <span id="refresh-status" class="refresh-status"></span>
+  </div>
+  <p class="note">
+    Os dados em _data/ só atualizam quando o workflow liquid-wire-analytics.yml roda (semanal).
+    O botão "Atualizar dados" refaz o fetch de analytics.json hospedado no mesmo GitHub Pages —
+    se já publicado, os gráficos refletem o último snapshot; caso contrário, mantém os dados
+    embutidos na geração estática.
+  </p>
+
+  <h2>Resumo geral</h2>
+  {_render_summary(analytics)}
+
+  <h2>Tendência semanal</h2>
+  <div class="filters">
+    <label for="period-filter">Período:</label>
+    <select id="period-filter" aria-label="Seletor de período do gráfico de views">
+      <option value="4">Últimas 4 semanas</option>
+      <option value="12" selected>Últimas 12 semanas</option>
+      <option value="0">Tudo</option>
+    </select>
+  </div>
+  {_chart_canvas("viewsChart")}
+  {_render_history(history)}
+
+  <h2>Views por dia de publicação</h2>
+  {_chart_canvas("viewsByDayChart", "280px")}
+
+  <h2>Views por cena</h2>
+  {_chart_canvas("sceneChart")}
+  {_render_weighted_table(scene_weights, "Cena")}
+
+  <h2>Views por padrão de título</h2>
+  {_chart_canvas("titlePatternChart", "360px")}
+  {_render_weighted_table(title_pattern_weights, "Padrão")}
+
+  <h2>Top 10 vídeos</h2>
+  {_chart_canvas("topVideosChart", "320px")}
+  {_render_top_videos(analytics)}
+
+  <h2>Variações de thumbnail (A/B/C)</h2>
+  {_chart_canvas("thumbnailVariantsChart", "240px")}
+  {_render_thumbnail_variants(video_tags)}
+
+  <h2>Recomendações para o próximo short</h2>
+  {_render_recommendations(view_predictor, scene_weights, title_pattern_weights)}
+
+  <h2>Previsão de views (próximos 7 dias)</h2>
+  {_render_predicted_views(view_predictor)}
+
+  <h2>Heatmap cena × horário</h2>
+  {_render_scene_hour_heatmap(view_predictor)}
+
+  <h2>Diversidade perceptual</h2>
+  {_render_diversity_section(quality_history)}
+
+  <footer>Gerado em {generated_at}</footer>
+
+  <script src="{_CHART_JS_CDN}"
+          integrity="{_CHART_JS_SRI}"
+          crossorigin="anonymous"
+          onerror="this.onerror=null;this.src='{_CHART_JS_FALLBACK}'"></script>
+  <script>{_dashboard_js(ds)}
   </script>
 </body>
 </html>

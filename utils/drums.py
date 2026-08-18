@@ -3,6 +3,11 @@
 A :class:`DrumSequencer` holds a named pattern (a dict mapping instrument name
 to a list of step indices) and renders it for a given number of bars at a
 given BPM. Swing delays odd 8th-note steps; 0.0 = straight, ~0.66 = jazz swing.
+
+Note: This module is the *sequencer* (time/pattern layer). Instrument
+*renderers* (Kick, Snare, HiHat, Timpani, …) live in
+``utils/instruments/drums.py``. The two are distinct by design: this file
+imports the registry of renderers and sequences them into a bar grid.
 """
 
 from __future__ import annotations

@@ -20,6 +20,7 @@ from googleapiclient.http import MediaFileUpload
 
 from utils import ffmpeg_helpers
 from utils.channel_config import active_channel
+from utils.chapter_markers import prepend_chapters
 from utils.content_funnel import append_related_video_cta, record_funnel_candidate
 from utils.log_config import configure_logging, log_exception_to_file
 from utils.notifier import send_alert
@@ -284,13 +285,12 @@ def upload_video(
 
 
 
-def _upload_video_inner(
-    language: str = "en",
-    privacy: str = "public",
-    prefix: str = "",
-    publish_at: str | None = None,
-    publish_after_check: bool = False,
-) -> str | None:
+def _resolve_upload_candidate(prefix: str) -> tuple[Path, dict] | None:
+    """Find the latest video+meta pair and run pre-upload validations.
+
+    Returns ``(video_path, meta)`` or ``None`` if no candidate is viable
+    (missing, contract rejected, zero duration, quota exhausted).
+    """
     found = _latest_video_meta(prefix=prefix)
     if not found:
         log.error("Nenhum video com metadata encontrado em %s", OUTPUT_DIR)
@@ -330,19 +330,40 @@ def _upload_video_inner(
             ALERT_THRESHOLD,
         )
         return None
+    return video_path, meta
 
-    title = str(meta.get("title", active_channel.name))[:100]
+
+def _build_description(meta: dict) -> tuple[str, str | None]:
+    """Assemble the final description (CTA + chapter markers).
+
+    Returns ``(description, related_long_id)``.
+    """
     description, related_long_id = append_related_video_cta(str(meta.get("description", "")), meta)
-    description = description[:5000]
-    if related_long_id:
-        meta["related_long_video_id"] = related_long_id
-        meta["description"] = description
-    tags = _build_tags(meta.get("scene", ""), meta.get("hashtags"))
-    thumbnail = _meta_path(meta, "thumbnail")
+    profile = meta.get("generator_profile") or {}
+    timeline = profile.get("timeline") if isinstance(profile, dict) else None
+    if isinstance(timeline, list) and timeline:
+        from utils.liquid_wire_timeline import CreativeEvent
 
-    # A3: se o metadata tem "lang" (decidido no generate via
-    # pick_upload_language), usa como idioma do upload defaultAudioLanguage/
-    # defaultLanguage. O --language do CLI continua como override explicito.
+        events = [CreativeEvent(**item) for item in timeline if isinstance(item, dict)]
+        description = prepend_chapters(description, float(meta.get("duration", 0.0)), events)
+    return description[:5000], related_long_id
+
+
+def _build_upload_body(
+    meta: dict,
+    description: str,
+    language: str,
+    privacy: str,
+    publish_at: str | None,
+    publish_after_check: bool,
+) -> tuple[dict, str, str]:
+    """Build the ``videos().insert()`` body and resolve effective privacy.
+
+    Returns ``(body, effective_privacy, target_privacy)`` where
+    ``target_privacy`` is non-empty when a Content-ID-check flip is pending.
+    """
+    title = str(meta.get("title", active_channel.name))[:100]
+    tags = _build_tags(meta.get("scene", ""), meta.get("hashtags"))
     meta_lang = str(meta.get("lang", "")).strip()
     effective_language = meta_lang if meta_lang else language
 
@@ -375,31 +396,19 @@ def _upload_video_inner(
         },
         "status": status,
     }
+    return body, privacy, target_privacy
 
-    service = get_youtube_service()
-    request = service.videos().insert(
-        part=",".join(body.keys()),
-        body=body,
-        media_body=MediaFileUpload(str(video_path), chunksize=-1, resumable=True),
-    )
-    response = _retry_youtube_call(request.execute)
-    video_id = response["id"]
-    log.info("Video enviado: https://youtu.be/%s", video_id)
 
-    # A resposta do insert() ja inclui "status" (pedido no part= acima) - da
-    # pra conferir se o vídeo saiu mesmo com o privacyStatus pedido sem gastar
-    # outra chamada. Vídeo preso em "private"/"processing" quando devia ser
-    # público some do canal em silêncio; melhor logar alto do que descobrir
-    # dias depois.
-    actual_privacy = response.get("status", {}).get("privacyStatus")
-    if actual_privacy != privacy:
-        log.error(
-            "Video %s saiu com privacyStatus=%r, esperado %r - confira manualmente.",
-            video_id,
-            actual_privacy,
-            privacy,
-        )
-
+def _post_upload(
+    service,
+    video_id: str,
+    meta: dict,
+    thumbnail: Path | None,
+    publish_after_check: bool,
+    target_privacy: str,
+) -> None:
+    """Run all post-upload steps: tags/funnel, thumbnail, captions, playlists,
+    and the optional Content ID pre-check → public flip."""
     _record_video_tags(video_id, meta)
     record_funnel_candidate(video_id, meta)
 
@@ -432,6 +441,54 @@ def _upload_video_inner(
                 level="error",
             )
 
+
+def _upload_video_inner(
+    language: str = "en",
+    privacy: str = "public",
+    prefix: str = "",
+    publish_at: str | None = None,
+    publish_after_check: bool = False,
+) -> str | None:
+    candidate = _resolve_upload_candidate(prefix)
+    if candidate is None:
+        return None
+    video_path, meta = candidate
+
+    description, related_long_id = _build_description(meta)
+    if related_long_id:
+        meta["related_long_video_id"] = related_long_id
+        meta["description"] = description
+
+    body, effective_privacy, target_privacy = _build_upload_body(
+        meta, description, language, privacy, publish_at, publish_after_check
+    )
+    thumbnail = _meta_path(meta, "thumbnail")
+
+    service = get_youtube_service()
+    request = service.videos().insert(
+        part=",".join(body.keys()),
+        body=body,
+        media_body=MediaFileUpload(str(video_path), chunksize=-1, resumable=True),
+    )
+    response = _retry_youtube_call(request.execute)
+    video_id = response["id"]
+    log.info("Video enviado: https://youtu.be/%s", video_id)
+
+    # A resposta do insert() ja inclui "status" (pedido no part= acima) - da
+    # pra conferir se o vídeo saiu mesmo com o privacyStatus pedido sem gastar
+    # outra chamada. Vídeo preso em "private"/"processing" quando devia ser
+    # público some do canal em silêncio; melhor logar alto do que descobrir
+    # dias depois.
+    actual_privacy = response.get("status", {}).get("privacyStatus")
+    if actual_privacy != effective_privacy:
+        log.error(
+            "Video %s saiu com privacyStatus=%r, esperado %r - confira manualmente.",
+            video_id,
+            actual_privacy,
+            effective_privacy,
+        )
+
+    _post_upload(service, video_id, meta, thumbnail, publish_after_check, target_privacy)
     return video_id
 
 

@@ -24,6 +24,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import tempfile
 import threading
 from datetime import UTC, datetime
 from pathlib import Path
@@ -137,16 +138,47 @@ def _load(file: Path | None = None) -> dict:
         if path.exists():
             value = json.loads(path.read_text(encoding="utf-8"))
             return _migrate_legacy_upload_costs(value) if isinstance(value, dict) else {}
-    except (OSError, json.JSONDecodeError):
-        log.warning("Falha ao ler %s; recomecando contagem do zero.", path)
+    except (OSError, json.JSONDecodeError) as exc:
+        # A corrupt quota file silently zeroes the day's count, which is the
+        # dangerous direction (under-count -> exceed 10k with no alert).
+        # Preserve the corrupt file for diagnosis and alert loudly.
+        log.warning("Falha ao ler %s (%s); recomecando contagem do zero.", path, exc)
+        try:
+            if path.exists():
+                corrupt = path.with_suffix(f".corrupt-{datetime.now(UTC).strftime('%Y%m%d%H%M%S')}.json")
+                path.rename(corrupt)
+                log.warning("Arquivo de quota corrompido preservado em %s", corrupt)
+                notifier.send_alert(
+                    f"quota_usage.json corrompido em {path} — contagem resetada. "
+                    f"Backup salvo em {corrupt}.",
+                    level="warning",
+                )
+        except Exception:
+            pass
     return {}
+
+
+def _atomic_write(path: Path, data: dict) -> None:
+    """Write JSON atomically: temp file in same dir, then os.replace.
+
+    Prevents truncated/empty files if the process is killed mid-write (common
+    in CI when a job is cancelled). os.replace is atomic on POSIX and Windows.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(dir=str(path.parent), prefix=".quota_", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(json.dumps(data, ensure_ascii=False, indent=2))
+        os.replace(tmp, path)
+    except Exception:
+        Path(tmp).unlink(missing_ok=True)
+        raise
 
 
 def _save(data: dict, file: Path | None = None) -> None:
     path = file if file is not None else QUOTA_FILE
-    path.parent.mkdir(parents=True, exist_ok=True)
     with state_lock(path):
-        path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        _atomic_write(path, data)
 
 
 def record_usage(resource: str, method: str, units: int | None = None, *, file: Path | None = None) -> int:
