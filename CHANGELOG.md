@@ -9,6 +9,48 @@ file captures human-curated highlights between releases.
 
 ## [Unreleased]
 
+### Added — Engine 4.0: Massive expansion of music and video engines
+
+**Music engine — 68 instruments (from 31), 32 genres (from 12):**
+- **5 new DSP engines**: FM multi-operator (DX7-style 6-op with algorithms
+  and feedback), wavetable synthesis with morphing, granular synthesis (cloud
+  grains, freeze, time-stretch), Karplus-Strong/waveguide physical modeling,
+  6 extra effects (flanger, ring mod, tremolo, vibrato, pitch shifter,
+  harmonizer).
+- **39 new instruments**: 10 winds (clarinet, oboe, sax, trumpet, trombone,
+  harmonica, accordion, shakuhachi, ocarina, panpipes), 7 strings with
+  physical modeling (violin, cello, harp, koto, banjo, mandolin, ukulele),
+  6 advanced synths (vocoder, wavetable, FM, granular pad, supersaw stereo,
+  shimmer pad), 16 percussion (tambourine, conga, bongo, cowbell, shaker,
+  woodblock, clave, agogo, rimshot, sidestick, china, splash, surdo, caixa,
+  cuica, tamborim).
+- **20 new genres**: techno, trance, dubstep, dnb, metal, country, folk,
+  pop, soul, disco, salsa, bossa_nova, samba, afrobeat, flamenco, gamelan,
+  vaporwave, chiptune, industrial, shoegaze.
+- **Extended composer**: 6-8 voices (motif, bass, pad following progression,
+  counter-melody, arpeggiator, ostinato, walking bass, gesture) with
+  phrase-level call-and-response and walking bass for jazz/groove genres.
+
+**Video engine — 42 visual families (from 22), cinematic post-processing:**
+- **Virtual camera**: 3D camera with position, FOV, Bezier paths, procedural
+  shake.
+- **Lighting system**: point/directional/spot lights, Phong shading,
+  Fresnel, ambient occlusion.
+- **20 new visual families**: Mobius, Klein bottle, Julia set, Sierpinski,
+  Voronoi sphere, Lissajous 3D, harmonograph, hyperbolic tiling, smoke
+  plume, fire flame, plasma field, lightning bolt, ink in water,
+  ferrofluid, caustics, DNA helix, aurora, accretion disk, gravitational
+  lens, Menger sponge.
+- **8 cinematic post-effects**: lens flare, god rays, halation, color
+  grading LUTs, anamorphic flare, film halation, optical aberrations, bokeh.
+- **Transitions**: crossfade, morph with correspondence, dissolve, wipe,
+  glitch, match cut, SceneTransition.
+- **Extended particle system**: emitters, lifetimes, 9 particle types
+  (embers, sparks, dust, smoke, rain, snow, bubbles, fireflies, debris),
+  trails, 3D projection.
+
+**Tests**: 2007 passed (from 1346), 87.31% coverage, ruff clean, mypy clean.
+
 ### Added — Engine 3.0: "Best in class" upgrade
 - **DSP performance**: biquad and ladder filters now use scipy.signal.lfilter
   for vectorized C-speed processing (50-100x faster than per-sample Python
