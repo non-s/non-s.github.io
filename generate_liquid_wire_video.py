@@ -25,6 +25,9 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
+from utils.ai_composer import ai_compose as ai_compose_music
+from utils.ai_director import ai_direct as ai_direct_narrative
+from utils.ai_evolution import apply_evolution_to_profile
 from utils.ai_helper import ai_text
 from utils.audio_mix import BUS_NAMES as MIX_BUS_NAMES
 from utils.audio_mix import Mixer
@@ -1667,17 +1670,30 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     stem = f"liquid_wire_{preset}_{datetime.now(UTC).strftime('%Y%m%d_%H%M%S')}"
     frame_count = max(1, int(duration * FPS))
     profile = _reserve_profile(preset, seed)
-    events = build_timeline(int(profile["seed"]), duration, profile["music"])
+    # AI Evolution: adjust profile based on learned aesthetic weights.
+    rng = np.random.default_rng(int(profile["seed"]))
+    profile = apply_evolution_to_profile(profile, rng)
+    # AI Director: plan narrative arc via Gemini (falls back to procedural timeline).
+    ai_events, ai_plan = ai_direct_narrative(
+        int(profile["seed"]), duration,
+        str(profile.get("genre", "lofi_ambient")), profile["family"],
+    )
+    if ai_events:
+        events = ai_events
+        log.info("Using AI Director narrative plan (%d events)", len(events))
+    else:
+        events = build_timeline(int(profile["seed"]), duration, profile["music"])
     genre_name = str(profile.get("genre") or "lofi_ambient")
     if genre_name == "lofi_ambient":
         composition = build_composition(int(profile["seed"]), duration, profile["music"], events)
     else:
-        composition = build_composition_for_genre(
-            int(profile["seed"]), duration, get_genre(genre_name)
-        )
-    profile["engine_version"] = "3.0"
+        # AI Composer: Gemini generates musical structure, motor renders it.
+        composition = ai_compose_music(int(profile["seed"]), duration, get_genre(genre_name))
+    profile["engine_version"] = "4.0"
     profile["timeline"] = [event.to_dict() for event in events]
     profile["composition"] = composition.to_dict()
+    if ai_plan:
+        profile["ai_plan"] = ai_plan
     # Carry the supersampled render size in the profile for the worker.
     profile["_render_w"] = render_w
     profile["_render_h"] = render_h
