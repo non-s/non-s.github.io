@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import logging
 import math
-import os
 from pathlib import Path
 from typing import Any
 
@@ -201,7 +200,9 @@ class WebGLRenderer:
         self._page = self._browser.new_page(viewport={"width": self.width, "height": self.height})
         assert self._page is not None
         html = self._build_html()
-        self._html_path = Path(os.environ.get("TEMP", "/tmp")) / "liquid_wire_webgl.html"
+        import tempfile
+
+        self._html_path = Path(tempfile.gettempdir()) / "liquid_wire_webgl.html"
         self._html_path.write_text(html, encoding="utf-8")
         self._page.goto(f"file://{self._html_path}")
         self._page.wait_for_function("document.title === 'READY' || document.title.startsWith('ERROR')", timeout=15000)
