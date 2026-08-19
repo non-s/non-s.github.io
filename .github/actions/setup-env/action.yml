@@ -36,10 +36,14 @@ runs:
     - name: "Instalar dependencias"
       run: |
         pip install --no-cache-dir --upgrade pip
-        # O lockfile inclui runtime e ferramentas de desenvolvimento. Usar
-        # sempre a mesma resolução evita que um cron instale versões
-        # diferentes daquelas validadas na CI.
         pip install --no-cache-dir -r requirements.lock
+      shell: bash
+    - name: "Instalar Chromium para WebGL (opcional)"
+      # Playwright Chromium para o path de render WebGL (ray-marching/PBR).
+      # Silencioso se falhar — o path CPU (numpy/PIL) e o default.
+      run: |
+        python -m playwright install chromium 2>/dev/null || true
+        python -m playwright install-deps chromium 2>/dev/null || true
       shell: bash
     - name: "Garantir PYTHONPATH na raiz do repo"
       run: echo "PYTHONPATH=${{ github.workspace }}" >> "$GITHUB_ENV"
