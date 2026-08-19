@@ -1446,8 +1446,8 @@ def _synth_audio_universal(
 
     left, right = _apply_master_processing(stereo[0], stereo[1], mix_config, events, duration, sr)
     # LUFS mastering: EBU R128 loudness normalization + true-peak limiting + dither.
-    mastered = lufs_master(np.stack([left, right]), sr, target_lufs=-16.0, true_peak_db=-1.5)
-    _write_stereo_wav(path, mastered[0], mastered[1], sr)
+    mastered = lufs_master(np.column_stack((left, right)), sr, target_lufs=-16.0, true_peak_db=-1.5)
+    _write_stereo_wav(path, mastered[:, 0], mastered[:, 1], sr)
 
 
 def _synth_audio(

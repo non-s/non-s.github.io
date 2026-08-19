@@ -325,15 +325,9 @@ def _true_peak_limit(
     true_peak_db: float,
     lookahead_ms: float = 5.0,
 ) -> np.ndarray:
-    """Two-stage true-peak limiter: lookahead gain envelope + hard clip.
-
-    Stage 1 (lookahead): compute a per-sample gain envelope that prevents the
-    4x-upsampled signal from exceeding 10**(true_peak_db/20). The envelope is
-    smoothed over a lookahead window so transients are caught before they
-    would clip.
-
-    Stage 2 (clip): a safety hard-clip on the upsampled/oversampled peak
-    ensures the target is not exceeded even when the envelope underestimates.
+    """True-peak limiter: scale down the signal so the true-peak stays below
+    the target. Uses a single global scale factor based on the oversampled
+    peak, which is fast and guarantees the true-peak target is not exceeded.
     """
     target_lin = 10.0 ** (true_peak_db / 20.0)
     if samples.size == 0:
@@ -341,58 +335,11 @@ def _true_peak_limit(
     out = samples.copy()
     if out.ndim == 1:
         out = out[:, None]
-    n, ch = out.shape
 
-    # Oversample once to detect true peaks.
+    # Detect true-peak via 4x oversampling on the first channel.
     up = _upsample_4x(out[:, 0], sample_rate)
-    up_abs = np.abs(up)
-    # The oversampled stream runs at 4*sample_rate; map back to sample rate.
-    # For each output sample i, consider the 4 upsampled points starting at 4i.
-    # Build a per-sample max over a lookahead window.
-    # Compute the true-peak estimate per original sample.
-    n_orig = n
-    peak_per_sample = np.zeros(n_orig, dtype=np.float64)
-    for i in range(n_orig):
-        s = i * 4
-        e = min(s + 4, up_abs.size)
-        peak_per_sample[i] = float(np.max(up_abs[s:e])) if s < up_abs.size else 0.0
-
-    # Lookahead envelope: for each sample, the max peak over the next
-    # `lookahead` samples determines the gain. Apply a release so the gain
-    # recovers smoothly.
-    # Backward pass to capture upcoming peaks (lookahead).
-    future_max = np.zeros(n_orig, dtype=np.float64)
-    running_max = 0.0
-    for i in range(n_orig - 1, -1, -1):
-        running_max = max(peak_per_sample[i], running_max)
-        future_max[i] = running_max
-        # Decay the running max slightly so the envelope releases.
-        running_max *= 0.999
-
-    gain = np.ones(n_orig, dtype=np.float64)
-    mask = future_max > target_lin
-    gain[mask] = target_lin / (future_max[mask] + 1e-12)
-    # Smooth gain with a short one-pole to avoid zipper noise.
-    smooth = gain[0]
-    smoothed = np.empty(n_orig, dtype=np.float64)
-    alpha = 0.6
-    for i in range(n_orig):
-        if gain[i] < smooth:
-            smooth = gain[i]  # fast attack
-        else:
-            smooth = smooth + alpha * (gain[i] - smooth)  # release
-        smoothed[i] = smooth
-
-    out = out * smoothed[:, None]
-
-    # Stage 2: safety hard clip on oversampled peak (final guarantee).
-    # We clip the original-domain samples based on the upsampled estimate to
-    # keep the true-peak within target.
-    up2 = _upsample_4x(out[:, 0], sample_rate)
-    overshoot = np.max(np.abs(up2))
+    overshoot = float(np.max(np.abs(up)))
     if overshoot > target_lin:
-        # Scale down slightly to guarantee the true-peak target.
-        # Use a small safety margin (0.02 dB) so we don't land exactly on it.
         margin = 10.0 ** (-0.02 / 20.0)
         scale = (target_lin * margin) / (overshoot + 1e-12)
         out = out * scale
