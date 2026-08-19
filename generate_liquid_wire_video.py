@@ -58,12 +58,14 @@ from utils.liquid_wire_composer import (
 )
 from utils.liquid_wire_quality import QualityGateError, QualityReport, assess_video
 from utils.liquid_wire_timeline import CreativeEvent, build_timeline, event_envelope, visual_state
+from utils.lufs_mastering import master_audio as lufs_master
 from utils.organic_growth import OrganicGrowth, render_branches
 from utils.particle_system import ParticleSystem
 from utils.particle_system import render as render_particles
 from utils.paths import data_dir
 from utils.post_process import apply_all as apply_post
 from utils.state_lock import state_lock
+from utils.trending_topics import enrich_metadata as enrich_with_trends
 
 log = logging.getLogger(__name__)
 
@@ -1443,7 +1445,9 @@ def _synth_audio_universal(
         stereo = stereo[:, :n]
 
     left, right = _apply_master_processing(stereo[0], stereo[1], mix_config, events, duration, sr)
-    _write_stereo_wav(path, left, right, sr)
+    # LUFS mastering: EBU R128 loudness normalization + true-peak limiting + dither.
+    mastered = lufs_master(np.stack([left, right]), sr, target_lufs=-16.0, true_peak_db=-1.5)
+    _write_stereo_wav(path, mastered[0], mastered[1], sr)
 
 
 def _synth_audio(
@@ -1721,6 +1725,8 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     Image.open(thumb_frame).save(thumbnail, quality=94)
     meta = _metadata(output, thumbnail, duration, preset, profile)
     meta["quality_report"] = quality.to_dict()
+    # Trending topics: enrich title/description with trending inspiration.
+    meta = enrich_with_trends(meta, profile.get("family", "orb"), str(profile.get("genre", "lofi_ambient")), preset)
     output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     audio_path.unlink(missing_ok=True)
     shutil.rmtree(FRAME_DIR, ignore_errors=True)

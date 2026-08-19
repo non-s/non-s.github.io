@@ -1,0 +1,43 @@
+name: "Liquid Wire - Thumbnail Optimization"
+
+on:
+  schedule:
+    # Daily at 03:17 UTC (off-peak) — check and swap thumbnails.
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  optimize:
+    name: "A/B test thumbnail swaps"
+    if: ${{ vars.LIQUID_WIRE_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: "Setup"
+        uses: ./.github/actions/setup-env
+        with:
+          ffmpeg: "false"
+      - name: "Restaurar token e estado"
+        uses: ./.github/actions/restore-token-and-cache
+        with:
+          youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Validate production credentials"
+        run: |
+          if [ ! -s youtube_token.json ]; then
+            echo "::error::YOUTUBE_TOKEN is missing or empty"
+            exit 1
+          fi
+      - name: "Run thumbnail optimization"
+        run: python scripts/optimize_thumbnails.py
+      - name: "Apagar token"
+        if: always()
+        run: rm -f youtube_token.json

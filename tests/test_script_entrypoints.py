@@ -138,10 +138,15 @@ def test_respond_comments_success_and_failure(monkeypatch):
     assert pipeline.call_args.kwargs["success"] is False
 
 
+_VALID_TOKEN_JSON = (
+    '{"token":"new","refresh_token":"rt","client_id":"cid","client_secret":"cs"}'
+)
+
+
 def _fake_credentials(*, refresh_token: str | None = "refresh") -> MagicMock:
     credentials = MagicMock()
     credentials.refresh_token = refresh_token
-    credentials.to_json.return_value = '{"token":"new"}'
+    credentials.to_json.return_value = _VALID_TOKEN_JSON
     return credentials
 
 
@@ -157,7 +162,7 @@ def test_refresh_oauth_success(monkeypatch, tmp_path):
     assert refresh_oauth_token.refresh_and_persist(token, "YOUTUBE_TOKEN", "liquid_wire") == 0
     credentials.refresh.assert_called_once()
     saved.assert_called_once_with(credentials, str(token))
-    secret_set.assert_called_once_with("YOUTUBE_TOKEN", '{"token":"new"}', "test-pat")
+    secret_set.assert_called_once_with("YOUTUBE_TOKEN", _VALID_TOKEN_JSON, "test-pat")
 
 
 def test_refresh_oauth_failure_paths(monkeypatch, tmp_path):
@@ -174,6 +179,30 @@ def test_refresh_oauth_failure_paths(monkeypatch, tmp_path):
     monkeypatch.setattr(refresh_oauth_token, "_open_issue_token_expired", opened := MagicMock())
     assert refresh_oauth_token.refresh_and_persist(token, "YOUTUBE_TOKEN", "liquid_wire") == 1
     opened.assert_called_once()
+
+
+def test_refresh_oauth_rejects_invalid_token_json(monkeypatch, tmp_path):
+    """to_json() retornando JSON invalido/vazio NAO deve sobrescrever o secret."""
+    token = tmp_path / "youtube_token.json"
+    token.write_text("{}")
+    credentials = _fake_credentials()
+    monkeypatch.setattr(refresh_oauth_token, "_load_token", lambda: credentials)
+    monkeypatch.setattr(refresh_oauth_token, "_save_token", MagicMock())
+    monkeypatch.setattr(refresh_oauth_token, "_open_issue_token_expired", opened := MagicMock())
+    monkeypatch.setenv("GH_PAT", "test-pat")
+
+    for bad_json in ("", "   ", "{", "not-json", "{}", '{"token":"x"}'):
+        credentials.to_json.return_value = bad_json
+        monkeypatch.setattr(
+            refresh_oauth_token, "_gh_secret_set", MagicMock(return_value=0)
+        )
+        assert refresh_oauth_token.refresh_and_persist(token, "YOUTUBE_TOKEN", "liquid_wire") == 1
+        opened.assert_called()
+
+    opened.reset_mock()
+    for bad_json in ("", "   ", "null", "[]", "123", '{"token":"x"}'):
+        assert refresh_oauth_token._validate_token_json(bad_json) is False
+    assert refresh_oauth_token._validate_token_json(_VALID_TOKEN_JSON) is True
 
 
 def test_refresh_oauth_requires_pat_and_handles_cli_failure(monkeypatch, tmp_path):
@@ -209,9 +238,8 @@ def test_gh_secret_set_sends_secret_through_stdin(monkeypatch):
     assert refresh_oauth_token._gh_secret_set("YOUTUBE_TOKEN", "sensitive-json", "github-pat") == 0
     cmd = run.call_args.args[0]
     assert cmd[:4] == ["gh", "secret", "set", "YOUTUBE_TOKEN"]
-    # The secret value must be piped via stdin (--body -), never on argv.
-    assert "--body" in cmd
-    body_idx = cmd.index("--body") + 1
-    assert cmd[body_idx] == "-"
+    # The secret value must be piped via stdin, never on argv: the command
+    # has no --body flag, so gh reads the value from standard input.
+    assert "--body" not in cmd
     assert run.call_args.kwargs["input"] == "sensitive-json"
     assert run.call_args.kwargs["env"]["GH_TOKEN"] == "github-pat"

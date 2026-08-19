@@ -1,0 +1,86 @@
+name: "Liquid Wire - Live Broadcast"
+
+on:
+  workflow_dispatch:
+    inputs:
+      duration_minutes:
+        description: "Live duration in minutes (5-330)"
+        required: false
+        default: "30"
+      privacy:
+        description: "Broadcast privacy"
+        required: false
+        default: "public"
+        type: choice
+        options: ["public", "unlisted", "private"]
+  schedule:
+    # Live semanal aos sabados as 16:00 UTC (13:00 BRT).
+    - cron: "0 16 * * 6"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: liquid-wire-live
+  cancel-in-progress: false
+
+jobs:
+  broadcast:
+    name: "Stream Liquid Wire to YouTube Live"
+    if: ${{ vars.LIQUID_WIRE_ENABLED == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      YOUTUBE_CHANNEL: liquid_wire
+      YOUTUBE_PRIVACY: ${{ inputs.privacy || 'public' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      LIQUID_WIRE_SS_FACTOR: "1"
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: "Setup"
+        uses: ./.github/actions/setup-env
+      - name: "Restaurar token e estado"
+        uses: ./.github/actions/restore-token-and-cache
+        with:
+          youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Validate production credentials"
+        run: |
+          if [ ! -s youtube_token.json ]; then
+            echo "::error::YOUTUBE_TOKEN is missing or empty"
+            exit 1
+          fi
+      - name: "Healthcheck"
+        run: python scripts/healthcheck.py
+      - name: "Live readiness pre-flight"
+        run: python scripts/check_live_readiness.py
+      - name: "Generate source video"
+        run: |
+          python generate_liquid_wire_video.py --preset long --duration 600
+      - name: "Broadcast to YouTube Live"
+        run: |
+          video=$(ls -t _videos/liquid_wire_long_*.mp4 2>/dev/null | head -1)
+          if [ -z "$video" ]; then
+            echo "::error::No source video found in _videos/"
+            exit 1
+          fi
+          python scripts/run_liquid_wire_live.py \
+            --video "$video" \
+            --duration-minutes "${{ inputs.duration_minutes || '30' }}" \
+            --privacy "$YOUTUBE_PRIVACY"
+      - name: "Upload live evidence"
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: liquid-wire-live-${{ github.run_id }}
+          path: |
+            _data/live_readiness.json
+            _videos/liquid_wire_long_*.json
+            _videos/last_error.txt
+          if-no-files-found: ignore
+          retention-days: 30
+      - name: "Apagar token"
+        if: always()
+        run: rm -f youtube_token.json

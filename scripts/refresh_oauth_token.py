@@ -1,13 +1,13 @@
 ﻿"""
-scripts/refresh_oauth_token.py â€” renova o token OAuth do YouTube em CI.
+scripts/refresh_oauth_token.py Ã¢ renovacao do token OAuth do YouTube em CI.
 Le o token OAuth de youtube_token.json (escrito a partir do secret
 YOUTUBE_TOKEN por .github/actions/restore-token-and-cache), tenta renovar
 o access_token via Credentials.refresh(Request()), e se o refresh
-funcionar escreve o novo token de volta no secret YOUTUBE_TOKEN usando
+funcar escreve o novo token de volta no secret YOUTUBE_TOKEN usando
 `gh secret set` (requer um Personal Access Token com scope `repo` no
 secret GH_PAT).
 
-Se o refresh falhar (refresh_token expirado â€” 90 dias sem uso, padrao do
+Se o refresh falhar (refresh_token expirado Ã¢ 90 dias sem uso, padrao do
 Google), abre uma issue no repositorio pedindo para rodar
 `python utils/youtube_oauth.py` localmente.
 
@@ -19,6 +19,7 @@ secret GH_PAT configurado.
 
 from __future__ import annotations
 
+import json
 import os
 import subprocess
 import sys
@@ -33,6 +34,28 @@ from utils.channel_config import CHANNELS
 from utils.youtube_oauth import _load_token, _save_token
 
 
+def _validate_token_json(token_json: str) -> bool:
+    """Valida que o JSON do token e parseavel e contem os campos essenciais.
+
+    Evita que um token corrompido/vazio (ex.: ``creds.to_json()`` retornando
+    string vazia apos um refresh aparentemente bem-sucedido) seja gravado
+    no secret, o que quebraria todas as runs subsequentes que dependem dele.
+    """
+    if not token_json or not token_json.strip():
+        return False
+    try:
+        data = json.loads(token_json)
+    except (json.JSONDecodeError, TypeError):
+        return False
+    if not isinstance(data, dict):
+        return False
+    if not data.get("refresh_token"):
+        return False
+    if not data.get("client_id") or not data.get("client_secret"):
+        return False
+    return True
+
+
 def refresh_and_persist(token_path: Path, secret_name: str, channel_slug: str) -> int:
     """Tenta renovar o token; se conseguir, atualiza o secret correspondente.
 
@@ -44,7 +67,7 @@ def refresh_and_persist(token_path: Path, secret_name: str, channel_slug: str) -
         print(f"::error::Nenhum token OAuth encontrado ({secret_name} nao setado?).")
         return 2
     if not creds.refresh_token:
-        print("::error::Token sem refresh_token â€” nao e possivel renovar automaticamente.")
+        print("::error::Token sem refresh_token Ã¢ nao e possivel renovar automaticamente.")
         return 2
 
     try:
@@ -60,11 +83,21 @@ def refresh_and_persist(token_path: Path, secret_name: str, channel_slug: str) -
         print(f"::warning::Token renovado mas falhou ao salvar em disco: {exc}")
 
     new_token_json = creds.to_json()
+
+    if not _validate_token_json(new_token_json):
+        print("::error::Token renovado mas JSON invalido/vazio - secret NAO atualizado.")
+        print(f"::error::to_json() retornou {len(new_token_json)} chars. Mantendo secret anterior.")
+        _open_issue_token_expired(
+            f"creds.to_json() retornou JSON invalido apos refresh ({len(new_token_json)} chars).",
+            channel_slug,
+        )
+        return 1
+
     gh_pat = os.environ.get("GH_PAT")
     if not gh_pat:
         print("::error::GH_PAT ausente: nao e possivel atualizar o secret automaticamente.")
         print("::error::Configure um Personal Access Token com scope 'repo' como secret GH_PAT.")
-        _open_issue_token_expired("GH_PAT ausente â€” configure o secret GH_PAT.", channel_slug)
+        _open_issue_token_expired("GH_PAT ausente Ã¢ configure o secret GH_PAT.", channel_slug)
         return 1
 
     rc = _gh_secret_set(secret_name, new_token_json, gh_pat)
@@ -79,12 +112,12 @@ def refresh_and_persist(token_path: Path, secret_name: str, channel_slug: str) -
 def _gh_secret_set(name: str, value: str, gh_pat: str) -> int:
     """Atualiza um secret do repositorio via `gh secret set`.
 
-    O valor do secret e enviado ao `gh` por **stdin** (``--body -``), nunca
+    O valor do secret e enviado ao `gh` por **stdin** (sem ``--body``), nunca
     pela linha de comando. Argumentos na linha de comando sao visiveis a
     outros processos do runner via ``/proc`` e em listagens de processo,
     o que vazaria o token OAuth.
     """
-    cmd = ["gh", "secret", "set", name, "--body", "-"]
+    cmd = ["gh", "secret", "set", name]
     env = {**os.environ, "GH_TOKEN": gh_pat}
     proc = subprocess.run(cmd, env=env, input=value, capture_output=True, text=True)
     if proc.returncode != 0:
