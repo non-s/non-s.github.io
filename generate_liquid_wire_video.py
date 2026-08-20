@@ -67,6 +67,7 @@ from utils.liquid_wire_composer import (
 )
 from utils.liquid_wire_quality import QualityGateError, QualityReport, assess_video
 from utils.liquid_wire_timeline import CreativeEvent, build_timeline, event_envelope, visual_state
+from utils.living_scene import build_scene, identify_scene, orchestrate_scene, scene_distance, scene_music
 from utils.lufs_mastering import master_audio as lufs_master
 from utils.metadata_audit import audit_description, audit_title
 from utils.organic_growth import OrganicGrowth, render_branches
@@ -571,6 +572,8 @@ def _profile(seed: int, preset: str) -> dict:
             },
         },
     }
+    profile["scene"] = build_scene(seed, preset, OBJECT_FAMILIES, family)
+    profile["scene_music"] = scene_music(profile)
     return couple_geometry_to_audio(profile)
 
 
@@ -591,6 +594,10 @@ def _load_history() -> list[dict]:
 def _materially_distinct(profile: dict, history: list[dict]) -> bool:
     """Reject recent profiles that would read as the same work at a glance."""
     recent = [item for item in history[-48:] if isinstance(item, dict)]
+    if any(item.get("architecture_id") == profile.get("scene", {}).get("architecture_id") for item in recent[-12:]):
+        return False
+    if any(scene_distance(profile.get("scene", {}), item.get("scene", {})) < 0.16 for item in recent[-24:]):
+        return False
     if any(item.get("family") == profile["family"] for item in recent[-2:]):
         return False
     # Consecutive works must not reuse the same musical language.  The full
@@ -647,6 +654,8 @@ def _reserve_profile(preset: str, requested_seed: int | None) -> dict:
                     "signature": signature,
                     "family": profile["family"],
                     "genre": profile["genre"],
+                    "architecture_id": profile["scene"]["architecture_id"],
+                    "scene": profile["scene"],
                     "preset": preset,
                     "creative_vector": {
                         "hue": profile["palette"]["base_hue"],
@@ -1019,7 +1028,9 @@ def _draw_frame(
 ) -> Path:
     family = str(profile["family"])
     try:
-        if family in SPECIAL_FAMILIES:
+        if profile.get("scene"):
+            frame_path = _draw_frame_mesh(index, frame_count, profile, events, frame_dir)
+        elif family in SPECIAL_FAMILIES:
             frame_path = _draw_frame_special(index, frame_count, profile, events, frame_dir)
         else:
             frame_path = _draw_frame_mesh(index, frame_count, profile, events, frame_dir)
@@ -1046,47 +1057,80 @@ def _draw_frame_mesh(
     index: int, frame_count: int, profile: dict, events: list[CreativeEvent], frame_dir: Path
 ) -> Path:
     t = index / FPS
-    sx, sy = _surface(t, profile, events)
     canvas = Image.new("RGBA", (WIDTH, HEIGHT), "#000000ff")
     glow = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 0))
     lines = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 0))
     glow_draw = ImageDraw.Draw(glow)
     draw = ImageDraw.Draw(lines)
-    rows, cols = sx.shape
-
-    palette = profile["palette"]
-    material = profile["material"]
     state = visual_state(t, events)
-    visible = _rupture_visibility(cols, state)
-    for i in range(rows):
-        pts = [(float(sx[i, j]), float(sy[i, j])) for j in range(cols)]
-        color = _rgb(i / rows, t, palette)[:3] + (int(material["opacity"]),)
-        _draw_visible_polyline(draw, pts, visible, color, 1)
-        if i % int(material["glow_stride"]) == 0:
-            _draw_visible_polyline(glow_draw, pts, visible, color[:3] + (55,), 4)
-
-    for j in range(0, cols, int(profile["line_step"])):
-        if not visible[j]:
-            continue
-        pts = [(float(sx[i, j]), float(sy[i, j])) for i in range(rows)]
-        draw.line(pts, fill=_rgb(j / cols + 0.4, t, palette)[:3] + (95,), width=1, joint="curve")
-
-    for strand in range(int(profile["strand_count"])):
-        strand_count = int(profile["strand_count"])
-        col = int((strand * cols / strand_count + index * 0.07) % cols)
-        if not visible[col]:
-            continue
-        wobble = 14 * np.sin(np.linspace(0, 2 * np.pi, rows) + t * 0.6 + strand)
-        pts = [(float(sx[i, col]), float(sy[i, col] + wobble[i])) for i in range(rows)]
-        draw.line(
-            pts,
-            fill=_rgb(strand / strand_count + 0.72, t, palette)[:3] + (115,),
-            width=int(material["strand_width"]),
-            joint="curve",
+    raw_scene = profile.get("scene")
+    scene: dict = raw_scene if isinstance(raw_scene, dict) else {}
+    organisms = scene.get("organisms") if isinstance(scene.get("organisms"), list) else []
+    if not organisms:
+        organisms = [{"id": "o0", "family": profile["family"], "seed": profile["seed"], "x": 0,
+                      "y": 0, "scale": 1, "phase": 0, "orbit_rate": 0, "pulse_rate": 0,
+                      "hue_offset": 0, "depth": 0}]
+    centers: dict[str, tuple[float, float]] = {}
+    ordered = sorted(organisms, key=lambda item: float(item.get("depth", 0)))
+    mesh_theta = max(38, int(78 / math.sqrt(max(1.0, len(ordered) / 2))))
+    mesh_phi = max(20, mesh_theta // 2)
+    for organism_index, organism in enumerate(ordered):
+        child = dict(profile)
+        family = str(organism.get("family"))
+        child["family"] = "orb" if family in SPECIAL_FAMILIES else family
+        child["seed"] = int(organism.get("seed", profile["seed"]))
+        child["phase"] = float(profile["phase"]) + float(organism.get("phase", 0))
+        palette = dict(profile["palette"])
+        palette["base_hue"] = (float(palette["base_hue"]) + float(organism.get("hue_offset", 0))) % 1.0
+        child["palette"] = palette
+        sx, sy = _surface(
+            t + float(organism.get("phase", 0)), child, events, n_theta=mesh_theta, n_phi=mesh_phi
         )
-        glow_draw.line(pts, fill=_rgb(strand / strand_count + 0.72, t, palette)[:3] + (50,), width=6, joint="curve")
+        morph_family = str(organism.get("morph_family", child["family"]))
+        # Two simultaneous topology transitions are visually rich while keeping
+        # long-form and live render budgets predictable.
+        if organism_index < 2 and morph_family not in SPECIAL_FAMILIES and morph_family != child["family"]:
+            morph = dict(child)
+            morph["family"] = morph_family
+            mx, my = _surface(
+                t - float(organism.get("phase", 0)), morph, events, n_theta=mesh_theta, n_phi=mesh_phi
+            )
+            amount = float(organism.get("topology_mix", .5))
+            amount = float(np.clip(amount + .12 * math.sin(t * float(organism.get("pulse_rate", 0))), 0, 1))
+            sx, sy = sx * (1 - amount) + mx * amount, sy * (1 - amount) + my * amount
+        angle = float(organism.get("phase", 0)) + t * float(organism.get("orbit_rate", 0))
+        ox, oy = float(organism.get("x", 0)), float(organism.get("y", 0))
+        x = ox * math.cos(angle) - oy * math.sin(angle)
+        y = ox * math.sin(angle) + oy * math.cos(angle)
+        pulse = 1.0 + .08 * math.sin(t * float(organism.get("pulse_rate", 0)) + angle)
+        scale = float(organism.get("scale", 1)) * pulse
+        sx = WIDTH * (.5 + x) + (sx - WIDTH * .5) * scale
+        sy = HEIGHT * (.5 + y) + (sy - HEIGHT * .5) * scale
+        centers[str(organism.get("id"))] = (WIDTH * (.5 + x), HEIGHT * (.5 + y))
+        rows, cols = sx.shape
+        material = profile["material"]
+        visible = _rupture_visibility(cols, state)
+        for i in range(rows):
+            pts = [(float(sx[i, j]), float(sy[i, j])) for j in range(cols)]
+            color = _rgb(i / rows, t, palette)[:3] + (int(material["opacity"]),)
+            _draw_visible_polyline(draw, pts, visible, color, 1)
+            if i % int(material["glow_stride"]) == 0:
+                _draw_visible_polyline(glow_draw, pts, visible, color[:3] + (48,), 4)
+        for j in range(0, cols, max(2, int(profile["line_step"]))):
+            if visible[j]:
+                pts = [(float(sx[i, j]), float(sy[i, j])) for i in range(rows)]
+                draw.line(pts, fill=_rgb(j / cols + .4, t, palette)[:3] + (82,), width=1, joint="curve")
 
-    canvas.alpha_composite(glow.filter(ImageFilter.GaussianBlur(float(material["glow_radius"]))))
+    for relation in scene.get("relations", []):
+        source = centers.get(str(relation.get("source")))
+        target = centers.get(str(relation.get("target")))
+        if source and target:
+            strength = float(relation.get("strength", .5))
+            phase = float(relation.get("phase", 0))
+            alpha = int(20 + 45 * strength * (.5 + .5 * math.sin(t + phase)))
+            draw.line((source, target), fill=_rgb(phase / (2*np.pi), t, profile["palette"])[:3] + (alpha,), width=1)
+
+    canvas.alpha_composite(glow.filter(ImageFilter.GaussianBlur(float(profile["material"]["glow_radius"]))))
     canvas.alpha_composite(lines)
     out = frame_dir / f"frame_{index:05d}.png"
     canvas.convert("RGB").save(out, quality=92)
@@ -1737,14 +1781,17 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
             recent_rejection_counts(data_dir() / "rejection_memory.json"),
         )
     profile["candidate_selection"] = candidate_report
+    profile["scene"] = identify_scene(profile["scene"])
+    profile["scene_music"] = scene_music(profile)
     profile["puzzle"] = prepare_puzzle(
         int(profile["seed"]), len(catalog) + 1, enabled=autonomy.puzzles_allowed, observations=catalog
     ).to_dict()
     profile["autonomy_state"] = autonomy.to_dict()
     # AI Director: plan narrative arc via Gemini (falls back to procedural timeline).
+    scene_families = "+".join(str(o.get("family")) for o in profile["scene"]["organisms"])
     ai_events, ai_plan = ai_direct_narrative(
         int(profile["seed"]), duration,
-        str(profile.get("genre", "lofi_ambient")), profile["family"],
+        str(profile.get("genre", "lofi_ambient")), scene_families,
     )
     if ai_events:
         events = ai_events
@@ -1757,6 +1804,7 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     else:
         # AI Composer: Gemini generates musical structure, motor renders it.
         composition = ai_compose_music(int(profile["seed"]), duration, get_genre(genre_name))
+    composition = orchestrate_scene(composition, profile["scene_music"], duration)
     profile["engine_version"] = ENGINE_VERSION
     profile["strategy_version"] = STRATEGY_VERSION
     profile["timeline"] = [event.to_dict() for event in events]

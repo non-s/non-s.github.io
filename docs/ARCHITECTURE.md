@@ -126,3 +126,27 @@ Operational checks:
 Get-ScheduledTaskInfo -TaskName "Liquid Wire Hourly Watchdog"
 Get-Content "$env:LOCALAPPDATA\LiquidWire\scheduler.log" -Tail 20
 ```
+# Living Scene Engine (v5)
+
+The creative unit is a scene genome, not a single named object. Each seeded
+scene contains two to seven organisms, continuous spatial and temporal
+parameters, topology morph targets, roles, and explicit relationships such as
+orbit, braid, resonance, attraction, and fusion. Named geometry families are
+an alphabet; continuous combinations and trajectories form the creative space.
+
+The same scene graph drives both media:
+
+- the renderer composites all organisms, morphs their topologies over time,
+  animates independent cycles, and renders their relationships as forces;
+- the composer assigns organism-specific intervals, polymetric subdivisions,
+  timing offsets, and counterpoint voices;
+- long-term memory rejects recent architecture identities and low structural
+  distance, in addition to final visual and audio fingerprint checks;
+- evolution can inherit high-confidence scene genomes learned from YouTube
+  performance, then apply a bounded, auditable scene mutation;
+- Gemini receives the full family ensemble as narrative context, while the
+  deterministic schema and quality gates retain authority over publication.
+
+Resource bounds vary by format so combinatorial diversity does not compromise
+the live handoff or scheduled publishing SLA. Every scene remains reproducible
+from its seed and versioned genome, and every mutation remains inspectable.

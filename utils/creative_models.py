@@ -11,11 +11,11 @@ import json
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
-GENOME_VERSION = 2
+GENOME_VERSION = 3
 VISUAL_DNA_VERSION = 1
 AUDIO_DNA_VERSION = 1
-ENGINE_VERSION = "4.2"
-STRATEGY_VERSION = 2
+ENGINE_VERSION = "5.0"
+STRATEGY_VERSION = 3
 
 
 def _canonical_hash(payload: object) -> str:
@@ -36,6 +36,7 @@ class Genome:
     appearance: dict[str, Any]
     temporal: dict[str, Any]
     audio: dict[str, Any]
+    scene: dict[str, Any] = field(default_factory=dict)
     puzzle: dict[str, Any] = field(default_factory=lambda: {"enabled": False})
     parents: tuple[str, ...] = ()
     mutations: tuple[dict[str, Any], ...] = ()
@@ -79,6 +80,7 @@ class Genome:
                 "composition_mode": composition.get("mode"),
                 "composition_id": profile.get("audio_composition_id"),
             },
+            scene=profile.get("scene", {}),
             puzzle=profile.get("puzzle", {"enabled": False}),
             parents=tuple(str(value) for value in profile.get("parents", []) if value),
             mutations=tuple(value for value in profile.get("mutations", []) if isinstance(value, dict)),
@@ -93,6 +95,8 @@ class Genome:
         migrated = dict(payload)
         if version == 1:
             migrated.setdefault("strategy_version", 1)
+        if version < 3:
+            migrated.setdefault("scene", {})
             migrated["version"] = GENOME_VERSION
         migrated["parents"] = tuple(str(value) for value in migrated.get("parents", ()))
         migrated["mutations"] = tuple(
