@@ -73,6 +73,7 @@ from utils.pipeline_metrics import record_pipeline_run
 from utils.post_process import apply_all as apply_post
 from utils.publication_policy import evaluate_publication
 from utils.puzzle_engine import prepare_puzzle
+from utils.rejection_memory import record_rejection
 from utils.state_lock import state_lock
 from utils.trending_topics import enrich_metadata as enrich_with_trends
 from utils.visual_intelligence import analyze_visual_dna
@@ -1738,6 +1739,7 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
         # AI Composer: Gemini generates musical structure, motor renders it.
         composition = ai_compose_music(int(profile["seed"]), duration, get_genre(genre_name))
     profile["engine_version"] = ENGINE_VERSION
+    profile["strategy_version"] = 1
     profile["timeline"] = [event.to_dict() for event in events]
     profile["composition"] = composition.to_dict()
     if ai_plan:
@@ -1760,6 +1762,13 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     quality = assess_video(output, (width, height), events, _recent_quality_fingerprints(), min_score=min_score)
     _record_quality(profile, quality)
     if not quality.passed:
+        record_rejection(
+            data_dir() / "rejection_memory.json",
+            "quality_failure",
+            seed=int(profile["seed"]),
+            family=str(profile.get("family", "unknown")),
+            details={"score": quality.score, "issues": list(quality.issues)},
+        )
         output.unlink(missing_ok=True)
         audio_path.unlink(missing_ok=True)
         shutil.rmtree(FRAME_DIR, ignore_errors=True)
@@ -1792,7 +1801,8 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     meta["audio_dna"] = audio_dna.to_dict()
     meta["audio_dna_id"] = audio_dna.dna_id
     publication = evaluate_publication(
-        quality.to_dict(), visual_dna.to_dict(), audio_dna.to_dict(), puzzle=genome.puzzle
+        quality.to_dict(), visual_dna.to_dict(), audio_dna.to_dict(), puzzle=genome.puzzle,
+        experiment=profile.get("experiment"), force_private=autonomy.force_private,
     )
     meta["publication_readiness"] = publication.to_dict()
     meta["autonomy_state"] = autonomy.to_dict()
@@ -1803,6 +1813,13 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
             *autonomy.reasons,
         ]
     if not publication.passed:
+        record_rejection(
+            data_dir() / "rejection_memory.json",
+            "publication_policy_failure",
+            seed=int(profile["seed"]),
+            family=str(profile.get("family", "unknown")),
+            details={"issues": list(publication.blocking_issues)},
+        )
         output.unlink(missing_ok=True)
         audio_path.unlink(missing_ok=True)
         thumbnail.unlink(missing_ok=True)
@@ -1810,6 +1827,7 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
         raise QualityGateError(f"Publication policy rejected render: {', '.join(publication.blocking_issues)}")
     meta["provenance"] = {
         "engine_version": ENGINE_VERSION,
+        "strategy_version": genome.strategy_version,
         "seed": genome.seed,
         "genome_version": genome.version,
         "visual_dna_version": visual_dna.version,

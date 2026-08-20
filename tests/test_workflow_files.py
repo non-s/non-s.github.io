@@ -38,6 +38,21 @@ def test_legacy_weekly_batch_is_manual_only() -> None:
     assert "schedule" not in triggers
 
 
+def test_primary_workflows_expose_governance_switches() -> None:
+    video = (WORKFLOWS_DIR / "liquid-wire-video.yml").read_text(encoding="utf-8")
+    evolution = (WORKFLOWS_DIR / "liquid-wire-evolution.yml").read_text(encoding="utf-8")
+    for switch in (
+        "LIQUID_WIRE_PAUSE_SCHEDULES",
+        "LIQUID_WIRE_DISABLE_GEMINI",
+        "LIQUID_WIRE_DISABLE_EVOLUTION",
+    ):
+        assert switch in video
+        assert switch in evolution
+    assert "LIQUID_WIRE_DISABLE_UPLOAD" in video
+    assert "LIQUID_WIRE_DISABLE_PUZZLE" in video
+    assert "LIQUID_WIRE_FORCE_PRIVATE" in video
+
+
 @pytest.mark.parametrize("filename", list(WORKFLOW_FILES.keys()))
 def test_workflow_file_exists(filename: str) -> None:
     path = WORKFLOWS_DIR / filename

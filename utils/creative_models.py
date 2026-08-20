@@ -15,6 +15,7 @@ GENOME_VERSION = 1
 VISUAL_DNA_VERSION = 1
 AUDIO_DNA_VERSION = 1
 ENGINE_VERSION = "4.1"
+STRATEGY_VERSION = 1
 
 
 def _canonical_hash(payload: object) -> str:
@@ -38,6 +39,7 @@ class Genome:
     puzzle: dict[str, Any] = field(default_factory=lambda: {"enabled": False})
     parents: tuple[str, ...] = ()
     mutations: tuple[dict[str, Any], ...] = ()
+    strategy_version: int = STRATEGY_VERSION
     version: int = GENOME_VERSION
 
     @classmethod

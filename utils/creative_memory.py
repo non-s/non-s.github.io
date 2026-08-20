@@ -11,6 +11,7 @@ from utils.state_lock import state_lock
 
 CATALOG_SCHEMA_VERSION = 1
 CATALOG_LIMIT = 1000
+ARCHIVE_SCHEMA_VERSION = 1
 
 
 def _path():
@@ -48,5 +49,33 @@ def record_creation(metadata: dict[str, Any]) -> None:
                 "hypothesis_id": metadata.get("hypothesis_id"),
             }
         )
+        dropped = catalog[:-CATALOG_LIMIT]
+        if dropped:
+            _aggregate_archive(path.parent / "catalog_archive.json", dropped)
         save_versioned(path, catalog[-CATALOG_LIMIT:], CATALOG_SCHEMA_VERSION)
     record_canon_event(path.parent / "canon_state.json", metadata)
+
+
+def _aggregate_archive(path, records: list[dict[str, Any]]) -> None:
+    """Compact evicted raw records into durable family/format/generation counts."""
+    archive = load_versioned(path, ARCHIVE_SCHEMA_VERSION, {}, {"cells": {}})
+    if not isinstance(archive, dict) or not isinstance(archive.get("cells"), dict):
+        archive = {"cells": {}}
+    cells = archive["cells"]
+    for record in records:
+        raw_genome = record.get("genome")
+        genome: dict[str, Any] = raw_genome if isinstance(raw_genome, dict) else {}
+        family = str(genome.get("family", "unknown"))
+        kind = str(record.get("kind", "unknown"))
+        generation = max(0, int(genome.get("generation", 0)))
+        key = f"{family}|{kind}"
+        cell = cells.setdefault(key, {"count": 0, "max_generation": 0, "fitness_sum": 0.0, "fitness_samples": 0})
+        cell["count"] += 1
+        cell["max_generation"] = max(int(cell["max_generation"]), generation)
+        raw_fitness = record.get("fitness")
+        fitness: dict[str, Any] = raw_fitness if isinstance(raw_fitness, dict) else {}
+        score = fitness.get("score")
+        if isinstance(score, (int, float)):
+            cell["fitness_sum"] += float(score)
+            cell["fitness_samples"] += 1
+    save_versioned(path, archive, ARCHIVE_SCHEMA_VERSION)

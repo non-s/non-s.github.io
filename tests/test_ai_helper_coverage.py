@@ -42,6 +42,16 @@ def test_default_system_prompt_contains_generative_art_terms() -> None:
     assert "Liquid Wire" in prompt
 
 
+def test_gemini_kill_switch_uses_fallback_without_network(monkeypatch) -> None:
+    monkeypatch.setenv("LIQUID_WIRE_DISABLE_GEMINI", "1")
+    with patch.object(ai_helper._session, "post") as post:
+        assert ai_helper.ai_text("prompt", task="kill_switch") == ""
+        post.assert_not_called()
+    data = __import__("json").loads(ai_helper._ai_metrics_file().read_text(encoding="utf-8"))
+    assert data[-1]["fell_back"] is True
+    assert data[-1]["prompt_hash"]
+
+
 @patch("utils.ai_helper._session")
 @patch("utils.ai_helper.os.environ")
 def test_ai_grounded_research_no_key_returns_empty(mock_env, mock_session) -> None:

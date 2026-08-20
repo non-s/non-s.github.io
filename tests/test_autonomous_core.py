@@ -77,6 +77,9 @@ def test_catalog_memory_is_bounded_and_versioned(monkeypatch, tmp_path):
     catalog = memory.load_catalog()
     assert [item["content_id"] for item in catalog] == ["lw_1", "lw_2"]
     assert json.loads((tmp_path / "catalog_memory.json").read_text())["schema_version"] == 1
+    archive = json.loads((tmp_path / "catalog_archive.json").read_text())
+    assert archive["schema_version"] == 1
+    assert sum(cell["count"] for cell in archive["data"]["cells"].values()) == 1
 
 
 def test_fitness_models_are_distinct_explainable_and_uncertain():

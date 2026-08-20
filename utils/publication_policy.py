@@ -25,6 +25,8 @@ def evaluate_publication(
     audio_dna: dict[str, Any],
     *,
     puzzle: dict[str, Any] | None = None,
+    experiment: dict[str, Any] | None = None,
+    force_private: bool = False,
 ) -> PublicationDecision:
     """Block objective failures; subjective characteristics become prompts."""
     blocking: list[str] = []
@@ -41,6 +43,8 @@ def evaluate_publication(
         dimensions["visual"] = "fail"
     else:
         dimensions["visual"] = "pass"
+    temporal = visual_dna.get("temporal")
+    dimensions["temporal"] = "pass" if isinstance(temporal, dict) and temporal else "unmeasured"
     fill = visual_dna.get("composition", {}).get("screen_fill")
     if isinstance(fill, (int, float)) and fill < 0.02:
         prompts.append("very low screen occupancy; review mobile legibility")
@@ -63,10 +67,21 @@ def evaluate_publication(
         dimensions["puzzle"] = "fail"
     else:
         dimensions["puzzle"] = "pass" if puzzle_state.get("enabled") else "not_applicable"
-    force_private = os.environ.get("LIQUID_WIRE_PRIVATE_VALIDATION", "1") != "0"
+    experiment_state = experiment or {}
+    changed = experiment_state.get("changed_variables")
+    if changed is not None and (not isinstance(changed, dict) or len(changed) != 1):
+        blocking.append("experiment must change exactly one declared variable")
+        dimensions["experiment"] = "fail"
+    else:
+        dimensions["experiment"] = "pass" if changed is not None else "not_applicable"
+    private_required = (
+        force_private
+        or os.environ.get("LIQUID_WIRE_FORCE_PRIVATE", "0") == "1"
+        or os.environ.get("LIQUID_WIRE_PRIVATE_VALIDATION", "1") != "0"
+    )
     return PublicationDecision(
         passed=not blocking,
-        required_privacy="private" if force_private else "configured",
+        required_privacy="private" if private_required else "configured",
         blocking_issues=tuple(blocking),
         review_prompts=tuple(prompts),
         dimensions=dimensions,

@@ -1,5 +1,13 @@
 # Changelog
 
+## Master Mandate V2 — exhaustive closure pass
+
+- Added independently enforced generation/upload/Gemini/evolution/puzzle/private/schedule controls.
+- Expanded pre-publication self-critique to all seven mandated dimensions and added bounded rejection memory.
+- Added strategy versioning, compacted long-term catalog aggregates, Pareto analysis, creative-space mapping,
+  value-of-information scoring and a dependency-free lineage graph.
+- Added prompt provenance (version, model, prompt hash, structured/fallback state) without storing prompt text or secrets.
+
 ## 4.1.0 - 2026-08-20
 
 - Added versioned procedural genomes, final-render visual DNA and stable

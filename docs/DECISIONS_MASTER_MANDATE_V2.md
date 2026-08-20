@@ -1,5 +1,19 @@
 # Master Mandate V2 — decision record
 
+## ADR-008 — Every numbered section is a formal acceptance unit
+
+The final closure pass treats sections 0–177, including their nested requirements,
+as individually traceable acceptance units. A passing CI run or a completed core
+loop is necessary but no longer sufficient to declare the mandate complete.
+
+## ADR-009 — Long-horizon intelligence stays deterministic until data exists
+
+Pareto analysis, value-of-information scoring, lineage and the creative map use
+small transparent Python primitives. The creative map reports insufficient data
+below eight final-render observations; it does not manufacture clusters. Evicted
+raw catalog records are compacted into versioned aggregates so generations remain
+auditable without unbounded state growth.
+
 ## ADR-001 — Evolve in place
 
 Decision: preserve the existing generator, upload, analytics and quality

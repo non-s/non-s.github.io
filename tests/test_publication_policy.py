@@ -21,6 +21,9 @@ def test_quality_gate_2_passes_objective_validity_and_requires_private_by_defaul
     assert decision.passed is True
     assert decision.required_privacy == "private"
     assert decision.dimensions["technical"] == "pass"
+    assert set(decision.dimensions) == {
+        "technical", "visual", "temporal", "novelty", "audio", "puzzle", "experiment"
+    }
 
 
 def test_taste_is_a_review_prompt_not_a_rejection():
@@ -40,3 +43,9 @@ def test_near_duplicate_silence_and_unvalidated_puzzle_block():
     assert decision.dimensions["novelty"] == "fail"
     assert decision.dimensions["audio"] == "fail"
     assert decision.dimensions["puzzle"] == "fail"
+
+
+def test_invalid_multi_variable_experiment_blocks_publication():
+    decision = evaluate_publication(*_valid(), experiment={"changed_variables": {"motion": 1, "audio": 2}})
+    assert decision.passed is False
+    assert decision.dimensions["experiment"] == "fail"
