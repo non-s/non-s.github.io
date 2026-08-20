@@ -11,6 +11,65 @@ from utils.atomic_state import atomic_write_json, load_versioned, save_versioned
 from utils.creative_memory import CATALOG_LIMIT, CATALOG_SCHEMA_VERSION, creation_record
 
 RECEIPT_SCHEMA_VERSION = 1
+LEGACY_MATCH_MAX_SECONDS = 6 * 3600
+LEGACY_AMBIGUITY_MARGIN_SECONDS = 15 * 60
+
+
+def _time(value: Any) -> datetime | None:
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return None
+    return parsed if parsed.tzinfo else parsed.replace(tzinfo=UTC)
+
+
+def _legacy_receipts(evidence_root: Path, data_root: Path, known_video_ids: set[str]) -> dict[str, dict[str, Any]]:
+    """Recover pre-receipt publications only when title/time evidence is decisive."""
+    try:
+        analytics = json.loads((data_root / "analytics.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    videos = analytics.get("all_videos", []) if isinstance(analytics, dict) else []
+    if not isinstance(videos, list):
+        return {}
+
+    candidates: list[tuple[Path, dict[str, Any], datetime]] = []
+    for path in evidence_root.rglob("*.json"):
+        if path.name.startswith("publication_receipt_"):
+            continue
+        try:
+            metadata = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        generated = _time(metadata.get("generated_at")) if isinstance(metadata, dict) else None
+        if isinstance(metadata, dict) and metadata.get("content_id") and metadata.get("title") and generated:
+            candidates.append((path, metadata, generated))
+
+    recovered: dict[str, dict[str, Any]] = {}
+    used_paths: set[Path] = set()
+    valid_videos = (row for row in videos if isinstance(row, dict))
+    for video in sorted(valid_videos, key=lambda row: str(row.get("published_at", ""))):
+        video_id = str(video.get("video_id", ""))
+        published = _time(video.get("published_at"))
+        title = str(video.get("title", "")).strip()
+        if not video_id or video_id in known_video_ids or not published or not title:
+            continue
+        ranked = sorted(
+            (
+                (abs((generated - published).total_seconds()), path, metadata)
+                for path, metadata, generated in candidates
+                if path not in used_paths and str(metadata.get("title", "")).strip() == title
+            ),
+            key=lambda row: row[0],
+        )
+        if not ranked or ranked[0][0] > LEGACY_MATCH_MAX_SECONDS:
+            continue
+        if len(ranked) > 1 and ranked[1][0] - ranked[0][0] < LEGACY_AMBIGUITY_MARGIN_SECONDS:
+            continue
+        _, path, metadata = ranked[0]
+        used_paths.add(path)
+        recovered[video_id] = publication_receipt(video_id, metadata, uploaded_at=published.isoformat())
+    return recovered
 
 
 def video_tag_record(metadata: dict[str, Any], uploaded_at: str) -> dict[str, Any]:
@@ -74,6 +133,8 @@ def rebuild_publication_state(evidence_root: Path, data_root: Path) -> dict[str,
                 current = receipts.get(video_id)
                 if current is None or str(payload.get("uploaded_at", "")) >= str(current.get("uploaded_at", "")):
                     receipts[video_id] = payload
+    legacy = _legacy_receipts(evidence_root, data_root, set(receipts))
+    receipts.update(legacy)
 
     tags_path = data_root / "video_tags.json"
     try:
@@ -122,4 +183,9 @@ def rebuild_publication_state(evidence_root: Path, data_root: Path) -> dict[str,
     old_titles = old_titles if isinstance(old_titles, list) else []
     merged_titles = list(dict.fromkeys([*reversed(titles), *(str(title) for title in old_titles)]))[:120]
     atomic_write_json(titles_path, merged_titles)
-    return {"receipts": len(receipts), "catalog_records": len(ordered_catalog), "video_tags": len(ordered_tags)}
+    return {
+        "receipts": len(receipts),
+        "legacy_matches": len(legacy),
+        "catalog_records": len(ordered_catalog),
+        "video_tags": len(ordered_tags),
+    }

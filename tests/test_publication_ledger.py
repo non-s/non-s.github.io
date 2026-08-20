@@ -36,8 +36,45 @@ def test_rebuild_merges_out_of_order_receipts_idempotently(tmp_path) -> None:
     first = rebuild_publication_state(evidence, data)
     second = rebuild_publication_state(evidence, data)
 
-    assert first == second == {"receipts": 2, "catalog_records": 2, "video_tags": 2}
+    assert first == second == {"receipts": 2, "legacy_matches": 0, "catalog_records": 2, "video_tags": 2}
     catalog = load_versioned(data / "catalog_memory.json", 1, {}, [])
     assert {row["content_id"] for row in catalog} == {"lw-1", "lw-2"}
     assert set(json.loads((data / "video_tags.json").read_text())) == {"v1", "v2"}
     assert json.loads((data / "used_titles.json").read_text()) == ["Second Tide", "First Bloom"]
+
+
+def test_rebuild_bootstraps_pre_receipt_metadata_from_title_and_time(tmp_path) -> None:
+    evidence, data = tmp_path / "evidence", tmp_path / "data"
+    evidence.mkdir()
+    metadata = _metadata("lw-old", "Historic Bloom")
+    (evidence / "liquid_wire_short.json").write_text(json.dumps(metadata), encoding="utf-8")
+    data.mkdir()
+    (data / "analytics.json").write_text(json.dumps({"all_videos": [{
+        "video_id": "youtube-old",
+        "title": "Historic Bloom",
+        "published_at": "2026-08-20T10:04:00Z",
+    }]}), encoding="utf-8")
+
+    result = rebuild_publication_state(evidence, data)
+
+    assert result["legacy_matches"] == 1
+    assert json.loads((data / "video_tags.json").read_text())["youtube-old"]["content_id"] == "lw-old"
+
+
+def test_rebuild_refuses_ambiguous_legacy_match(tmp_path) -> None:
+    evidence, data = tmp_path / "evidence", tmp_path / "data"
+    evidence.mkdir()
+    for index, generated in enumerate(("2026-08-20T10:00:00Z", "2026-08-20T10:05:00Z")):
+        metadata = _metadata(f"lw-{index}", "Repeated Title")
+        metadata["generated_at"] = generated
+        (evidence / f"candidate-{index}.json").write_text(json.dumps(metadata), encoding="utf-8")
+    data.mkdir()
+    (data / "analytics.json").write_text(json.dumps({"all_videos": [{
+        "video_id": "youtube-ambiguous",
+        "title": "Repeated Title",
+        "published_at": "2026-08-20T10:03:00Z",
+    }]}), encoding="utf-8")
+
+    result = rebuild_publication_state(evidence, data)
+
+    assert result["legacy_matches"] == 0
