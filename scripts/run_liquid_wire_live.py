@@ -132,6 +132,7 @@ def broadcast_resilient(
     *,
     chaos_after_seconds: int = 0,
     journal_path: Path | None = None,
+    preparation_seconds: float | None = None,
 ) -> list[str]:
     """Reconnect with a fresh broadcast immediately after an RTMP failure."""
     remaining = duration_minutes
@@ -141,6 +142,9 @@ def broadcast_resilient(
         "started_at": datetime.now(UTC).isoformat(),
         "target_minutes": duration_minutes,
         "privacy": privacy,
+        "source_preparation_seconds": (
+            round(preparation_seconds, 3) if preparation_seconds is not None else None
+        ),
         "attempts": [],
         "completed": False,
     }
@@ -240,7 +244,9 @@ def main() -> int:
         parser.error("--max-restarts must be between 0 and 10")
     if not 0 <= args.chaos_after_seconds <= args.duration_minutes * 60:
         parser.error("--chaos-after-seconds must fit inside the session")
+    preparation_started = time.monotonic()
     delivery = prepare_live_asset(args.video, args.video.with_name(f"{args.video.stem}_delivery.mp4"))
+    preparation_seconds = time.monotonic() - preparation_started
     journal = ROOT / "_data" / "live_continuity.json"
     broadcast_ids = broadcast_resilient(
         service,
@@ -250,6 +256,7 @@ def main() -> int:
         args.max_restarts,
         chaos_after_seconds=args.chaos_after_seconds,
         journal_path=journal,
+        preparation_seconds=preparation_seconds,
     )
     print(broadcast_ids[-1])
     return 0
