@@ -301,13 +301,13 @@ def artifact_hash(relative: str) -> str:
     path = ROOT / relative
     digest = hashlib.sha256()
     if path.is_file():
-        digest.update(path.read_bytes())
+        digest.update(path.read_bytes().replace(b"\r\n", b"\n"))
         return digest.hexdigest()
     if path.is_dir():
         files = sorted(item for item in path.rglob("*.py") if "__pycache__" not in item.parts)
         for item in files:
             digest.update(item.relative_to(path).as_posix().encode())
-            digest.update(item.read_bytes())
+            digest.update(item.read_bytes().replace(b"\r\n", b"\n"))
         return digest.hexdigest()
     raise ValueError(f"evidence path does not exist: {relative}")
 

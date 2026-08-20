@@ -12,11 +12,11 @@ def _artifact_hash(relative: str) -> str:
     path = ROOT / relative
     digest = hashlib.sha256()
     if path.is_file():
-        digest.update(path.read_bytes())
+        digest.update(path.read_bytes().replace(b"\r\n", b"\n"))
     else:
         for item in sorted(entry for entry in path.rglob("*.py") if "__pycache__" not in entry.parts):
             digest.update(item.relative_to(path).as_posix().encode())
-            digest.update(item.read_bytes())
+            digest.update(item.read_bytes().replace(b"\r\n", b"\n"))
     return digest.hexdigest()
 
 
