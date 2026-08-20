@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from utils.atomic_state import load_versioned, save_versioned
+from utils.canon_memory import record_canon_event
 from utils.paths import data_dir
 from utils.state_lock import state_lock
 
@@ -37,7 +38,10 @@ def record_creation(metadata: dict[str, Any]) -> None:
                 "genome": metadata.get("genome"),
                 "visual_dna_id": metadata.get("visual_dna_id"),
                 "visual_dna": metadata.get("visual_dna"),
+                "audio_dna_id": metadata.get("audio_dna_id"),
+                "audio_dna": metadata.get("audio_dna"),
                 "quality": metadata.get("quality_report"),
+                "puzzle": metadata.get("genome", {}).get("puzzle", {}),
                 "performance_windows": {},
                 "fitness": None,
                 "experiment_id": metadata.get("experiment_id"),
@@ -45,3 +49,4 @@ def record_creation(metadata: dict[str, Any]) -> None:
             }
         )
         save_versioned(path, catalog[-CATALOG_LIMIT:], CATALOG_SCHEMA_VERSION)
+    record_canon_event(path.parent / "canon_state.json", metadata)

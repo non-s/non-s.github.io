@@ -64,6 +64,17 @@ def _production_contract_issues(meta: dict) -> list[str]:
         version_parts = ()
     if version_parts < (2, 1):
         issues.append("engine_version_below_2_1")
+    if version_parts >= (4, 1):
+        if not meta.get("content_id") or not isinstance(meta.get("genome"), dict):
+            issues.append("autonomous_identity_missing")
+        if not isinstance(meta.get("visual_dna"), dict) or not isinstance(meta.get("audio_dna"), dict):
+            issues.append("observed_dna_missing")
+        readiness = meta.get("publication_readiness")
+        if not isinstance(readiness, dict) or readiness.get("passed") is not True:
+            issues.append("publication_policy_not_approved")
+        autonomy = meta.get("autonomy_state")
+        if isinstance(autonomy, dict) and autonomy.get("publication_allowed") is not True:
+            issues.append("publication_kill_switch_active")
     fingerprint = quality.get("fingerprint") if isinstance(quality, dict) else None
     # Frente E expandiu o fingerprint perceptual de 20 para 32 dim. Aceitamos
     # ambas: 32 (engine atual) ou 20 (legacy, pre-Frente E). O proprio
@@ -150,6 +161,11 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
         except Exception:
             existing = {}
         existing[video_id] = {
+            "content_id": meta.get("content_id", ""),
+            "genome_id": meta.get("genome_id", ""),
+            "visual_dna_id": meta.get("visual_dna_id", ""),
+            "experiment_id": meta.get("experiment_id", ""),
+            "hypothesis_id": meta.get("hypothesis_id", ""),
             "scene": scene,
             "hook": meta.get("hook", ""),
             "mood": meta.get("mood", ""),
@@ -377,8 +393,9 @@ def _build_upload_body(
     # and the Content ID pre-check clears, the privacy is flipped to the
     # requested value (only "public" is actionable; unlisted/private stay as-is).
     target_privacy = ""
-    if publish_after_check and privacy == "public":
-        target_privacy = "public"
+    requires_private_validation = meta.get("publication_readiness", {}).get("required_privacy") == "private"
+    if (publish_after_check or requires_private_validation) and privacy == "public":
+        target_privacy = "public" if publish_after_check else ""
         privacy = "private"
         status["privacyStatus"] = privacy
 

@@ -58,14 +58,31 @@ before the 4.1 autonomous-core changes.
 - `git diff --check`: clean except Windows line-ending notices.
 - No network service, database or new runtime dependency introduced.
 
+## Checkpoint 2 — scientific loop and governed evolution
+
+- YouTube observations are attached to creations by `content_id` and maturity
+  window; unmatched videos remain explicit and never create phantom records.
+- Hypotheses and experiments use a versioned ledger with conservative evidence
+  states and a single-variable causal-design guard.
+- Weekly research emits machine- and human-readable reports without requiring
+  Gemini or manufacturing conclusions during cold start.
+- Evolution includes lineage, controlled semantic mutation, adaptive
+  exploration, novelty pressure and a bounded archive of elites.
+- Cheap candidate ranking precedes expensive rendering; final encoded visual
+  DNA remains authoritative.
+- Audio DNA, Quality Gate 2.0, safe mode, private validation, canary controls
+  and upload-level kill switches close the governance path.
+- The fictional glyph/puzzle protocol is versioned, density-limited,
+  checksum-validated, canon-linked and explicitly disclaims historical
+  cuneiform.
+
 ## Remaining sequence
 
-1. Attach analytics snapshots to catalog entries by `content_id`, normalized
-   into early/1h/6h/24h/72h/mature windows.
-2. Persist hypotheses and single-variable experiments using the versioned
-   state primitive.
-3. Implement lineage, controlled mutation, exploration/exploitation and an
-   archive of elites in shadow mode.
-4. Add candidate-preview ranking and resource budgets before final render.
-5. Add puzzle/lore protocols only after the feedback loop has enough real
-   channel data to evaluate them.
+1. Collect enough real channel observations to graduate evolution from shadow
+   to canary; no code can manufacture that evidence.
+2. Add an optional low-resolution rendered-preview stage if runner benchmarks
+   prove that cheap intent ranking is insufficient.
+3. Consolidate legacy state writers into atomic/versioned envelopes by risk,
+   without breaking rollback compatibility.
+4. Consolidate workflows only after schedule/run-duration evidence identifies
+   safe combinations.

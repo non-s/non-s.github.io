@@ -28,8 +28,14 @@ WORKFLOW_FILES = {
     "liquid-wire-engagement.yml": "0 */2 * * *",
     "liquid-wire-analytics.yml": "12 2 * * 1",
     "liquid-wire-identity.yml": "20 3 * * 1",
-    "liquid-wire-weekly.yml": "30 3 * * 1",
 }
+
+
+def test_legacy_weekly_batch_is_manual_only() -> None:
+    data = _load_workflow("liquid-wire-weekly.yml")
+    triggers = data.get("on", {})
+    assert "workflow_dispatch" in triggers
+    assert "schedule" not in triggers
 
 
 @pytest.mark.parametrize("filename", list(WORKFLOW_FILES.keys()))

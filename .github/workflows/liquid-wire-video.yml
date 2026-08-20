@@ -81,8 +81,14 @@ jobs:
             preset="${{ inputs.preset }}"
             duration="${{ inputs.duration }}"
           elif [ "${{ github.event.schedule }}" = "37 21 * * 2,4,6" ]; then
-            preset="long"
-            duration="180"
+            if python scripts/check_long_form_candidate.py; then
+              preset="long"
+              duration="180"
+            else
+              echo "No replicated mature Short winner; using another Short experiment."
+              preset="short"
+              duration=$((27 + ${{ github.run_id }} % 19))
+            fi
           else
             preset="short"
             # 27-45 segundos, deterministico por execucao e sempre dentro do limite de Short.
@@ -90,10 +96,15 @@ jobs:
           fi
           echo "preset=$preset" >> "$GITHUB_OUTPUT"
           echo "duration=$duration" >> "$GITHUB_OUTPUT"
+      - name: "Check adaptive publication cadence"
+        id: cadence
+        run: python scripts/check_publication_cadence.py
       - name: "Healthcheck"
+        if: steps.cadence.outputs.generate == 'true'
         run: python scripts/healthcheck.py
         continue-on-error: false
       - name: "Generate procedural video"
+        if: steps.cadence.outputs.generate == 'true'
         run: |
           args=(--preset "${{ steps.format.outputs.preset }}" --attempts 3)
           if [ -n "${{ steps.format.outputs.duration }}" ]; then
@@ -101,10 +112,11 @@ jobs:
           fi
           python generate_liquid_wire_video.py "${args[@]}"
       - name: "Upload to YouTube"
-        if: hashFiles('youtube_token.json') != ''
+        if: steps.cadence.outputs.generate == 'true' && hashFiles('youtube_token.json') != ''
         run: >-
           python upload_youtube.py --mode upload --language=en
           --privacy "$YOUTUBE_PRIVACY"
+          --publish-after-check
           --prefix "liquid_wire_${{ steps.format.outputs.preset }}_"
       - name: "Upload production evidence"
         if: always()

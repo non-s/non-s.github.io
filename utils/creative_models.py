@@ -13,6 +13,7 @@ from typing import Any
 
 GENOME_VERSION = 1
 VISUAL_DNA_VERSION = 1
+AUDIO_DNA_VERSION = 1
 ENGINE_VERSION = "4.1"
 
 
@@ -35,12 +36,16 @@ class Genome:
     temporal: dict[str, Any]
     audio: dict[str, Any]
     puzzle: dict[str, Any] = field(default_factory=lambda: {"enabled": False})
+    parents: tuple[str, ...] = ()
+    mutations: tuple[dict[str, Any], ...] = ()
     version: int = GENOME_VERSION
 
     @classmethod
     def from_profile(cls, profile: dict[str, Any], preset: str) -> Genome:
-        palette = profile.get("palette") if isinstance(profile.get("palette"), dict) else {}
-        composition = profile.get("composition") if isinstance(profile.get("composition"), dict) else {}
+        raw_palette = profile.get("palette")
+        palette: dict[str, Any] = raw_palette if isinstance(raw_palette, dict) else {}
+        raw_composition = profile.get("composition")
+        composition: dict[str, Any] = raw_composition if isinstance(raw_composition, dict) else {}
         timeline = profile.get("timeline") if isinstance(profile.get("timeline"), list) else []
         return cls(
             seed=int(profile["seed"]),
@@ -72,6 +77,8 @@ class Genome:
                 "composition_mode": composition.get("mode"),
             },
             puzzle=profile.get("puzzle", {"enabled": False}),
+            parents=tuple(str(value) for value in profile.get("parents", []) if value),
+            mutations=tuple(value for value in profile.get("mutations", []) if isinstance(value, dict)),
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -93,6 +100,43 @@ class VisualDNA:
     novelty: dict[str, Any]
     sample_count: int
     version: int = VISUAL_DNA_VERSION
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+    @property
+    def dna_id(self) -> str:
+        return _canonical_hash(self.to_dict())[:24]
+
+
+@dataclass(frozen=True)
+class AudioDNA:
+    """Observed audio properties decoded from the final compressed video."""
+
+    loudness: dict[str, Any]
+    stereo: dict[str, Any]
+    temporal: dict[str, Any]
+    spectral: dict[str, Any]
+    version: int = AUDIO_DNA_VERSION
+
+    @classmethod
+    def from_quality_report(cls, report: dict[str, Any]) -> AudioDNA:
+        raw_fingerprint = report.get("fingerprint")
+        fingerprint: list[Any] | tuple[Any, ...] = (
+            raw_fingerprint if isinstance(raw_fingerprint, (list, tuple)) else []
+        )
+        spectral = list(fingerprint[-4:]) if len(fingerprint) >= 4 else [0.0] * 4
+        return cls(
+            loudness={"rms_db": report.get("audio_rms_db"), "peak": report.get("audio_peak")},
+            stereo={"width": report.get("stereo_width"), "channels": report.get("audio_channels")},
+            temporal={"silence_ratio": report.get("silence_ratio"), "visual_sync_signal": report.get("sync_signal")},
+            spectral={
+                "flux_mean": spectral[0],
+                "flux_std": spectral[1],
+                "harmonic_rhythm": spectral[2],
+                "centroid_variance": spectral[3],
+            },
+        )
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)

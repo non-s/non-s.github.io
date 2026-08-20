@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from upload_youtube import _production_contract_issues
+from upload_youtube import _build_upload_body, _production_contract_issues
 
 
 def _approved_metadata() -> dict:
@@ -49,3 +49,38 @@ def test_production_contract_rejects_wrong_dim_fingerprint() -> None:
     metadata["quality_report"]["fingerprint"] = [0.1] * 25
     issues = _production_contract_issues(metadata)
     assert "perceptual_fingerprint_missing" in issues
+
+
+def test_engine_4_1_requires_autonomous_evidence_and_governance() -> None:
+    metadata = _approved_metadata()
+    metadata["generator_profile"]["engine_version"] = "4.1"
+    issues = _production_contract_issues(metadata)
+    assert "autonomous_identity_missing" in issues
+    assert "observed_dna_missing" in issues
+    assert "publication_policy_not_approved" in issues
+
+
+def test_engine_4_1_accepts_complete_contract_and_obeys_kill_switch() -> None:
+    metadata = _approved_metadata()
+    metadata.update(
+        {
+            "generator_profile": {"engine_version": "4.1"},
+            "content_id": "lw_1",
+            "genome": {"version": 1},
+            "visual_dna": {"version": 1},
+            "audio_dna": {"version": 1},
+            "publication_readiness": {"passed": True},
+            "autonomy_state": {"publication_allowed": True},
+        }
+    )
+    assert _production_contract_issues(metadata) == []
+    metadata["autonomy_state"]["publication_allowed"] = False
+    assert "publication_kill_switch_active" in _production_contract_issues(metadata)
+
+
+def test_private_validation_contract_overrides_direct_public_upload() -> None:
+    metadata = {"publication_readiness": {"required_privacy": "private"}}
+    body, effective, target = _build_upload_body(metadata, "description", "en", "public", None, False)
+    assert body["status"]["privacyStatus"] == "private"
+    assert effective == "private"
+    assert target == ""

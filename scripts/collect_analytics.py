@@ -27,6 +27,7 @@ from googleapiclient.http import MediaFileUpload
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+from utils.analytics_feedback import sync_catalog_performance
 from utils.log_config import configure_logging
 from utils.paths import data_dir, ensure_data_dir
 from utils.state_lock import state_lock
@@ -908,6 +909,10 @@ def main(argv: list[str] | None = None) -> int:
     # thumbnails - rodando diariamente (06:00 UTC) alimenta um historico
     # mais fino pro predict_views sem gastar quota nem tempo de CI.
     if args.snapshot_only:
+        report["research_feedback"] = sync_catalog_performance(
+            DATA_DIR, stats, video_tags, observed_at=report["collected_at"]
+        )
+        out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
         log.info(
             "Modo snapshot-only: pulando computacao de cena/title_pattern, deteccao de virais e rotacao de thumbnails."
         )
@@ -959,6 +964,11 @@ def main(argv: list[str] | None = None) -> int:
         out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     except Exception as exc:
         log.warning("YouTube Reporting indisponivel (nao fatal): %s", exc)
+
+    report["research_feedback"] = sync_catalog_performance(
+        DATA_DIR, stats, video_tags, observed_at=report["collected_at"]
+    )
+    out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 
     # Detecao de virais: apos computar performance por cena/title_pattern,
     # identifica videos cujas views excedem _VIRAL_THRESHOLD x a mediana e

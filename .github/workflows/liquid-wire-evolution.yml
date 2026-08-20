@@ -29,13 +29,19 @@ jobs:
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
       - name: "Run aesthetic evolution"
+        run: python scripts/run_research_cycle.py
+      - name: "Run governed aesthetic evolution"
         run: python scripts/evolve_aesthetics.py
       - name: "Upload evolution report"
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: evolution-report-${{ github.run_id }}
-          path: _data/evolution_report.json
+          path: |
+            _data/evolution_report.json
+            _data/research_report.json
+            _data/research_report.md
+            _data/research_ledger.json
           if-no-files-found: ignore
           retention-days: 30
       - name: "Apagar token"

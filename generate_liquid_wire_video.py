@@ -17,6 +17,7 @@ import os
 import secrets
 import shutil
 import subprocess
+import time
 import wave
 from datetime import UTC, datetime
 from multiprocessing import Pool, cpu_count
@@ -31,12 +32,15 @@ from utils.ai_evolution import apply_evolution_to_profile
 from utils.ai_helper import ai_text
 from utils.audio_mix import BUS_NAMES as MIX_BUS_NAMES
 from utils.audio_mix import Mixer
+from utils.autonomy import assess_autonomy
+from utils.candidate_selector import select_candidate
 from utils.chapter_markers import prepend_chapters
 from utils.content_strategy import current_brt_hour, min_quality_score_for_slot
-from utils.creative_memory import record_creation
-from utils.creative_models import ENGINE_VERSION, Genome, content_id
+from utils.creative_memory import load_catalog, record_creation
+from utils.creative_models import ENGINE_VERSION, AudioDNA, Genome, content_id
 from utils.drums import DrumSequencer
 from utils.dsp.dynamics import SideChainDuck
+from utils.evolution_engine import evolve_profile
 from utils.flow_field import FlowField, render_flow_particles
 from utils.fluid_deform import fluid_deform
 from utils.genres.registry import GENRES, get_genre
@@ -65,7 +69,10 @@ from utils.organic_growth import OrganicGrowth, render_branches
 from utils.particle_system import ParticleSystem
 from utils.particle_system import render as render_particles
 from utils.paths import data_dir
+from utils.pipeline_metrics import record_pipeline_run
 from utils.post_process import apply_all as apply_post
+from utils.publication_policy import evaluate_publication
+from utils.puzzle_engine import prepare_puzzle
 from utils.state_lock import state_lock
 from utils.trending_topics import enrich_metadata as enrich_with_trends
 from utils.visual_intelligence import analyze_visual_dna
@@ -668,7 +675,23 @@ def _deform_radius(
     rupture = state["rupture"] * 0.24 * np.sign(np.sin((folds_theta + 1) * theta + phase))
     tide = state["tide"] * 0.18 * np.sin(phi * 2 + theta + t * 0.35)
     stillness = max(0.25, 1.0 - state["stillness"] * 0.72)
-    return 1.0 + stillness * (breath + fold_a + fold_b + melt + slow_pull) + bloom + compression + rupture + tide
+    raw_puzzle = profile.get("puzzle")
+    puzzle: dict = raw_puzzle if isinstance(raw_puzzle, dict) else {}
+    glyph_codes = puzzle.get("glyph_codes") if puzzle.get("enabled") else ()
+    glyph_modulation = 0.0
+    if isinstance(glyph_codes, (list, tuple)):
+        density = float(puzzle.get("density", 0.0))
+        for index, code in enumerate(glyph_codes[:24]):
+            glyph_modulation += density * 0.006 * np.sin((int(code) % 9 + 1) * theta + (index % 5 + 1) * phi)
+    return (
+        1.0
+        + stillness * (breath + fold_a + fold_b + melt + slow_pull)
+        + bloom
+        + compression
+        + rupture
+        + tide
+        + glyph_modulation
+    )
 
 
 def _rotate(points: np.ndarray, ax: float, ay: float, az: float) -> np.ndarray:
@@ -1671,6 +1694,9 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     WIDTH, HEIGHT = render_w, render_h
     OUTPUT_DIR.mkdir(exist_ok=True)
     THUMB_DIR.mkdir(parents=True, exist_ok=True)
+    autonomy = assess_autonomy(data_dir())
+    if not autonomy.generation_allowed:
+        raise RuntimeError(f"Liquid Wire generation stopped: {', '.join(autonomy.reasons)}")
     if FRAME_DIR.exists():
         shutil.rmtree(FRAME_DIR)
     FRAME_DIR.mkdir(parents=True)
@@ -1680,6 +1706,21 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     # AI Evolution: adjust profile based on learned aesthetic weights.
     rng = np.random.default_rng(int(profile["seed"]))
     profile = apply_evolution_to_profile(profile, rng)
+    try:
+        catalog = load_catalog()
+    except (OSError, ValueError, json.JSONDecodeError):
+        catalog = []
+    evolution_decision = evolve_profile(profile, preset, catalog, mode=autonomy.evolution_mode)
+    profile["evolution_decision"] = evolution_decision.to_dict()
+    if evolution_decision.applied:
+        candidate_report = {"stage": "skipped", "reason": "controlled evolution already changed one variable"}
+    else:
+        profile, candidate_report = select_candidate(profile, preset, catalog)
+    profile["candidate_selection"] = candidate_report
+    profile["puzzle"] = prepare_puzzle(
+        int(profile["seed"]), len(catalog) + 1, enabled=autonomy.puzzles_allowed
+    ).to_dict()
+    profile["autonomy_state"] = autonomy.to_dict()
     # AI Director: plan narrative arc via Gemini (falls back to procedural timeline).
     ai_events, ai_plan = ai_direct_narrative(
         int(profile["seed"]), duration,
@@ -1725,7 +1766,14 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
         raise QualityGateError(
             f"Render rejected with score {quality.score:.4f}: {', '.join(quality.issues) or 'score_below_threshold'}"
         )
-    visual_dna = analyze_visual_dna(output)
+    recent_visual_fingerprints: list[list[float] | tuple[float, ...]] = []
+    for item in catalog[-96:]:
+        visual = item.get("visual_dna") if isinstance(item, dict) else None
+        novelty = visual.get("novelty") if isinstance(visual, dict) else None
+        fingerprint = novelty.get("fingerprint") if isinstance(novelty, dict) else None
+        if isinstance(fingerprint, list) and all(isinstance(value, (int, float)) for value in fingerprint):
+            recent_visual_fingerprints.append([float(value) for value in fingerprint])
+    visual_dna = analyze_visual_dna(output, recent_fingerprints=recent_visual_fingerprints)
     if visual_dna is None:
         output.unlink(missing_ok=True)
         audio_path.unlink(missing_ok=True)
@@ -1740,6 +1788,26 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     meta["genome_id"] = genome.genome_id
     meta["visual_dna"] = visual_dna.to_dict()
     meta["visual_dna_id"] = visual_dna.dna_id
+    audio_dna = AudioDNA.from_quality_report(quality.to_dict())
+    meta["audio_dna"] = audio_dna.to_dict()
+    meta["audio_dna_id"] = audio_dna.dna_id
+    publication = evaluate_publication(
+        quality.to_dict(), visual_dna.to_dict(), audio_dna.to_dict(), puzzle=genome.puzzle
+    )
+    meta["publication_readiness"] = publication.to_dict()
+    meta["autonomy_state"] = autonomy.to_dict()
+    if not autonomy.publication_allowed:
+        meta["publication_readiness"]["passed"] = False
+        meta["publication_readiness"]["blocking_issues"] = [
+            *meta["publication_readiness"].get("blocking_issues", []),
+            *autonomy.reasons,
+        ]
+    if not publication.passed:
+        output.unlink(missing_ok=True)
+        audio_path.unlink(missing_ok=True)
+        thumbnail.unlink(missing_ok=True)
+        shutil.rmtree(FRAME_DIR, ignore_errors=True)
+        raise QualityGateError(f"Publication policy rejected render: {', '.join(publication.blocking_issues)}")
     meta["provenance"] = {
         "engine_version": ENGINE_VERSION,
         "seed": genome.seed,
@@ -1809,6 +1877,7 @@ def _short_duration_for_slot() -> float:
 
 
 def main() -> int:
+    started_at = time.monotonic()
     parser = argparse.ArgumentParser(description="Generate Liquid Wire procedural videos")
     parser.add_argument("--preset", choices=["short", "long", "live-test"], default="short")
     parser.add_argument("--duration", type=float, default=None, help="Duration in seconds")
@@ -1858,9 +1927,23 @@ def main() -> int:
                 pass
             if args.seed is not None or attempt == args.attempts:
                 _record_dead_letter(slot, attempt_seed, last_error, last_profile)
+                record_pipeline_run(
+                    stage="generate",
+                    success=False,
+                    duration_seconds=time.monotonic() - started_at,
+                    kind=args.preset,
+                    details={"attempts": attempt, "last_error": last_error[:500]},
+                )
                 raise
     if output is None:  # pragma: no cover - defensive invariant
         raise RuntimeError("No render was produced.")
+    record_pipeline_run(
+        stage="generate",
+        success=True,
+        duration_seconds=time.monotonic() - started_at,
+        kind=args.preset,
+        details={"attempts": attempt, "output_bytes": output.stat().st_size},
+    )
     print(output)
     return 0
 

@@ -26,7 +26,13 @@ def _metrics_file() -> Path:
     return data_dir() / "pipeline_metrics.json"
 
 
-def record_pipeline_run(stage: str, success: bool, duration_seconds: float = 0, kind: str = "") -> None:
+def record_pipeline_run(
+    stage: str,
+    success: bool,
+    duration_seconds: float = 0,
+    kind: str = "",
+    details: dict | None = None,
+) -> None:
     """Acrescenta uma entrada de metrica ao arquivo de metricas de pipeline.
 
     Args:
@@ -41,6 +47,7 @@ def record_pipeline_run(stage: str, success: bool, duration_seconds: float = 0, 
         "duration_seconds": float(duration_seconds),
         "kind": kind,
         "at": datetime.now(UTC).isoformat(),
+        "details": details or {},
     }
     path = _metrics_file()
     with state_lock(path):

@@ -10,6 +10,14 @@
   copies.
 - Added explainable, confidence-aware and format-specific fitness primitives.
 - Added the Master Mandate V2 baseline/audit and autonomous-core tests.
+- Joined YouTube metrics to catalog memory in comparable maturity windows and
+  added deterministic research reports, hypotheses and experiment ledgers.
+- Added governed lineage, semantic mutations, adaptive exploration, novelty
+  pressure, archive of elites and cheap candidate selection.
+- Added audio DNA, Quality Gate 2.0, private validation, safe mode, canary and
+  kill-switch enforcement.
+- Added a fictional, versioned Liquid Wire glyph/puzzle protocol and canon;
+  it explicitly does not claim historical cuneiform.
 
 All notable changes to Liquid Wire are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project

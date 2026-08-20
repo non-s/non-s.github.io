@@ -52,6 +52,39 @@ The generated profile includes:
 
 The history file prevents accidental reuse of the same seed/signature.
 
+## Research and evolution
+
+Analytics snapshots join the catalog through `content_id` and are stored in
+non-overlapping maturity windows: `early`, `1h`, `6h`, `24h`, `72h` and
+`mature`. Shorts and long-form use separate explainable fitness models;
+missing API metrics lower confidence rather than being imputed.
+
+The weekly research cycle produces JSON and Markdown reports and may propose
+at most three testable hypotheses when at least eight comparable observations
+exist. Correlations are always labelled non-causal. Experiments reference a
+known hypothesis and may change exactly one variable.
+
+Evolution uses a family/format archive of elites, confidence, novelty and an
+adaptive exploration rate. Modes are `off`, `shadow` (default), `canary`
+(deterministic 10%) and `active`. An applied descendant inherits a parent and
+records exactly one bounded semantic mutation.
+
+## Governance and secret identity
+
+Quality Gate 2.0 separates objective blocking failures from subjective review
+prompts and requires private validation by default. The uploader independently
+enforces the 4.1 metadata contract and publication kill switch.
+
+The Liquid Wire glyph language is original and fictional—not historical
+cuneiform. At most one in five creations carries a message. Encoding,
+checksum, density, difficulty, disclosure and canon are versioned, validated
+and linked to lineage. The glyph codes subtly modulate geometry; they are not
+an unrelated text overlay.
+
+Safe mode disables evolution and puzzles while preserving stable offline
+generation. Separate global and publication kill switches are checked before
+generation and again by the uploader contract.
+
 ## Active Workflows
 
 - `Liquid Wire - Generate and Upload`

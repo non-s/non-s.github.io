@@ -226,7 +226,7 @@ def plan_camera_shots(
     bounds: list[float] = [raw_bounds[0]]
     for b in raw_bounds[1:-1]:
         # Snap to nearest event start within +/- 1.2s.
-        snapped = b
+        snapped = float(b)
         best_d = 1.2
         for ev in sorted_events:
             d = abs(ev.start - b)
