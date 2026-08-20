@@ -9,9 +9,9 @@ from utils.rollback_policy import assess_rollback
 def test_upload_spike_and_duplicate_content_block_publication(tmp_path):
     now = datetime(2026, 1, 1, 12, tzinfo=UTC)
     metrics = [
-        {"at": now.isoformat(), "stage": "upload", "success": False},
-        {"at": now.isoformat(), "stage": "upload", "success": False},
-        {"at": now.isoformat(), "stage": "upload", "success": False},
+        {"at": now.isoformat(), "stage": "upload", "success": False, "details": {"remote_attempted": True}},
+        {"at": now.isoformat(), "stage": "upload", "success": False, "details": {"remote_attempted": True}},
+        {"at": now.isoformat(), "stage": "upload", "success": False, "details": {"remote_attempted": True}},
     ]
     (tmp_path / "pipeline_metrics.json").write_text(json.dumps(metrics), encoding="utf-8")
     (tmp_path / "video_tags.json").write_text(
@@ -22,6 +22,21 @@ def test_upload_spike_and_duplicate_content_block_publication(tmp_path):
     assert decision.block_publication is True
     assert "upload failure spike" in decision.reasons
     assert "duplicate content publication detected" in decision.reasons
+
+
+def test_local_policy_rejections_do_not_self_trigger_upload_rollback(tmp_path):
+    now = datetime(2026, 1, 1, 12, tzinfo=UTC)
+    metrics = [
+        {"at": now.isoformat(), "stage": "upload", "success": False, "details": {"remote_attempted": False}},
+        {"at": now.isoformat(), "stage": "upload", "success": False, "details": {"remote_attempted": False}},
+        {"at": now.isoformat(), "stage": "upload", "success": False, "details": {"remote_attempted": False}},
+    ]
+    (tmp_path / "pipeline_metrics.json").write_text(json.dumps(metrics), encoding="utf-8")
+
+    decision = assess_rollback(tmp_path, now=now)
+
+    assert decision.required is False
+    assert "upload failure spike" not in decision.reasons
 
 
 def test_old_failures_do_not_trigger_rollback_and_corruption_does(tmp_path):

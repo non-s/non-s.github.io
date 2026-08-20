@@ -48,7 +48,16 @@ def assess_rollback(data_root: Path, *, now: datetime | None = None) -> Rollback
     block_publication = False
     metrics = _json(data_root / "pipeline_metrics.json", [])
     recent_metrics = _recent(metrics if isinstance(metrics, list) else [], current)
-    uploads = [row for row in recent_metrics if str(row.get("stage", "")).startswith("upload")][-5:]
+    # Count only failures after a candidate passed the local production
+    # contract. Historically, policy rejections were recorded as upload
+    # failures too, creating a self-reinforcing publication kill switch.
+    uploads = [
+        row
+        for row in recent_metrics
+        if str(row.get("stage", "")).startswith("upload")
+        and isinstance(row.get("details"), dict)
+        and row["details"].get("remote_attempted") is True
+    ][-5:]
     renders = [row for row in recent_metrics if str(row.get("stage", "")).startswith("generate")][-5:]
     if len(uploads) >= 3 and sum(not bool(row.get("success")) for row in uploads) >= 3:
         reasons.append("upload failure spike")
