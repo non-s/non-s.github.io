@@ -124,6 +124,22 @@ def test_catalog_persists_audio_intent_memory(monkeypatch, tmp_path):
     assert item["audio_novelty"]["nearest_distance"] == 0.4
 
 
+def test_catalog_persists_and_archives_semantic_memory(monkeypatch, tmp_path):
+    import utils.creative_memory as memory
+
+    monkeypatch.setattr(memory, "data_dir", lambda: tmp_path)
+    monkeypatch.setattr(memory, "CATALOG_LIMIT", 1)
+    signature = {"vector": [0.1, 0.3], "concepts": ["family:orb"]}
+    memory.record_creation({"content_id": "old", "kind": "short", "semantic_signature": signature})
+    memory.record_creation({"content_id": "new", "kind": "long", "semantic_signature": signature})
+    assert memory.load_catalog()[0]["semantic_signature"] == signature
+    archive = json.loads((tmp_path / "catalog_archive.json").read_text())["data"]
+    cell = archive["cells"]["unknown|short"]
+    assert cell["semantic_centroid"] == [0.1, 0.3]
+    assert cell["semantic_samples"] == 1
+    assert cell["semantic_concepts"] == {"family:orb": 1}
+
+
 def test_fitness_models_are_distinct_explainable_and_uncertain():
     metrics = {
         "views": 100,

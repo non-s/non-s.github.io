@@ -26,6 +26,7 @@ def evaluate_publication(
     *,
     puzzle: dict[str, Any] | None = None,
     experiment: dict[str, Any] | None = None,
+    semantic_novelty: dict[str, Any] | None = None,
     force_private: bool = False,
 ) -> PublicationDecision:
     """Block objective failures; subjective characteristics become prompts."""
@@ -54,6 +55,20 @@ def evaluate_publication(
         dimensions["novelty"] = "fail"
     else:
         dimensions["novelty"] = "pass" if novelty is not None else "unmeasured"
+    semantic_state = semantic_novelty or {}
+    semantic_nearest = semantic_state.get("nearest", {})
+    semantic_distance = semantic_nearest.get("distance") if isinstance(semantic_nearest, dict) else None
+    semantic_minimum = semantic_state.get("minimum_distance")
+    if (
+        isinstance(semantic_distance, (int, float))
+        and isinstance(semantic_minimum, (int, float))
+        and semantic_nearest.get("content_id") is not None
+        and semantic_distance < semantic_minimum
+    ):
+        blocking.append("creative intent is a semantic near-duplicate")
+        dimensions["semantic_novelty"] = "fail"
+    else:
+        dimensions["semantic_novelty"] = "pass" if semantic_distance is not None else "unmeasured"
     rms = audio_dna.get("loudness", {}).get("rms_db")
     peak = audio_dna.get("loudness", {}).get("peak")
     if isinstance(rms, (int, float)) and rms <= -60:

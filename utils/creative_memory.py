@@ -44,6 +44,8 @@ def record_creation(metadata: dict[str, Any]) -> None:
                 "audio_composition_id": metadata.get("audio_composition_id"),
                 "audio_intent_vector": metadata.get("audio_intent_vector"),
                 "audio_novelty": metadata.get("audio_novelty"),
+                "semantic_signature": metadata.get("semantic_signature"),
+                "semantic_novelty": metadata.get("semantic_novelty"),
                 "quality": metadata.get("quality_report"),
                 "puzzle": metadata.get("genome", {}).get("puzzle", {}),
                 "performance_windows": {},
@@ -84,4 +86,27 @@ def _aggregate_archive(path, records: list[dict[str, Any]]) -> None:
         if isinstance(score, (int, float)):
             cell["fitness_sum"] += float(score)
             cell["fitness_samples"] += 1
+        raw_signature = record.get("semantic_signature")
+        signature: dict[str, Any] = raw_signature if isinstance(raw_signature, dict) else {}
+        vector = signature.get("vector")
+        if isinstance(vector, list) and all(isinstance(value, (int, float)) for value in vector):
+            old_count = int(cell.get("semantic_samples", 0))
+            old = cell.get("semantic_centroid", [0.0] * len(vector))
+            if not isinstance(old, list) or len(old) != len(vector):
+                old, old_count = [0.0] * len(vector), 0
+            cell["semantic_centroid"] = [
+                round((float(previous) * old_count + float(value)) / (old_count + 1), 6)
+                for previous, value in zip(old, vector, strict=True)
+            ]
+            cell["semantic_samples"] = old_count + 1
+            concepts = signature.get("concepts", [])
+            counts = cell.get("semantic_concepts", {})
+            if not isinstance(counts, dict):
+                counts = {}
+            for concept in concepts if isinstance(concepts, list) else []:
+                key_concept = str(concept)[:160]
+                counts[key_concept] = int(counts.get(key_concept, 0)) + 1
+            cell["semantic_concepts"] = dict(
+                sorted(counts.items(), key=lambda item: (-int(item[1]), item[0]))[:64]
+            )
     save_versioned(path, archive, ARCHIVE_SCHEMA_VERSION)
