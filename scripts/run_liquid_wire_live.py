@@ -10,10 +10,12 @@ import sys
 import time
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+from utils.atomic_state import atomic_write_json
 from utils.youtube_retry import retry_youtube_call
 
 log = logging.getLogger(__name__)
@@ -52,7 +54,7 @@ def create_live(service, *, title: str, privacy: str) -> tuple[str, str]:
             part="snippet,cdn,status",
             body={
                 "snippet": {"title": f"{title} stream"},
-                "cdn": {"ingestionType": "rtmp", "resolution": "720p", "frameRate": "30fps"},
+                "cdn": {"ingestionType": "rtmp", "resolution": "1080p", "frameRate": "30fps"},
             },
         ).execute
     )
@@ -66,34 +68,125 @@ def create_live(service, *, title: str, privacy: str) -> tuple[str, str]:
     return broadcast_id, _ingestion_url(stream)
 
 
-def stream_video(video: Path, rtmp_url: str, duration_minutes: int) -> None:
+def prepare_live_asset(video: Path, output: Path) -> Path:
+    """Encode the short loop once to a YouTube-safe, low-CPU delivery asset."""
     if not video.is_file():
         raise FileNotFoundError(video)
+    output.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run(
         [
-            "ffmpeg", "-hide_banner", "-nostdin", "-re", "-stream_loop", "-1", "-i", str(video),
-            "-t", str(duration_minutes * 60), "-c:v", "libx264", "-preset", "veryfast",
-            "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k", "-f", "flv", rtmp_url,
+            "ffmpeg", "-y", "-hide_banner", "-i", str(video),
+            "-c:v", "libx264", "-preset", "fast", "-profile:v", "high", "-level", "4.2",
+            "-b:v", "6000k", "-maxrate", "7500k", "-bufsize", "12000k",
+            "-g", "60", "-keyint_min", "60", "-sc_threshold", "0", "-pix_fmt", "yuv420p",
+            "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-movflags", "+faststart",
+            str(output),
         ],
         check=True,
-        timeout=duration_minutes * 60 + 300,
+        timeout=600,
     )
+    if not output.is_file() or output.stat().st_size < 1024:
+        raise RuntimeError("FFmpeg did not produce a valid live delivery asset.")
+    return output
 
 
-def broadcast_resilient(service, video: Path, duration_minutes: int, privacy: str, max_restarts: int = 3) -> list[str]:
+def stream_video(
+    video: Path,
+    rtmp_url: str,
+    duration_minutes: int,
+    *,
+    chaos_after_seconds: int = 0,
+) -> None:
+    if not video.is_file():
+        raise FileNotFoundError(video)
+    command = [
+        "ffmpeg", "-hide_banner", "-nostdin", "-re", "-stream_loop", "-1",
+        "-fflags", "+genpts", "-i", str(video), "-t", str(duration_minutes * 60),
+        "-c", "copy", "-flvflags", "no_duration_filesize", "-f", "flv", rtmp_url,
+    ]
+    if chaos_after_seconds:
+        process = subprocess.Popen(command)
+        try:
+            process.wait(timeout=chaos_after_seconds)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait(timeout=30)
+            raise subprocess.CalledProcessError(86, command, stderr="intentional chaos disconnect") from None
+        if process.returncode:
+            raise subprocess.CalledProcessError(process.returncode, command)
+        return
+    subprocess.run(command, check=True, timeout=duration_minutes * 60 + 300)
+
+
+def _write_journal(path: Path | None, payload: dict) -> None:
+    if path is not None:
+        atomic_write_json(path, payload, backup=False)
+
+
+def broadcast_resilient(
+    service,
+    video: Path,
+    duration_minutes: int,
+    privacy: str,
+    max_restarts: int = 10,
+    *,
+    chaos_after_seconds: int = 0,
+    journal_path: Path | None = None,
+) -> list[str]:
     """Reconnect with a fresh broadcast immediately after an RTMP failure."""
     remaining = duration_minutes
     broadcast_ids: list[str] = []
+    journal: dict[str, Any] = {
+        "schema_version": 1,
+        "started_at": datetime.now(UTC).isoformat(),
+        "target_minutes": duration_minutes,
+        "privacy": privacy,
+        "attempts": [],
+        "completed": False,
+    }
+    _write_journal(journal_path, journal)
+    failed_at: float | None = None
     for attempt in range(max_restarts + 1):
-        broadcast_id, rtmp_url = create_live(
-            service, title="Liquid Wire Live | Living Generative Forms", privacy=privacy
-        )
-        broadcast_ids.append(broadcast_id)
-        started = time.monotonic()
-        failure: subprocess.CalledProcessError | None = None
         try:
-            stream_video(video, rtmp_url, remaining)
-        except subprocess.CalledProcessError as exc:
+            broadcast_id, rtmp_url = create_live(
+                service, title="Liquid Wire Live | Living Generative Forms", privacy=privacy
+            )
+        except Exception as exc:
+            failed_at = failed_at or time.monotonic()
+            journal["attempts"].append({
+                "attempt": attempt + 1,
+                "created_at": datetime.now(UTC).isoformat(),
+                "outcome": "creation_failed",
+                "error_type": type(exc).__name__,
+                "remaining_minutes": remaining,
+            })
+            _write_journal(journal_path, journal)
+            if attempt >= max_restarts:
+                raise
+            time.sleep(min(30, 2 ** attempt))
+            continue
+        created_at = time.monotonic()
+        broadcast_ids.append(broadcast_id)
+        entry = {
+            "attempt": attempt + 1,
+            "broadcast_id": broadcast_id,
+            "created_at": datetime.now(UTC).isoformat(),
+            "recovery_latency_seconds": round(created_at - failed_at, 3) if failed_at is not None else None,
+            "remaining_minutes": remaining,
+            "outcome": "streaming",
+        }
+        journal["attempts"].append(entry)
+        _write_journal(journal_path, journal)
+        started = created_at
+        failure: (subprocess.CalledProcessError | subprocess.TimeoutExpired) | None = None
+        try:
+            stream_video(
+                video,
+                rtmp_url,
+                remaining,
+                chaos_after_seconds=chaos_after_seconds if attempt == 0 else 0,
+            )
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
             failure = exc
         finally:
             try:
@@ -105,8 +198,19 @@ def broadcast_resilient(service, video: Path, duration_minutes: int, privacy: st
             except Exception as exc:
                 log.warning("Could not complete broadcast %s: %s", broadcast_id, exc)
         if failure is None:
+            entry["outcome"] = "completed"
+            entry["streamed_seconds"] = round(time.monotonic() - started, 3)
+            journal["completed"] = True
+            journal["completed_at"] = datetime.now(UTC).isoformat()
+            _write_journal(journal_path, journal)
             return broadcast_ids
-        elapsed_minutes = max(1, math.ceil((time.monotonic() - started) / 60))
+        failed_at = time.monotonic()
+        elapsed_seconds = failed_at - started
+        entry["outcome"] = "disconnected"
+        entry["streamed_seconds"] = round(elapsed_seconds, 3)
+        entry["error_type"] = type(failure).__name__
+        _write_journal(journal_path, journal)
+        elapsed_minutes = max(1, math.ceil(elapsed_seconds / 60))
         remaining -= elapsed_minutes
         if attempt >= max_restarts or remaining < 5:
             raise failure
@@ -123,7 +227,8 @@ def main() -> int:
     parser.add_argument("--video", required=True, type=Path)
     parser.add_argument("--duration-minutes", type=int, default=10)
     parser.add_argument("--privacy", choices=("public", "unlisted", "private"), default="public")
-    parser.add_argument("--max-restarts", type=int, default=3)
+    parser.add_argument("--max-restarts", type=int, default=10)
+    parser.add_argument("--chaos-after-seconds", type=int, default=0)
     args = parser.parse_args()
     if not 5 <= args.duration_minutes <= 330:
         parser.error("--duration-minutes must be between 5 and 330")
@@ -133,8 +238,18 @@ def main() -> int:
     service = get_youtube_service()
     if not 0 <= args.max_restarts <= 10:
         parser.error("--max-restarts must be between 0 and 10")
+    if not 0 <= args.chaos_after_seconds <= args.duration_minutes * 60:
+        parser.error("--chaos-after-seconds must fit inside the session")
+    delivery = prepare_live_asset(args.video, args.video.with_name(f"{args.video.stem}_delivery.mp4"))
+    journal = ROOT / "_data" / "live_continuity.json"
     broadcast_ids = broadcast_resilient(
-        service, args.video, args.duration_minutes, args.privacy, args.max_restarts
+        service,
+        delivery,
+        args.duration_minutes,
+        args.privacy,
+        args.max_restarts,
+        chaos_after_seconds=args.chaos_after_seconds,
+        journal_path=journal,
     )
     print(broadcast_ids[-1])
     return 0

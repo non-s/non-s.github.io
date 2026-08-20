@@ -3,8 +3,8 @@ name: "Liquid Wire - Continuous Live Watchdog"
 on:
   workflow_dispatch:
   schedule:
-    # Recover a broken chain within at most 30 minutes.
-    - cron: "7,37 * * * *"
+    # Recover a broken chain within at most 10 minutes.
+    - cron: "7,17,27,37,47,57 * * * *"
 
 permissions:
   contents: read
@@ -36,7 +36,8 @@ jobs:
               --ref main \
               -f duration_minutes=330 \
               -f privacy=public \
-              -f continuous=true
+              -f continuous=true \
+              -f chaos_after_seconds=0
             echo "Continuous live chain recovered."
           else
             echo "Continuous live session already active or queued."
