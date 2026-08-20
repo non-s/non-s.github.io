@@ -12,7 +12,7 @@ overfitting a um unico viral). Os pesos resultantes sao persistidos em
 Fluxo:
 
     evolve_aesthetics()  ->  analyze_performance()  ->  Gemini
-                        |                          |-> (fallback None)
+                        |                          |-> deterministic catalog fallback
                         v                          v
                         save_aesthetic_weights()   (nao salva)
                         |
@@ -28,9 +28,10 @@ Fluxo:
             weighted_choice() usa load_aesthetic_weights()
 
 O modulo e defensivo: se o Gemini falhar (key ausente, circuit breaker,
-JSON invalido), :func:`analyze_performance` retorna ``None`` e o canal
-continua operando com pesos uniformes (fallback). Nenhum erro de IA
-pode derrubar a geracao.
+JSON invalido), :func:`analyze_performance` usa apenas fitness comparavel
+do catalogo. Sem ao menos oito observacoes na mesma janela/formato, preserva
+os pesos anteriores e declara dados insuficientes. Nenhum erro de IA pode
+derrubar a geracao nem fabricar aprendizado.
 """
 
 from __future__ import annotations
@@ -38,11 +39,13 @@ from __future__ import annotations
 import json
 import logging
 import os
+from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
 
 from utils.ai_helper import ai_text
+from utils.atomic_state import load_versioned
 from utils.paths import data_dir
 from utils.state_lock import state_lock
 
@@ -63,6 +66,7 @@ _DEFAULT_DURATION_RANGE: list[float] = [20.0, 180.0]
 _DEFAULT_POSTING_HOURS: list[int] = list(range(0, 24))
 
 _RESORT_ATTEMPTS = 4
+_MIN_DETERMINISTIC_SAMPLES = 8
 
 
 def _weights_file() -> Path:
@@ -195,6 +199,78 @@ def _build_analysis_prompt(summary: dict) -> str:
     )
 
 
+def _deterministic_catalog_analysis() -> dict | None:
+    """Learn bounded weights from comparable observed fitness when Gemini is unavailable."""
+    path = data_dir() / "catalog_memory.json"
+    catalog = load_versioned(path, 1, {}, []) if path.exists() else []
+    rows = catalog if isinstance(catalog, list) else []
+    cohorts: dict[tuple[str, str], list[dict]] = defaultdict(list)
+    for row in rows:
+        fitness = row.get("fitness") if isinstance(row, dict) else None
+        if (
+            isinstance(row, dict)
+            and isinstance(fitness, dict)
+            and isinstance(fitness.get("score"), (int, float))
+            and float(fitness.get("confidence") or 0.0) >= 0.2
+            and row.get("kind") in {"short", "long"}
+            and row.get("fitness_window")
+        ):
+            cohorts[(str(row["kind"]), str(row["fitness_window"]))].append(row)
+    comparable = [cohort for cohort in cohorts.values() if len(cohort) >= _MIN_DETERMINISTIC_SAMPLES]
+    if not comparable:
+        return None
+
+    family_signals: dict[str, list[tuple[float, float]]] = defaultdict(list)
+    genre_signals: dict[str, list[tuple[float, float]]] = defaultdict(list)
+    for cohort in comparable:
+        scores = [float(row["fitness"]["score"]) for row in cohort]
+        baseline = sum(scores) / len(scores)
+        for row, score in zip(cohort, scores, strict=True):
+            confidence = float(row["fitness"].get("confidence") or 0.0)
+            raw_genome = row.get("genome")
+            genome: dict = raw_genome if isinstance(raw_genome, dict) else {}
+            family = str(genome.get("family", ""))
+            raw_audio = genome.get("audio")
+            audio: dict = raw_audio if isinstance(raw_audio, dict) else {}
+            genre = str(audio.get("genre", ""))
+            if family:
+                family_signals[family].append((score - baseline, confidence))
+            if genre:
+                genre_signals[genre].append((score - baseline, confidence))
+
+    def weights(signals: dict[str, list[tuple[float, float]]]) -> dict[str, float]:
+        result: dict[str, float] = {}
+        for option, observations in signals.items():
+            confidence_total = sum(confidence for _, confidence in observations)
+            if confidence_total <= 0:
+                continue
+            effect = sum(delta * confidence for delta, confidence in observations) / confidence_total
+            shrinkage = len(observations) / (len(observations) + 4.0)
+            result[option] = round(float(np.clip(1.0 + effect * 2.0 * shrinkage, 0.5, 1.5)), 6)
+        return result
+
+    family_weights = weights(family_signals)
+    genre_weights = weights(genre_signals)
+    ranked_families = sorted(family_weights, key=lambda item: family_weights[item], reverse=True)
+    ranked_genres = sorted(genre_weights, key=lambda item: genre_weights[item], reverse=True)
+    return {
+        "best_genres": ranked_genres[:5],
+        "best_families": ranked_families[:5],
+        "optimal_duration_range": list(_DEFAULT_DURATION_RANGE),
+        "best_posting_hours": list(_DEFAULT_POSTING_HOURS),
+        "aesthetic_weights": {
+            "family_weight": family_weights,
+            "genre_weight": genre_weights,
+        },
+        "recommendations": (
+            "Deterministic confidence-weighted update from same-format, same-age-window cohorts."
+        ),
+        "analysis_source": "deterministic_catalog",
+        "eligible_samples": sum(len(cohort) for cohort in comparable),
+        "comparable_cohorts": len(comparable),
+    }
+
+
 def _coerce_weights(
     raw: dict,
     known_options: list[str],
@@ -235,8 +311,8 @@ def analyze_performance() -> dict | None:
     pipeline = pipeline_raw if isinstance(pipeline_raw, list) else []
 
     if not analytics and not quality and not pipeline:
-        log.info("ai_evolution: sem dados para analisar (analytics/quality/pipeline ausentes).")
-        return None
+        log.info("ai_evolution: fontes legadas ausentes; consultando catalogo de fitness.")
+        return _deterministic_catalog_analysis()
 
     summary = {
         "analytics": _summarize_analytics(analytics),
@@ -247,8 +323,8 @@ def analyze_performance() -> dict | None:
     prompt = _build_analysis_prompt(summary)
     raw = ai_text(prompt, json_mode=True, task="aesthetic_evolution", timeout=45)
     if not raw:
-        log.warning("ai_evolution: Gemini retornou vazio; usando fallback uniforme.")
-        return None
+        log.warning("ai_evolution: Gemini retornou vazio; tentando aprendizado deterministico.")
+        return _deterministic_catalog_analysis()
     try:
         data = json.loads(raw)
     except (json.JSONDecodeError, TypeError) as exc:
@@ -263,11 +339,11 @@ def analyze_performance() -> dict | None:
         except (json.JSONDecodeError, TypeError):
             data = None
         if data is None:
-            log.warning("ai_evolution: autorreparo JSON falhou; mantendo pesos anteriores.")
-            return None
+            log.warning("ai_evolution: autorreparo JSON falhou; tentando aprendizado deterministico.")
+            return _deterministic_catalog_analysis()
     if not isinstance(data, dict):
         log.warning("ai_evolution: resposta do Gemini nao e um objeto JSON.")
-        return None
+        return _deterministic_catalog_analysis()
 
     result = {
         "best_genres": [str(g) for g in data.get("best_genres", []) if isinstance(g, str)],
@@ -445,22 +521,26 @@ def evolve_aesthetics() -> dict:
     relatorio em pesos normalizados e os salva via
     :func:`save_aesthetic_weights`. Se a analise falhar (Gemini indisponivel,
     dados insuficientes), mantem os pesos existentes e retorna um dict
-    vazio com ``status="fallback"`` para o caller distinguir.
+    relatorio de dados insuficientes para o caller distinguir.
 
     Returns:
         dict de analise (com ``status`` adicionado) ou ``{"status":
-        "fallback"}`` em falha.
+        "insufficient_data"}`` quando nenhuma coorte e valida.
     """
     analysis = analyze_performance()
     if analysis is None:
-        log.info("ai_evolution: evolve_aesthetics sem atualizacao (fallback).")
-        return {"status": "fallback"}
+        log.info("ai_evolution: dados comparaveis insuficientes; pesos preservados.")
+        return {"status": "insufficient_data", "minimum_samples": _MIN_DETERMINISTIC_SAMPLES}
 
     weights = _analysis_to_weights(analysis)
     save_aesthetic_weights(weights)
 
     report = dict(analysis)
-    report["status"] = "evolved"
+    report["status"] = (
+        "evolved_deterministic"
+        if analysis.get("analysis_source") == "deterministic_catalog"
+        else "evolved"
+    )
     log.info(
         "ai_evolution: evolucao aplicada — familias_top=%s, generos_top=%s, duration=%s.",
         ",".join(analysis.get("best_families", [])[:5]) or "-",
@@ -553,7 +633,7 @@ def main() -> int:
         return 1
     report = evolve_aesthetics()
     print(json.dumps(report, ensure_ascii=False, indent=2))
-    return 0 if report.get("status") == "evolved" else 2
+    return 0 if report.get("status") in {"evolved", "evolved_deterministic"} else 2
 
 
 if __name__ == "__main__":
