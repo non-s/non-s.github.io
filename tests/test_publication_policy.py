@@ -22,7 +22,7 @@ def test_quality_gate_2_passes_objective_validity_and_requires_private_by_defaul
     assert decision.required_privacy == "private"
     assert decision.dimensions["technical"] == "pass"
     assert set(decision.dimensions) == {
-        "technical", "visual", "temporal", "novelty", "audio", "puzzle", "experiment"
+        "technical", "visual", "temporal", "novelty", "semantic_novelty", "audio", "puzzle", "experiment"
     }
 
 
@@ -57,3 +57,15 @@ def test_invalid_multi_variable_experiment_blocks_publication():
     decision = evaluate_publication(*_valid(), experiment={"changed_variables": {"motion": 1, "audio": 2}})
     assert decision.passed is False
     assert decision.dimensions["experiment"] == "fail"
+
+
+def test_semantic_near_duplicate_is_blocked():
+    decision = evaluate_publication(
+        *_valid(),
+        semantic_novelty={
+            "minimum_distance": 0.045,
+            "nearest": {"distance": 0.01, "content_id": "lw_previous"},
+        },
+    )
+    assert not decision.passed
+    assert decision.dimensions["semantic_novelty"] == "fail"

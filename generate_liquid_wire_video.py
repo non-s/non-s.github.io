@@ -80,6 +80,12 @@ from utils.post_process import apply_all as apply_post
 from utils.publication_policy import evaluate_publication
 from utils.puzzle_engine import prepare_puzzle, validate_puzzle_carrier
 from utils.rejection_memory import recent_rejection_counts, record_rejection
+from utils.semantic_memory import (
+    SEMANTIC_MIN_DISTANCE,
+    build_semantic_signature,
+    load_archive_signatures,
+    nearest_semantic_signature,
+)
 from utils.soft_matter import bridge_strands, interaction_deform, jelly_deform
 from utils.state_lock import state_lock
 from utils.trending_topics import enrich_metadata as enrich_with_trends
@@ -1876,6 +1882,22 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
         if isinstance(item, dict)
     ):
         raise QualityGateError("Audio composition rejected: exact composition already exists")
+    profile["duration"] = duration
+    profile["semantic_signature"] = build_semantic_signature(profile, preset)
+    semantic_neighbors = nearest_semantic_signature(
+        profile["semantic_signature"], catalog, load_archive_signatures(data_dir())
+    )
+    profile["semantic_novelty"] = {
+        "version": 1,
+        "minimum_distance": SEMANTIC_MIN_DISTANCE,
+        **semantic_neighbors,
+    }
+    semantic_nearest = semantic_neighbors["nearest"]
+    if semantic_nearest["content_id"] is not None and semantic_nearest["distance"] < SEMANTIC_MIN_DISTANCE:
+        raise QualityGateError(
+            f"Creative intent rejected: semantic repetition of {semantic_nearest['content_id']} "
+            f"(distance={semantic_nearest['distance']:.6f})"
+        )
     if ai_plan:
         profile["ai_plan"] = ai_plan
     genome = Genome.from_profile(profile, preset)
@@ -1944,9 +1966,12 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     meta["audio_composition_id"] = profile["audio_composition_id"]
     meta["audio_intent_vector"] = profile["audio_intent_vector"]
     meta["audio_novelty"] = profile["audio_novelty"]
+    meta["semantic_signature"] = profile["semantic_signature"]
+    meta["semantic_novelty"] = profile["semantic_novelty"]
     publication = evaluate_publication(
         quality.to_dict(), visual_dna.to_dict(), audio_dna.to_dict(), puzzle=genome.puzzle,
-        experiment=profile.get("experiment"), force_private=autonomy.force_private,
+        experiment=profile.get("experiment"), semantic_novelty=profile["semantic_novelty"],
+        force_private=autonomy.force_private,
     )
     meta["publication_readiness"] = publication.to_dict()
     meta["autonomy_state"] = autonomy.to_dict()
