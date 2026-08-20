@@ -71,7 +71,12 @@ def assess_rollback(data_root: Path, *, now: datetime | None = None) -> Rollback
             content_id = record.get("content_id") if isinstance(record, dict) else None
             if content_id and content_id in seen and seen[content_id] != video_id:
                 reasons.append("duplicate content publication detected")
-                block_publication = True
+                # The duplicate is already immutable YouTube history.  Keep
+                # the system in safe/private-validation mode, but do not brick
+                # every future unique publication forever.  Exact and
+                # perceptual duplicate gates still reject the next candidate
+                # before upload; hard blocking remains reserved for an active
+                # upload failure spike or corrupted state.
                 break
             if content_id:
                 seen[str(content_id)] = str(video_id)
