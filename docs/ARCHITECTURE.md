@@ -14,6 +14,28 @@ stock footage or stock music.
    `generator_profile`.
 6. `upload_youtube.py` uploads the latest `liquid_wire_*.mp4` using OAuth.
 
+## Autonomous core contract (engine 4.1)
+
+The stable loop is now:
+
+```text
+profile -> versioned genome -> render -> final-MP4 perception
+        -> versioned visual DNA -> quality gate -> catalog memory
+        -> age-normalized YouTube evidence -> explainable fitness
+        -> hypothesis/experiment -> controlled evolution
+```
+
+`utils/creative_models.py` separates creative intent (`Genome`) from observed
+output (`VisualDNA`) and derives stable identifiers. `utils/atomic_state.py`
+provides migration-aware atomic persistence. `utils/creative_memory.py` keeps
+a bounded catalog that can later receive performance windows without growing
+raw history forever. `utils/research_engine.py` supplies distinct Shorts and
+long-form fitness models and conservative evidence states.
+
+The profile remains an internal engine structure for compatibility. New
+automation should depend on the versioned genome and visual-DNA metadata,
+not on undocumented profile fields.
+
 ## Uniqueness
 
 Each video gets a cryptographic-random seed unless a seed is passed manually.

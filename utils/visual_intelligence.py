@@ -10,6 +10,8 @@ import importlib
 from pathlib import Path
 from typing import Any
 
+from utils.creative_models import VisualDNA
+
 # Dynamic imports keep static checking independent from the local NumPy stub
 # version while OpenCV remains a declared runtime dependency.
 cv2: Any = importlib.import_module("cv2")
@@ -64,6 +66,141 @@ def analyze_video(path: Path, samples: int = 3) -> dict[str, float]:
         "motion_signal": round(float(np.mean(motions)) if motions else 0.0, 2),
         "sample_count": float(len(brightnesses)),
     }
+
+
+def _entropy(gray: Any) -> float:
+    histogram = cv2.calcHist([gray], [0], None, [256], [0, 256]).ravel().astype(float)
+    probabilities = histogram[histogram > 0] / max(1.0, float(histogram.sum()))
+    return float(-(probabilities * np.log2(probabilities)).sum())
+
+
+def _sampled_frames(path: Path, samples: int) -> list[Any]:
+    capture = cv2.VideoCapture(str(path))
+    if not capture.isOpened():
+        return []
+    count = max(1, int(capture.get(cv2.CAP_PROP_FRAME_COUNT)))
+    indices = np.linspace(0, count - 1, min(max(3, samples), count), dtype=int)
+    frames: list[Any] = []
+    try:
+        for index in indices:
+            capture.set(cv2.CAP_PROP_POS_FRAMES, int(index))
+            ok, frame = capture.read()
+            if ok:
+                frames.append(frame)
+    finally:
+        capture.release()
+    return frames
+
+
+def analyze_visual_dna(
+    path: Path,
+    *,
+    samples: int = 12,
+    recent_fingerprints: list[list[float] | tuple[float, ...]] | None = None,
+) -> VisualDNA | None:
+    """Describe what survived the final encode using inexpensive OpenCV signals.
+
+    Metrics are normalized where practical so future schema migrations can
+    compare videos rendered at different resolutions.  Novelty is descriptive;
+    a separate policy decides whether it should block publication.
+    """
+    frames = _sampled_frames(path, samples)
+    if not frames:
+        return None
+    brightness: list[float] = []
+    contrast: list[float] = []
+    saturation: list[float] = []
+    entropy: list[float] = []
+    edge_density: list[float] = []
+    screen_fill: list[float] = []
+    symmetry: list[float] = []
+    centers: list[tuple[float, float]] = []
+    flow: list[float] = []
+    differences: list[float] = []
+    palette_hist = np.zeros(12, dtype=float)
+    previous = None
+    for frame in frames:
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        active = gray > 8
+        edges = cv2.Canny(gray, 80, 160)
+        brightness.append(float(gray.mean() / 255.0))
+        contrast.append(float(gray.std() / 127.5))
+        saturation.append(float(hsv[:, :, 1].mean() / 255.0))
+        entropy.append(_entropy(gray) / 8.0)
+        edge_density.append(float(np.count_nonzero(edges) / edges.size))
+        screen_fill.append(float(active.mean()))
+        ys, xs = np.nonzero(active)
+        centers.append(
+            (
+                float(xs.mean() / max(1, gray.shape[1] - 1)) if len(xs) else 0.5,
+                float(ys.mean() / max(1, gray.shape[0] - 1)) if len(ys) else 0.5,
+            )
+        )
+        flipped = cv2.flip(gray, 1)
+        symmetry.append(1.0 - min(1.0, float(cv2.absdiff(gray, flipped).mean() / 255.0)))
+        colorful = (hsv[:, :, 1] > 32) & (hsv[:, :, 2] > 24)
+        if np.any(colorful):
+            palette_hist += np.histogram(hsv[:, :, 0][colorful], bins=12, range=(0, 180))[0]
+        reduced = cv2.resize(gray, (160, 90), interpolation=cv2.INTER_AREA)
+        if previous is not None:
+            differences.append(float(cv2.absdiff(previous, reduced).mean() / 255.0))
+            optical = cv2.calcOpticalFlowFarneback(previous, reduced, None, 0.5, 2, 12, 2, 5, 1.1, 0)
+            magnitude = cv2.magnitude(optical[..., 0], optical[..., 1])
+            flow.append(float(np.median(magnitude) / np.hypot(160, 90)))
+        previous = reduced
+    palette_total = float(palette_hist.sum())
+    palette = (palette_hist / palette_total).tolist() if palette_total else [0.0] * 12
+    fingerprint = [
+        float(np.mean(screen_fill)),
+        float(np.mean(centers, axis=0)[0]),
+        float(np.mean(centers, axis=0)[1]),
+        float(np.mean(symmetry)),
+        float(np.mean(entropy)),
+        float(np.mean(flow)) if flow else 0.0,
+        float(np.mean(brightness)),
+        float(np.mean(contrast)),
+        float(np.mean(saturation)),
+        *palette,
+    ]
+    distances = []
+    for old in recent_fingerprints or []:
+        if not old:
+            continue
+        width = min(len(old), len(fingerprint))
+        delta = np.asarray(fingerprint[:width]) - np.asarray(old[:width])
+        distances.append(float(np.linalg.norm(delta) / np.sqrt(width)))
+    thirds = np.array_split(np.asarray(differences or [0.0]), 3)
+    return VisualDNA(
+        composition={
+            "screen_fill": round(float(np.mean(screen_fill)), 6),
+            "center_mass": [round(float(value), 6) for value in np.mean(centers, axis=0)],
+            "symmetry": round(float(np.mean(symmetry)), 6),
+            "edge_density": round(float(np.mean(edge_density)), 6),
+            "entropy": round(float(np.mean(entropy)), 6),
+        },
+        motion={
+            "optical_flow_mean": round(float(np.mean(flow)) if flow else 0.0, 6),
+            "optical_flow_variance": round(float(np.var(flow)) if flow else 0.0, 6),
+            "frame_difference_mean": round(float(np.mean(differences)) if differences else 0.0, 6),
+        },
+        appearance={
+            "brightness": round(float(np.mean(brightness)), 6),
+            "contrast": round(float(np.mean(contrast)), 6),
+            "saturation": round(float(np.mean(saturation)), 6),
+            "dominant_palette": [round(float(value), 6) for value in palette],
+        },
+        temporal={
+            "opening_activity": round(float(np.mean(thirds[0])), 6),
+            "middle_activity": round(float(np.mean(thirds[1])), 6),
+            "ending_activity": round(float(np.mean(thirds[2])), 6),
+        },
+        novelty={
+            "fingerprint": [round(float(value), 6) for value in fingerprint],
+            "recent_distance": round(min(distances), 6) if distances else None,
+        },
+        sample_count=len(frames),
+    )
 
 
 def creative_quality_flags(thumbnail: dict[str, float], video: dict[str, float]) -> list[str]:

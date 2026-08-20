@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.1.0 - 2026-08-20
+
+- Added versioned procedural genomes, final-render visual DNA and stable
+  content/provenance identifiers.
+- Added OpenCV composition, palette, entropy, temporal-change and optical-flow
+  observation of the encoded MP4.
+- Added bounded catalog memory with atomic versioned JSON writes and rollback
+  copies.
+- Added explainable, confidence-aware and format-specific fitness primitives.
+- Added the Master Mandate V2 baseline/audit and autonomous-core tests.
+
 All notable changes to Liquid Wire are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).

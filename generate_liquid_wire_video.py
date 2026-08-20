@@ -33,6 +33,8 @@ from utils.audio_mix import BUS_NAMES as MIX_BUS_NAMES
 from utils.audio_mix import Mixer
 from utils.chapter_markers import prepend_chapters
 from utils.content_strategy import current_brt_hour, min_quality_score_for_slot
+from utils.creative_memory import record_creation
+from utils.creative_models import ENGINE_VERSION, Genome, content_id
 from utils.drums import DrumSequencer
 from utils.dsp.dynamics import SideChainDuck
 from utils.flow_field import FlowField, render_flow_particles
@@ -66,6 +68,7 @@ from utils.paths import data_dir
 from utils.post_process import apply_all as apply_post
 from utils.state_lock import state_lock
 from utils.trending_topics import enrich_metadata as enrich_with_trends
+from utils.visual_intelligence import analyze_visual_dna
 
 log = logging.getLogger(__name__)
 
@@ -1693,11 +1696,12 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     else:
         # AI Composer: Gemini generates musical structure, motor renders it.
         composition = ai_compose_music(int(profile["seed"]), duration, get_genre(genre_name))
-    profile["engine_version"] = "4.0"
+    profile["engine_version"] = ENGINE_VERSION
     profile["timeline"] = [event.to_dict() for event in events]
     profile["composition"] = composition.to_dict()
     if ai_plan:
         profile["ai_plan"] = ai_plan
+    genome = Genome.from_profile(profile, preset)
     # Carry the supersampled render size in the profile for the worker.
     profile["_render_w"] = render_w
     profile["_render_h"] = render_h
@@ -1721,13 +1725,34 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
         raise QualityGateError(
             f"Render rejected with score {quality.score:.4f}: {', '.join(quality.issues) or 'score_below_threshold'}"
         )
+    visual_dna = analyze_visual_dna(output)
+    if visual_dna is None:
+        output.unlink(missing_ok=True)
+        audio_path.unlink(missing_ok=True)
+        shutil.rmtree(FRAME_DIR, ignore_errors=True)
+        raise QualityGateError("Render rejected: final encoded video could not be perceived")
     thumbnail = THUMB_DIR / f"{stem}.jpg"
     Image.open(thumb_frame).save(thumbnail, quality=94)
     meta = _metadata(output, thumbnail, duration, preset, profile)
     meta["quality_report"] = quality.to_dict()
+    meta["content_id"] = content_id(genome, visual_dna)
+    meta["genome"] = genome.to_dict()
+    meta["genome_id"] = genome.genome_id
+    meta["visual_dna"] = visual_dna.to_dict()
+    meta["visual_dna_id"] = visual_dna.dna_id
+    meta["provenance"] = {
+        "engine_version": ENGINE_VERSION,
+        "seed": genome.seed,
+        "genome_version": genome.version,
+        "visual_dna_version": visual_dna.version,
+        "runtime": "python",
+        "visual_source": "procedural_python",
+        "audio_source": "synthetic_python",
+    }
     # Trending topics: enrich title/description with trending inspiration.
     meta = enrich_with_trends(meta, profile.get("family", "orb"), str(profile.get("genre", "lofi_ambient")), preset)
     output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    record_creation(meta)
     audio_path.unlink(missing_ok=True)
     shutil.rmtree(FRAME_DIR, ignore_errors=True)
     return output
