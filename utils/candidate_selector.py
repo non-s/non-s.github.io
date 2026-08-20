@@ -32,12 +32,22 @@ def candidate_budget(preset: str) -> int:
 def _intent_vector(profile: dict[str, Any]) -> np.ndarray:
     raw_palette = profile.get("palette")
     palette: dict[str, Any] = raw_palette if isinstance(raw_palette, dict) else {}
+    raw_scene = profile.get("scene")
+    scene = raw_scene if isinstance(raw_scene, dict) else {}
+    organisms = scene.get("organisms", [])
+    relations = scene.get("relations", [])
+    mean_scale = float(np.mean([o.get("scale", .5) for o in organisms])) if organisms else 0.0
+    mean_motion = float(np.mean([abs(o.get("orbit_rate", 0)) for o in organisms])) if organisms else 0.0
     return np.asarray(
         [
             float(profile.get("folds_theta", 0)) / 12.0,
             float(profile.get("folds_phi", 0)) / 12.0,
             min(1.0, float(profile.get("melt_rate", 0)) / 2.5),
             float(palette.get("base_hue", 0)) % 1.0,
+            min(1.0, len(organisms) / 7.0),
+            mean_scale,
+            min(1.0, mean_motion * 4),
+            min(1.0, len({r.get("kind") for r in relations}) / 7.0),
         ],
         dtype=float,
     )
@@ -58,6 +68,7 @@ def _catalog_vectors(catalog: list[dict[str, Any]]) -> list[np.ndarray]:
                     **geometry,
                     **motion,
                     "palette": appearance.get("palette", {}),
+                    "scene": genome.get("scene", {}),
                 }
             )
         )
@@ -68,7 +79,9 @@ def _variant(base: dict[str, Any], index: int, rng: np.random.Generator) -> tupl
     candidate = copy.deepcopy(base)
     if index == 0:
         return candidate, {"field": None, "before": None, "after": None}
-    choice = (index - 1) % 3
+    before: Any
+    after: Any
+    choice = (index - 1) % 5
     if choice == 0:
         field = "palette.base_hue"
         palette = candidate.setdefault("palette", {})
@@ -80,11 +93,30 @@ def _variant(base: dict[str, Any], index: int, rng: np.random.Generator) -> tupl
         before = int(candidate.get(field, 3))
         after = int(np.clip(before + int(rng.choice([-1, 1])), 1, 12))
         candidate[field] = after
-    else:
+    elif choice == 2:
         field = "melt_rate"
         before = float(candidate.get(field, 0.2))
         after = round(float(np.clip(before * rng.uniform(0.75, 1.25), 0.02, 2.5)), 6)
         candidate[field] = after
+    elif choice == 3:
+        field = "scene.organism_motion"
+        organisms = candidate.get("scene", {}).get("organisms", [])
+        if not organisms:
+            return candidate, {"field": None, "before": None, "after": None}
+        target = organisms[index % len(organisms)]
+        before = float(target.get("orbit_rate", 0))
+        after = round(float(np.clip(before + rng.uniform(-.12, .12), -.4, .4)), 6)
+        target["orbit_rate"] = after
+    else:
+        field = "scene.relation"
+        relations = candidate.get("scene", {}).get("relations", [])
+        if not relations:
+            return candidate, {"field": None, "before": None, "after": None}
+        target = relations[index % len(relations)]
+        before = str(target.get("kind"))
+        choices = ["orbit", "resonance", "braid", "mirror", "attraction", "emergence", "fusion"]
+        after = str(rng.choice([value for value in choices if value != before]))
+        target["kind"] = after
     return candidate, {"field": field, "before": before, "after": after}
 
 

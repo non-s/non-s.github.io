@@ -49,7 +49,8 @@ def archive_of_elites(catalog: list[dict[str, Any]], per_cell: int = 3) -> list[
             continue
         raw_genome = item.get("genome")
         genome: dict[str, Any] = raw_genome if isinstance(raw_genome, dict) else {}
-        family = str(genome.get("family", "unknown"))
+        scene = genome.get("scene", {})
+        family = str(scene.get("architecture_id") or genome.get("family", "unknown"))
         kind = str(item.get("kind", "unknown"))
         raw_visual_dna = item.get("visual_dna")
         visual_dna: dict[str, Any] = raw_visual_dna if isinstance(raw_visual_dna, dict) else {}
@@ -92,7 +93,7 @@ def _select_parent(elites: list[dict[str, Any]], preset: str, rng: np.random.Gen
 
 
 def _mutate_profile(profile: dict[str, Any], rng: np.random.Generator) -> Mutation:
-    options = ["geometry", "motion", "appearance", "audio"]
+    options = ["geometry", "motion", "appearance", "audio", "scene", "scene"]
     category = str(rng.choice(options))
     before: Any
     after: Any
@@ -111,12 +112,26 @@ def _mutate_profile(profile: dict[str, Any], rng: np.random.Generator) -> Mutati
         after = round((before + float(rng.uniform(-0.12, 0.12))) % 1.0, 6)
         palette["base_hue"] = after
         return Mutation(category, field, before, after)
-    else:
+    elif category == "audio":
         field = "music.swing"
         music = profile.setdefault("music", {})
         before = float(music.get("swing", 0.1))
         after = round(float(np.clip(before + rng.uniform(-0.04, 0.04), 0.0, 0.35)), 6)
         music["swing"] = after
+        return Mutation(category, field, before, after)
+    else:
+        organisms = profile.get("scene", {}).get("organisms", [])
+        if not organisms:
+            field = "folds_theta"
+            before = int(profile.get(field, 3))
+            after = int(np.clip(before + int(rng.choice([-1, 1])), 1, 12))
+            profile[field] = after
+            return Mutation("geometry", field, before, after)
+        organism = organisms[int(rng.integers(0, len(organisms)))]
+        field = f"scene.{organism.get('id')}.topology_mix"
+        before = float(organism.get("topology_mix", .5))
+        after = round(float(np.clip(before + rng.uniform(-.2, .2), 0, 1)), 6)
+        organism["topology_mix"] = after
         return Mutation(category, field, before, after)
     profile[field] = after
     return Mutation(category, field, before, after)
@@ -137,6 +152,9 @@ def _inherit(profile: dict[str, Any], genome: dict[str, Any]) -> None:
         profile["palette"] = copy.deepcopy(appearance["palette"])
     if audio.get("genre"):
         profile["genre"] = audio["genre"]
+    scene = genome.get("scene")
+    if isinstance(scene, dict) and scene.get("organisms"):
+        profile["scene"] = copy.deepcopy(scene)
 
 
 def evolve_profile(
