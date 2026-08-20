@@ -7,6 +7,7 @@ import pytest
 
 from scripts.run_liquid_wire_live import (
     _ingestion_url,
+    broadcast_resilient,
     create_live,
     stream_video,
 )
@@ -139,3 +140,18 @@ def test_main_validates_duration_range() -> None:
     with patch("sys.argv", ["run_liquid_wire_live.py", "--video", "x.mp4", "--duration-minutes", "3"]):
         with pytest.raises(SystemExit):
             live.main()
+
+
+def test_resilient_broadcast_immediately_replaces_broken_rtmp(tmp_path: Path) -> None:
+    video = tmp_path / "source.mp4"
+    video.write_bytes(b"video")
+    failure = __import__("subprocess").CalledProcessError(1, ["ffmpeg"])
+    with (
+        patch("scripts.run_liquid_wire_live.create_live", side_effect=[("b1", "rtmp://one"), ("b2", "rtmp://two")]),
+        patch("scripts.run_liquid_wire_live.stream_video", side_effect=[failure, None]) as stream,
+        patch("scripts.run_liquid_wire_live.time.monotonic", side_effect=[0.0, 61.0, 62.0]),
+    ):
+        ids = broadcast_resilient(_LiveService(), video, 30, "public", max_restarts=2)
+    assert ids == ["b1", "b2"]
+    assert stream.call_count == 2
+    assert stream.call_args_list[1].args[-1] == 28

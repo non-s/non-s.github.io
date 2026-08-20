@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import argparse
 import logging
+import math
 import subprocess
 import sys
+import time
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
@@ -78,11 +80,50 @@ def stream_video(video: Path, rtmp_url: str, duration_minutes: int) -> None:
     )
 
 
+def broadcast_resilient(service, video: Path, duration_minutes: int, privacy: str, max_restarts: int = 3) -> list[str]:
+    """Reconnect with a fresh broadcast immediately after an RTMP failure."""
+    remaining = duration_minutes
+    broadcast_ids: list[str] = []
+    for attempt in range(max_restarts + 1):
+        broadcast_id, rtmp_url = create_live(
+            service, title="Liquid Wire Live | Living Generative Forms", privacy=privacy
+        )
+        broadcast_ids.append(broadcast_id)
+        started = time.monotonic()
+        failure: subprocess.CalledProcessError | None = None
+        try:
+            stream_video(video, rtmp_url, remaining)
+        except subprocess.CalledProcessError as exc:
+            failure = exc
+        finally:
+            try:
+                retry_youtube_call(
+                    service.liveBroadcasts().transition(
+                        broadcastStatus="complete", id=broadcast_id, part="status"
+                    ).execute
+                )
+            except Exception as exc:
+                log.warning("Could not complete broadcast %s: %s", broadcast_id, exc)
+        if failure is None:
+            return broadcast_ids
+        elapsed_minutes = max(1, math.ceil((time.monotonic() - started) / 60))
+        remaining -= elapsed_minutes
+        if attempt >= max_restarts or remaining < 5:
+            raise failure
+        log.warning(
+            "RTMP disconnected after %d minute(s); creating replacement broadcast immediately "
+            "(attempt %d/%d, %d minutes remaining).",
+            elapsed_minutes, attempt + 1, max_restarts, remaining,
+        )
+    return broadcast_ids
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Broadcast Liquid Wire to YouTube Live")
     parser.add_argument("--video", required=True, type=Path)
     parser.add_argument("--duration-minutes", type=int, default=10)
     parser.add_argument("--privacy", choices=("public", "unlisted", "private"), default="public")
+    parser.add_argument("--max-restarts", type=int, default=3)
     args = parser.parse_args()
     if not 5 <= args.duration_minutes <= 330:
         parser.error("--duration-minutes must be between 5 and 330")
@@ -90,23 +131,12 @@ def main() -> int:
     from utils.youtube_oauth import get_youtube_service
 
     service = get_youtube_service()
-    broadcast_id, rtmp_url = create_live(
-        service,
-        title="Liquid Wire Live | Living Generative Forms",
-        privacy=args.privacy,
+    if not 0 <= args.max_restarts <= 10:
+        parser.error("--max-restarts must be between 0 and 10")
+    broadcast_ids = broadcast_resilient(
+        service, args.video, args.duration_minutes, args.privacy, args.max_restarts
     )
-    try:
-        stream_video(args.video, rtmp_url, args.duration_minutes)
-    finally:
-        try:
-            retry_youtube_call(
-                service.liveBroadcasts().transition(
-                    broadcastStatus="complete", id=broadcast_id, part="status"
-                ).execute
-            )
-        except Exception as exc:
-            log.warning("Could not complete broadcast %s: %s", broadcast_id, exc)
-    print(broadcast_id)
+    print(broadcast_ids[-1])
     return 0
 
 
