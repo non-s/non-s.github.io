@@ -18,14 +18,14 @@ on:
         required: false
         default: true
         type: boolean
+      chaos_after_seconds:
+        description: "Force one RTMP disconnect for an unlisted recovery test (0 disables)"
+        required: false
+        default: "0"
 
 permissions:
   contents: read
   actions: write
-
-concurrency:
-  group: liquid-wire-live
-  cancel-in-progress: false
 
 jobs:
   broadcast:
@@ -67,26 +67,63 @@ jobs:
           # repeats it for the full five-and-a-half-hour broadcast.
           python generate_liquid_wire_video.py --preset live-test --duration 30
       - name: "Broadcast to YouTube Live"
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           video=$(ls -t _videos/liquid_wire_live-test_*.mp4 2>/dev/null | head -1)
           if [ -z "$video" ]; then
             echo "::error::No source video found in _videos/"
             exit 1
           fi
+          duration="${{ inputs.duration_minutes || '330' }}"
+          handoff_pid=""
+          if [ "${{ inputs.continuous }}" = "true" ] && [ "$duration" -gt 20 ]; then
+            delay_seconds=$((duration * 60 - 900))
+            (
+              sleep "$delay_seconds"
+              gh workflow run liquid-wire-live.yml --ref main \
+                -f duration_minutes=330 -f privacy="${{ inputs.privacy || 'public' }}" \
+                -f continuous=true -f chaos_after_seconds=0
+              mkdir -p _data
+              date -u +%FT%TZ > _data/live_handoff_dispatched
+            ) &
+            handoff_pid=$!
+          fi
+          set +e
           python scripts/run_liquid_wire_live.py \
             --video "$video" \
-            --duration-minutes "${{ inputs.duration_minutes || '330' }}" \
-            --privacy "$YOUTUBE_PRIVACY"
+            --duration-minutes "$duration" \
+            --privacy "$YOUTUBE_PRIVACY" \
+            --max-restarts 10 \
+            --chaos-after-seconds "${{ inputs.chaos_after_seconds || '0' }}"
+          status=$?
+          set -e
+          if [ -n "$handoff_pid" ]; then
+            kill "$handoff_pid" 2>/dev/null || true
+            wait "$handoff_pid" 2>/dev/null || true
+          fi
+          exit "$status"
       - name: "Chain next continuous session"
         # Handoff is a recovery mechanism too. A broken RTMP connection must
         # start a fresh broadcast immediately instead of waiting for watchdog.
         if: ${{ always() && !cancelled() && inputs.continuous == true }}
         env:
           GH_TOKEN: ${{ github.token }}
-        run: >-
-          gh workflow run liquid-wire-live.yml --ref main
-          -f duration_minutes=330 -f privacy=${{ inputs.privacy || 'public' }}
-          -f continuous=true
+        run: |
+          active_other=$(gh run list \
+            --repo "${{ github.repository }}" \
+            --workflow liquid-wire-live.yml \
+            --limit 20 \
+            --json databaseId,status \
+            --jq '[.[] | select((.status == "in_progress" or .status == "queued" or .status == "pending") and .databaseId != ${{ github.run_id }})] | length')
+          if [ "$active_other" -eq 0 ]; then
+            gh workflow run liquid-wire-live.yml --ref main \
+              -f duration_minutes=330 -f privacy=${{ inputs.privacy || 'public' }} \
+              -f continuous=true -f chaos_after_seconds=0
+            echo "Fallback handoff dispatched."
+          else
+            echo "Overlapping replacement session already active or queued."
+          fi
       - name: "Upload live evidence"
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -94,7 +131,9 @@ jobs:
           name: liquid-wire-live-${{ github.run_id }}
           path: |
             _data/live_readiness.json
-            _videos/liquid_wire_long_*.json
+            _data/live_continuity.json
+            _data/live_handoff_dispatched
+            _videos/liquid_wire_live-test_*.json
             _videos/last_error.txt
           if-no-files-found: ignore
           retention-days: 30

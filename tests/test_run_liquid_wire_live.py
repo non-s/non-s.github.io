@@ -9,6 +9,7 @@ from scripts.run_liquid_wire_live import (
     _ingestion_url,
     broadcast_resilient,
     create_live,
+    prepare_live_asset,
     stream_video,
 )
 
@@ -128,9 +129,39 @@ def test_stream_video_invokes_ffmpeg(tmp_path: Path) -> None:
     assert cmd[0] == "ffmpeg"
     assert "-re" in cmd
     assert "-stream_loop" in cmd
+    assert cmd[cmd.index("-c") + 1] == "copy"
     assert "-f" in cmd
     assert "flv" in cmd
     assert "rtmp://example.com/live" == cmd[-1]
+
+
+def test_prepare_live_asset_encodes_once_to_bounded_delivery_format(tmp_path: Path) -> None:
+    video = tmp_path / "source.mp4"
+    output = tmp_path / "delivery.mp4"
+    video.write_bytes(b"source")
+
+    def completed(command, **kwargs):
+        output.write_bytes(b"x" * 2048)
+        return MagicMock(returncode=0)
+
+    with patch("scripts.run_liquid_wire_live.subprocess.run", side_effect=completed) as run:
+        assert prepare_live_asset(video, output) == output
+    command = run.call_args.args[0]
+    assert command[command.index("-b:v") + 1] == "6000k"
+    assert command[command.index("-g") + 1] == "60"
+
+
+def test_stream_video_can_inject_one_controlled_disconnect(tmp_path: Path) -> None:
+    video = tmp_path / "source.mp4"
+    video.write_bytes(b"video")
+    process = MagicMock()
+    process.wait.side_effect = [__import__("subprocess").TimeoutExpired(["ffmpeg"], 2), 0]
+    process.returncode = -9
+    with patch("scripts.run_liquid_wire_live.subprocess.Popen", return_value=process):
+        with pytest.raises(__import__("subprocess").CalledProcessError) as error:
+            stream_video(video, "rtmp://example/live", 5, chaos_after_seconds=2)
+    assert error.value.returncode == 86
+    process.kill.assert_called_once()
 
 
 def test_main_validates_duration_range() -> None:
@@ -149,9 +180,52 @@ def test_resilient_broadcast_immediately_replaces_broken_rtmp(tmp_path: Path) ->
     with (
         patch("scripts.run_liquid_wire_live.create_live", side_effect=[("b1", "rtmp://one"), ("b2", "rtmp://two")]),
         patch("scripts.run_liquid_wire_live.stream_video", side_effect=[failure, None]) as stream,
-        patch("scripts.run_liquid_wire_live.time.monotonic", side_effect=[0.0, 61.0, 62.0]),
+        patch("scripts.run_liquid_wire_live.time.monotonic", side_effect=[0.0, 61.0, 62.0, 63.0]),
     ):
         ids = broadcast_resilient(_LiveService(), video, 30, "public", max_restarts=2)
     assert ids == ["b1", "b2"]
     assert stream.call_count == 2
     assert stream.call_args_list[1].args[-1] == 28
+
+
+def test_resilient_broadcast_records_recovery_latency_and_chaos_evidence(tmp_path: Path) -> None:
+    video = tmp_path / "source.mp4"
+    journal = tmp_path / "live_continuity.json"
+    video.write_bytes(b"video")
+    failure = __import__("subprocess").CalledProcessError(86, ["ffmpeg"])
+    with (
+        patch("scripts.run_liquid_wire_live.create_live", side_effect=[("b1", "rtmp://one"), ("b2", "rtmp://two")]),
+        patch("scripts.run_liquid_wire_live.stream_video", side_effect=[failure, None]) as stream,
+        patch("scripts.run_liquid_wire_live.time.monotonic", side_effect=[10.0, 12.0, 12.4, 13.0]),
+    ):
+        ids = broadcast_resilient(
+            _LiveService(), video, 10, "unlisted", max_restarts=2,
+            chaos_after_seconds=2, journal_path=journal,
+        )
+    payload = __import__("json").loads(journal.read_text())
+    assert ids == ["b1", "b2"]
+    assert payload["completed"] is True
+    assert payload["attempts"][0]["outcome"] == "disconnected"
+    assert payload["attempts"][1]["recovery_latency_seconds"] == .4
+    assert stream.call_args_list[0].kwargs["chaos_after_seconds"] == 2
+    assert stream.call_args_list[1].kwargs["chaos_after_seconds"] == 0
+
+
+def test_resilient_broadcast_recovers_from_temporary_creation_failure(tmp_path: Path) -> None:
+    video = tmp_path / "source.mp4"
+    journal = tmp_path / "live_continuity.json"
+    video.write_bytes(b"video")
+    with (
+        patch("scripts.run_liquid_wire_live.create_live", side_effect=[RuntimeError("api"), ("b2", "rtmp://two")]),
+        patch("scripts.run_liquid_wire_live.stream_video") as stream,
+        patch("scripts.run_liquid_wire_live.time.sleep"),
+        patch("scripts.run_liquid_wire_live.time.monotonic", side_effect=[1.0, 1.5, 2.0]),
+    ):
+        ids = broadcast_resilient(
+            _LiveService(), video, 10, "unlisted", max_restarts=2, journal_path=journal,
+        )
+    payload = __import__("json").loads(journal.read_text())
+    assert ids == ["b2"]
+    assert payload["attempts"][0]["outcome"] == "creation_failed"
+    assert payload["attempts"][1]["outcome"] == "completed"
+    stream.assert_called_once()

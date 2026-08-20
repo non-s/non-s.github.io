@@ -67,7 +67,11 @@ def test_continuous_live_chains_and_has_watchdog() -> None:
     assert "duration_minutes=330" in live
     assert "continuous=true" in live
     assert "gh workflow run liquid-wire-live.yml" in live
-    assert "7,37 * * * *" in watchdog
+    assert "7,17,27,37,47,57 * * * *" in watchdog
+    assert "delay_seconds=$((duration * 60 - 900))" in live
+    assert "active_other" in live
+    assert "group: liquid-wire-live" not in live
+    assert "_data/live_continuity.json" in live
     assert "status == \"in_progress\"" in watchdog
 
 
