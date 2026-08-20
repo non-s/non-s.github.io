@@ -23,7 +23,7 @@ def test_processing_complete_no_claims_is_safe(_retry, _sleep):
     response = {
         "items": [
             {
-                "processingDetails": {"processingStatus": "terminated"},
+                "processingDetails": {"processingStatus": "succeeded"},
                 "status": {"rejectionReason": ""},
             }
         ]
@@ -44,7 +44,7 @@ def test_claims_detected_is_not_safe(_retry, _sleep):
     response = {
         "items": [
             {
-                "processingDetails": {"processingStatus": "terminated"},
+                "processingDetails": {"processingStatus": "succeeded"},
                 "status": {"rejectionReason": "copyright"},
             }
         ]
@@ -63,7 +63,7 @@ def test_processing_failure_reason_counts_as_claims(_retry, _sleep):
         "items": [
             {
                 "processingDetails": {
-                    "processingStatus": "terminated",
+                    "processingStatus": "failed",
                     "processingFailureReason": "unsupported_format",
                 },
                 "status": {"rejectionReason": ""},
@@ -74,6 +74,16 @@ def test_processing_failure_reason_counts_as_claims(_retry, _sleep):
     result = upload_youtube.wait_for_content_id_check(service, "vid3")
     assert result["has_claims"] is True
     assert result["safe_to_publish"] is False
+
+
+@patch("upload_youtube.time.sleep")
+@patch("upload_youtube._retry_youtube_call", side_effect=lambda func, *a, **k: func())
+def test_terminated_processing_is_not_safe(_retry, _sleep):
+    service = _mock_service(
+        {"items": [{"processingDetails": {"processingStatus": "terminated"}, "status": {}}]}
+    )
+    result = upload_youtube.wait_for_content_id_check(service, "vid-terminated")
+    assert result == {"processing_complete": True, "has_claims": True, "safe_to_publish": False}
 
 
 @patch("upload_youtube.time.sleep")

@@ -182,10 +182,14 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
 
 
 
-def wait_for_content_id_check(service, video_id: str, max_wait_minutes: int = 30) -> dict:
+def wait_for_content_id_check(
+    service, video_id: str, max_wait_minutes: int = 12, poll_seconds: int = 20
+) -> dict:
     """Poll YouTube API until video processing is complete.
 
-    Checks videos.list(processingDetails, contentRating) every 2 minutes.
+    Checks ``videos.list`` every ``poll_seconds`` and models every terminal
+    YouTube processing state. Only ``succeeded`` without a rejection/failure
+    is publishable; ``failed`` and ``terminated`` fail closed.
     Returns dict with:
     - "processing_complete": bool
     - "has_claims": bool (if any content claims detected)
@@ -214,10 +218,15 @@ def wait_for_content_id_check(service, video_id: str, max_wait_minutes: int = 30
             processing = item.get("processingDetails", {})
             status = item.get("status", {})
 
-            processing_done = processing.get("processingStatus") == "terminated"
+            processing_status = str(processing.get("processingStatus", ""))
+            processing_done = processing_status in {"succeeded", "failed", "terminated"}
             # Check for content claims (via contentRating or rejection)
             rejected = status.get("rejectionReason", "")
-            has_claims = bool(rejected) or bool(processing.get("processingFailureReason"))
+            has_claims = (
+                bool(rejected)
+                or bool(processing.get("processingFailureReason"))
+                or processing_status in {"failed", "terminated"}
+            )
 
             if processing_done:
                 return {
@@ -228,7 +237,7 @@ def wait_for_content_id_check(service, video_id: str, max_wait_minutes: int = 30
         except Exception as exc:
             log.warning("Content ID check error for %s: %s", video_id, exc)
 
-        time.sleep(120)  # 2 minutes
+        time.sleep(max(5, poll_seconds))
 
     return {"processing_complete": False, "has_claims": False, "safe_to_publish": False}
 

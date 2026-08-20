@@ -116,7 +116,7 @@ def test_update_privacy_to_public_failure_sends_alert() -> None:
 def test_wait_for_content_id_check_processing_complete() -> None:
     service = MagicMock()
     service.videos().list().execute.return_value = {
-        "items": [{"processingDetails": {"processingStatus": "terminated"}, "status": {"rejectionReason": ""}}]
+        "items": [{"processingDetails": {"processingStatus": "succeeded"}, "status": {"rejectionReason": ""}}]
     }
     with patch("upload_youtube.time.sleep"), patch(
         "upload_youtube._retry_youtube_call", side_effect=lambda func, *a, **k: func()
