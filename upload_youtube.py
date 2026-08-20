@@ -28,6 +28,7 @@ from utils.metadata_audit import audit_description, audit_title
 from utils.notifier import send_alert
 from utils.paths import data_dir
 from utils.pipeline_metrics import record_pipeline_run
+from utils.publication_ledger import video_tag_record, write_receipt
 from utils.quota_tracker import (
     ALERT_THRESHOLD,
     UPLOAD_ALERT_THRESHOLD,
@@ -168,30 +169,7 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
             existing = json.loads(tags_file.read_text(encoding="utf-8")) if tags_file.exists() else {}
         except Exception:
             existing = {}
-        existing[video_id] = {
-            "content_id": meta.get("content_id", ""),
-            "genome_id": meta.get("genome_id", ""),
-            "engine_version": meta.get("engine_version", ""),
-            "strategy_version": meta.get("strategy_version", ""),
-            "visual_dna_id": meta.get("visual_dna_id", ""),
-            "experiment_id": meta.get("experiment_id", ""),
-            "hypothesis_id": meta.get("hypothesis_id", ""),
-            "scene": scene,
-            "hook": meta.get("hook", ""),
-            "mood": meta.get("mood", ""),
-            "kind": meta.get("kind", ""),
-            "title": meta.get("title", ""),
-            "title_alt": meta.get("title_alt", ""),
-            "title_pattern": meta.get("title_pattern", ""),
-            "lang": meta.get("lang", "en"),
-            "uploaded_at": datetime.now(UTC).isoformat(),
-            "thumbnails": meta.get("thumbnails", []),
-            "thumbnail_variant": meta.get("thumbnail_variant", "A"),
-            "editorial_brief": meta.get("editorial_brief", {}),
-            "visual_intelligence": meta.get("visual_intelligence", {}),
-            "story_card": meta.get("story_card", {}),
-            "viewer_experience": meta.get("viewer_experience", {}),
-        }
+        existing[video_id] = video_tag_record(meta, datetime.now(UTC).isoformat())
         # Mantem so as N mais recentes (por ordem de insercao) pra nao crescer pra sempre.
         if len(existing) > _MAX_VIDEO_TAGS:
             for old_key in list(existing.keys())[: len(existing) - _MAX_VIDEO_TAGS]:
@@ -515,8 +493,9 @@ def _upload_video_inner(
             effective_privacy,
         )
 
-    _post_upload(service, video_id, meta, thumbnail, publish_after_check, target_privacy)
+    write_receipt(OUTPUT_DIR, video_id, meta)
     record_used_title(str(meta.get("title", "")))
+    _post_upload(service, video_id, meta, thumbnail, publish_after_check, target_privacy)
     return video_id
 
 

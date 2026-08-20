@@ -34,6 +34,7 @@ on:
     - cron: "37 21 * * 2,4,6"
 
 permissions:
+  actions: read
   contents: read
 
 concurrency:
@@ -80,6 +81,10 @@ jobs:
         uses: ./.github/actions/restore-token-and-cache
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
+      - name: "Rebuild append-only publication ledger"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash .github/scripts/restore-publication-ledger.sh
       - name: "Validate production credentials"
         run: |
           if [ ! -s youtube_token.json ]; then

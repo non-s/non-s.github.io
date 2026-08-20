@@ -25,38 +25,41 @@ def load_catalog() -> list[dict[str, Any]]:
     return [item for item in value if isinstance(item, dict)]
 
 
+def creation_record(metadata: dict[str, Any]) -> dict[str, Any]:
+    """Project full render metadata into the durable learning schema."""
+    return {
+        "content_id": metadata["content_id"],
+        "generated_at": metadata.get("generated_at"),
+        "kind": metadata.get("kind"),
+        "genome_id": metadata.get("genome_id"),
+        "genome": metadata.get("genome"),
+        "visual_dna_id": metadata.get("visual_dna_id"),
+        "visual_dna": metadata.get("visual_dna"),
+        "audio_dna_id": metadata.get("audio_dna_id"),
+        "audio_dna": metadata.get("audio_dna"),
+        "audio_composition_id": metadata.get("audio_composition_id"),
+        "audio_intent_vector": metadata.get("audio_intent_vector"),
+        "audio_novelty": metadata.get("audio_novelty"),
+        "semantic_signature": metadata.get("semantic_signature"),
+        "semantic_novelty": metadata.get("semantic_novelty"),
+        "quality": metadata.get("quality_report"),
+        "puzzle": metadata.get("genome", {}).get("puzzle", {}),
+        "performance_windows": {},
+        "fitness": None,
+        "experiment_id": metadata.get("experiment_id"),
+        "hypothesis_id": metadata.get("hypothesis_id"),
+        "candidate_selection": metadata.get("generator_profile", {}).get("candidate_selection", {}),
+        "publication_readiness": metadata.get("publication_readiness"),
+        "strategy_version": metadata.get("strategy_version"),
+    }
+
+
 def record_creation(metadata: dict[str, Any]) -> None:
     """Persist only durable learning fields, not bulky editorial metadata."""
     path = _path()
     with state_lock(path):
         catalog = load_catalog()
-        catalog.append(
-            {
-                "content_id": metadata["content_id"],
-                "generated_at": metadata.get("generated_at"),
-                "kind": metadata.get("kind"),
-                "genome_id": metadata.get("genome_id"),
-                "genome": metadata.get("genome"),
-                "visual_dna_id": metadata.get("visual_dna_id"),
-                "visual_dna": metadata.get("visual_dna"),
-                "audio_dna_id": metadata.get("audio_dna_id"),
-                "audio_dna": metadata.get("audio_dna"),
-                "audio_composition_id": metadata.get("audio_composition_id"),
-                "audio_intent_vector": metadata.get("audio_intent_vector"),
-                "audio_novelty": metadata.get("audio_novelty"),
-                "semantic_signature": metadata.get("semantic_signature"),
-                "semantic_novelty": metadata.get("semantic_novelty"),
-                "quality": metadata.get("quality_report"),
-                "puzzle": metadata.get("genome", {}).get("puzzle", {}),
-                "performance_windows": {},
-                "fitness": None,
-                "experiment_id": metadata.get("experiment_id"),
-                "hypothesis_id": metadata.get("hypothesis_id"),
-                "candidate_selection": metadata.get("generator_profile", {}).get("candidate_selection", {}),
-                "publication_readiness": metadata.get("publication_readiness"),
-                "strategy_version": metadata.get("strategy_version"),
-            }
-        )
+        catalog.append(creation_record(metadata))
         dropped = catalog[:-CATALOG_LIMIT]
         if dropped:
             _aggregate_archive(path.parent / "catalog_archive.json", dropped)
