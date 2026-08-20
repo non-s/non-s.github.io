@@ -171,6 +171,28 @@ def analyze_visual_dna(
         delta = np.asarray(fingerprint[:width]) - np.asarray(old[:width])
         distances.append(float(np.linalg.norm(delta) / np.sqrt(width)))
     thirds = np.array_split(np.asarray(differences or [0.0]), 3)
+    act_features = np.column_stack((
+        screen_fill,
+        np.asarray(centers)[:, 0],
+        np.asarray(centers)[:, 1],
+        symmetry,
+        entropy,
+        edge_density,
+        brightness,
+        saturation,
+    ))
+    acts = [part.mean(axis=0) for part in np.array_split(act_features, 3)]
+    opening_middle = float(np.linalg.norm(acts[0] - acts[1]) / np.sqrt(act_features.shape[1]))
+    middle_ending = float(np.linalg.norm(acts[1] - acts[2]) / np.sqrt(act_features.shape[1]))
+    opening_ending = float(np.linalg.norm(acts[0] - acts[2]) / np.sqrt(act_features.shape[1]))
+    activities = [float(np.mean(part)) for part in thirds]
+    narrative_criteria = {
+        "enough_observations": len(frames) >= 6,
+        "distinct_adjacent_acts": min(opening_middle, middle_ending) >= .004,
+        "irreversible_state_change": opening_ending >= .006,
+        "dynamic_contrast": max(activities) - min(activities) >= .0005,
+        "resolution_detected": activities[2] <= max(activities[0], activities[1]) * 1.35 + 1e-6,
+    }
     return VisualDNA(
         composition={
             "screen_fill": round(float(np.mean(screen_fill)), 6),
@@ -191,9 +213,14 @@ def analyze_visual_dna(
             "dominant_palette": [round(float(value), 6) for value in palette],
         },
         temporal={
-            "opening_activity": round(float(np.mean(thirds[0])), 6),
-            "middle_activity": round(float(np.mean(thirds[1])), 6),
-            "ending_activity": round(float(np.mean(thirds[2])), 6),
+            "opening_activity": round(activities[0], 6),
+            "middle_activity": round(activities[1], 6),
+            "ending_activity": round(activities[2], 6),
+            "opening_middle_distance": round(opening_middle, 6),
+            "middle_ending_distance": round(middle_ending, 6),
+            "opening_ending_distance": round(opening_ending, 6),
+            "narrative_criteria": narrative_criteria,
+            "narrative_pass": all(narrative_criteria.values()),
         },
         novelty={
             "fingerprint": [round(float(value), 6) for value in fingerprint],

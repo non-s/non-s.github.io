@@ -69,3 +69,11 @@ def test_semantic_near_duplicate_is_blocked():
     )
     assert not decision.passed
     assert decision.dimensions["semantic_novelty"] == "fail"
+
+
+def test_failed_observed_temporal_narrative_is_blocked():
+    quality, visual, audio = _valid()
+    visual["temporal"] = {"narrative_pass": False}
+    decision = evaluate_publication(quality, visual, audio)
+    assert not decision.passed
+    assert decision.dimensions["temporal"] == "fail"

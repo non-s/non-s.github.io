@@ -7,6 +7,7 @@ from dataclasses import asdict, dataclass
 import numpy as np
 
 EVENT_KINDS = ("bloom", "compression", "rupture", "tide", "stillness")
+NARRATIVE_ARC_VERSION = 1
 
 
 @dataclass(frozen=True)
@@ -47,7 +48,74 @@ def build_timeline(seed: int, duration: float, music: dict) -> list[CreativeEven
                 pitch_offset=int(rng.choice((-12, -7, -5, 5, 7, 12))),
             )
         )
-    return events
+    return ensure_narrative_arc(events, duration, seed)
+
+
+def ensure_narrative_arc(
+    events: list[CreativeEvent], duration: float, seed: int = 0
+) -> list[CreativeEvent]:
+    """Guarantee opening, development, climax and resolution beats.
+
+    Gemini remains free to direct the work, but malformed or dramatically flat
+    plans are completed deterministically instead of silently becoming a loop.
+    """
+    duration = max(1.0, float(duration))
+    result = [event for event in events if 0 <= event.start < duration]
+    rng = np.random.default_rng(seed ^ 0x415243)
+
+    def add(kind: str, fraction: float, length: float, intensity: float) -> None:
+        result.append(CreativeEvent(
+            kind=kind,
+            start=round(duration * fraction, 6),
+            duration=max(.5, round(duration * length, 6)),
+            intensity=intensity,
+            direction=float(rng.uniform(-np.pi, np.pi)),
+            pitch_offset=int(rng.choice((-12, -7, 5, 7, 12))),
+        ))
+
+    if not any(event.start <= duration * .22 for event in result):
+        add("tide", .08, .14, .48)
+    if not any(duration * .22 < event.start < duration * .48 for event in result):
+        add("compression", .32, .13, .62)
+    if not any(
+        duration * .48 <= event.start <= duration * .72
+        and event.kind in {"rupture", "bloom"}
+        and event.intensity >= .76
+        for event in result
+    ):
+        add("rupture", .61, .10, .94)
+    if not any(
+        event.start >= duration * .76 and event.kind in {"stillness", "tide"}
+        for event in result
+    ):
+        add("stillness", .84, .12, .56)
+    return sorted(result, key=lambda event: (event.start, event.kind))
+
+
+def audit_narrative_arc(events: list[CreativeEvent], duration: float) -> dict[str, object]:
+    """Machine-readable proof that a planned timeline has a dramatic grammar."""
+    duration = max(1.0, float(duration))
+    criteria = {
+        "opening": any(event.start <= duration * .22 for event in events),
+        "development": any(duration * .22 < event.start < duration * .48 for event in events),
+        "climax": any(
+            duration * .48 <= event.start <= duration * .72
+            and event.kind in {"rupture", "bloom"}
+            and event.intensity >= .76
+            for event in events
+        ),
+        "resolution": any(
+            event.start >= duration * .76 and event.kind in {"stillness", "tide"}
+            for event in events
+        ),
+        "variety": len({event.kind for event in events}) >= 3,
+    }
+    return {
+        "version": NARRATIVE_ARC_VERSION,
+        "passed": all(criteria.values()),
+        "criteria": criteria,
+        "event_count": len(events),
+    }
 
 
 def event_envelope(t: float | np.ndarray, event: CreativeEvent) -> float | np.ndarray:
@@ -73,3 +141,22 @@ def visual_state(t: float, events: list[CreativeEvent]) -> dict[str, float]:
     state["direction_y"] = direction_y
     state["total"] = sum(state[kind] for kind in EVENT_KINDS)
     return state
+
+
+def narrative_state(t: float, events: list[CreativeEvent]) -> dict[str, float]:
+    """Cumulative visual memory: transformations leave a lasting trace."""
+    cumulative = {kind: 0.0 for kind in EVENT_KINDS}
+    for event in events:
+        phase = float(np.clip((t - event.start) / max(event.duration, 1e-6), 0.0, 1.0))
+        progress = phase * phase * (3.0 - 2.0 * phase)
+        cumulative[event.kind] += progress * event.intensity
+    metamorphosis = np.tanh(
+        .52 * cumulative["bloom"] - .35 * cumulative["compression"]
+        + .28 * cumulative["rupture"] + .16 * cumulative["tide"]
+    )
+    return {
+        **cumulative,
+        "metamorphosis": float(metamorphosis),
+        "scar": float(np.tanh(.65 * cumulative["rupture"])),
+        "settling": float(np.tanh(.55 * cumulative["stillness"])),
+    }
