@@ -9,6 +9,7 @@ from typing import Any
 
 from utils.atomic_state import atomic_write_json, load_versioned, save_versioned
 from utils.creative_memory import CATALOG_LIMIT, CATALOG_SCHEMA_VERSION, creation_record
+from utils.experiment_engine import RESEARCH_SCHEMA_VERSION
 
 RECEIPT_SCHEMA_VERSION = 1
 LEGACY_MATCH_MAX_SECONDS = 6 * 3600
@@ -81,6 +82,7 @@ def video_tag_record(metadata: dict[str, Any], uploaded_at: str) -> dict[str, An
         "visual_dna_id": metadata.get("visual_dna_id", ""),
         "experiment_id": metadata.get("experiment_id", ""),
         "hypothesis_id": metadata.get("hypothesis_id", ""),
+        "experiment_variant": metadata.get("experiment_variant", ""),
         "scene": metadata.get("scene", ""),
         "hook": metadata.get("hook", ""),
         "mood": metadata.get("mood", ""),
@@ -117,6 +119,61 @@ def write_receipt(output_dir: Path, video_id: str, metadata: dict[str, Any]) -> 
     path = output_dir / f"publication_receipt_{video_id}.json"
     atomic_write_json(path, publication_receipt(video_id, metadata))
     return path
+
+
+def _rebuild_experiment_state(data_root: Path, catalog: list[dict[str, Any]]) -> int:
+    """Recover experiment cohorts from self-contained immutable publications."""
+    path = data_root / "research_ledger.json"
+    ledger = load_versioned(path, RESEARCH_SCHEMA_VERSION, {}, {"hypotheses": {}, "experiments": {}})
+    if not isinstance(ledger, dict):
+        ledger = {"hypotheses": {}, "experiments": {}}
+    hypotheses = ledger.setdefault("hypotheses", {})
+    experiments = ledger.setdefault("experiments", {})
+    recovered = 0
+    for record in catalog:
+        assignment = record.get("experiment") if isinstance(record, dict) else None
+        if not isinstance(assignment, dict):
+            continue
+        experiment_id = str(assignment.get("experiment_id", ""))
+        hypothesis_id = str(assignment.get("hypothesis_id", ""))
+        content_id = str(record.get("content_id", ""))
+        variant = str(record.get("experiment_variant") or assignment.get("variant", ""))
+        changed = assignment.get("changed_variables")
+        if (
+            not experiment_id
+            or not hypothesis_id
+            or not content_id
+            or variant not in {"control", "treatment"}
+            or not isinstance(changed, dict)
+            or len(changed) != 1
+        ):
+            continue
+        snapshot = assignment.get("hypothesis")
+        if hypothesis_id not in hypotheses and isinstance(snapshot, dict):
+            hypotheses[hypothesis_id] = snapshot
+        experiment = experiments.setdefault(
+            experiment_id,
+            {
+                "hypothesis_id": hypothesis_id,
+                "control_content_ids": [],
+                "treatment_content_ids": [],
+                "changed_variables": changed,
+                "format": record.get("kind"),
+                "target_window": assignment.get("target_window"),
+                "status": "running",
+            },
+        )
+        if not isinstance(experiment, dict):
+            continue
+        cohort = "control_content_ids" if variant == "control" else "treatment_content_ids"
+        ids = experiment.setdefault(cohort, [])
+        if content_id not in ids:
+            ids.append(content_id)
+        recovered += 1
+        if experiment.get("status") == "planned":
+            experiment["status"] = "running"
+    save_versioned(path, ledger, RESEARCH_SCHEMA_VERSION)
+    return recovered
 
 
 def rebuild_publication_state(evidence_root: Path, data_root: Path) -> dict[str, int]:
@@ -174,6 +231,7 @@ def rebuild_publication_state(evidence_root: Path, data_root: Path) -> dict[str,
     ordered_tags = dict(sorted(tags.items(), key=lambda item: str(item[1].get("uploaded_at", "")))[-500:])
     data_root.mkdir(parents=True, exist_ok=True)
     save_versioned(catalog_path, ordered_catalog, CATALOG_SCHEMA_VERSION)
+    experiment_assignments = _rebuild_experiment_state(data_root, ordered_catalog)
     atomic_write_json(tags_path, ordered_tags)
     titles_path = data_root / "used_titles.json"
     try:
@@ -188,4 +246,5 @@ def rebuild_publication_state(evidence_root: Path, data_root: Path) -> dict[str,
         "legacy_matches": len(legacy),
         "catalog_records": len(ordered_catalog),
         "video_tags": len(ordered_tags),
+        "experiment_assignments": experiment_assignments,
     }

@@ -48,6 +48,8 @@ def creation_record(metadata: dict[str, Any]) -> dict[str, Any]:
         "fitness": None,
         "experiment_id": metadata.get("experiment_id"),
         "hypothesis_id": metadata.get("hypothesis_id"),
+        "experiment_variant": metadata.get("experiment_variant"),
+        "experiment": metadata.get("experiment"),
         "candidate_selection": metadata.get("generator_profile", {}).get("candidate_selection", {}),
         "publication_readiness": metadata.get("publication_readiness"),
         "strategy_version": metadata.get("strategy_version"),

@@ -6,7 +6,17 @@ import pytest
 
 from utils.analytics_feedback import age_window, normalized_metrics, sync_catalog_performance
 from utils.atomic_state import load_versioned, save_versioned
-from utils.experiment_engine import Experiment, Hypothesis, record_experiment, record_hypothesis, record_result
+from utils.experiment_engine import (
+    Experiment,
+    Hypothesis,
+    assign_experiment,
+    conclude_ready_experiments,
+    plan_experiment,
+    record_assignment,
+    record_experiment,
+    record_hypothesis,
+    record_result,
+)
 from utils.research_cycle import run_research_cycle
 
 
@@ -133,7 +143,15 @@ def test_research_cycle_proposes_traceable_noncausal_hypothesis(tmp_path):
                 "content_id": f"lw_{index}",
                 "kind": "short",
                 "fitness_window": "72h",
-                "genome": {"family": "orb" if index % 2 else "ribbon"},
+                "genome": {
+                    "family": "orb" if index % 2 else "ribbon",
+                    "motion": {"melt_rate": 0.1 + value},
+                    "geometry": {
+                        "folds_theta": 2 + index,
+                        "folds_phi": 3 + index,
+                        "strand_count": 7 + index,
+                    },
+                },
                 "fitness": {"score": value, "confidence": 0.8},
                 "visual_dna": {
                     "composition": {"screen_fill": value, "symmetry": 0.5, "entropy": 0.4},
@@ -152,6 +170,7 @@ def test_research_cycle_proposes_traceable_noncausal_hypothesis(tmp_path):
     ledger = load_versioned(tmp_path / "research_ledger.json", 1, {}, {})
     assert report["proposed_hypothesis_ids"][0] in ledger["hypotheses"]
     assert report["experiment_priorities"]
+    assert report["planned_experiment_id"] in ledger["experiments"]
     assert report["creative_map"]["status"] == "ready"
     assert report["lineage_graph"]["nodes"]
     assert "meta_learning" in report
@@ -166,6 +185,14 @@ def test_research_never_mixes_formats_or_maturity_windows(tmp_path):
                 "kind": "short" if index % 2 else "long",
                 "fitness_window": "24h" if index % 3 else "72h",
                 "fitness": {"score": index / 14, "confidence": 0.8},
+                "genome": {
+                    "motion": {"melt_rate": index / 14},
+                    "geometry": {
+                        "folds_theta": index + 1,
+                        "folds_phi": index + 2,
+                        "strand_count": index + 7,
+                    },
+                },
                 "visual_dna": {
                     "composition": {"screen_fill": index / 14, "symmetry": 0.5, "entropy": 0.4},
                     "motion": {"optical_flow_mean": index / 14},
@@ -178,3 +205,78 @@ def test_research_never_mixes_formats_or_maturity_windows(tmp_path):
     report = run_research_cycle(tmp_path)
     assert report["correlations"] == []
     assert report["data_status"] == "insufficient_data"
+
+
+def test_governed_experiment_balances_assignments_and_changes_only_treatment(tmp_path):
+    ledger = tmp_path / "research.json"
+    hypothesis = Hypothesis(
+        statement="Melt rate may improve fitness",
+        independent_variable="genome.motion.melt_rate",
+        dependent_metric="fitness.score",
+        expected_direction="increase",
+        rationale="Comparable observational cohort.",
+    )
+    hypothesis_id = record_hypothesis(ledger, hypothesis)
+    experiment_id = plan_experiment(
+        ledger,
+        hypothesis_id,
+        independent_variable=hypothesis.independent_variable,
+        format="short",
+        target_window="72h",
+    )
+    assert experiment_id
+    control_profile = {"melt_rate": 0.5}
+    control = assign_experiment(ledger, control_profile, "short")
+    assert control and control["variant"] == "control"
+    assert control_profile["melt_rate"] == 0.5
+    record_assignment(ledger, experiment_id, "control", "lw_control")
+
+    treatment_profile = {"melt_rate": 0.5}
+    treatment = assign_experiment(ledger, treatment_profile, "short")
+    assert treatment and treatment["variant"] == "treatment"
+    assert treatment_profile["melt_rate"] == 0.6
+    assert list(treatment["changed_variables"]) == ["genome.motion.melt_rate"]
+    record_assignment(ledger, experiment_id, "treatment", "lw_treatment")
+    stored = load_versioned(ledger, 1, {}, {})["experiments"][experiment_id]
+    assert stored["control_content_ids"] == ["lw_control"]
+    assert stored["treatment_content_ids"] == ["lw_treatment"]
+
+
+def test_experiment_conclusion_waits_for_confidence_then_records_causal_result(tmp_path):
+    ledger = tmp_path / "research.json"
+    hypothesis = Hypothesis(
+        statement="Melt rate improves fitness",
+        independent_variable="genome.motion.melt_rate",
+        dependent_metric="fitness.score",
+        expected_direction="increase",
+        rationale="Comparable observational cohort.",
+    )
+    hypothesis_id = record_hypothesis(ledger, hypothesis)
+    experiment_id = plan_experiment(
+        ledger,
+        hypothesis_id,
+        independent_variable=hypothesis.independent_variable,
+        format="short",
+        target_window="72h",
+    )
+    assert experiment_id
+    catalog = []
+    for index in range(30):
+        variant = "control" if index % 2 == 0 else "treatment"
+        content_id = f"lw_{index}"
+        record_assignment(ledger, experiment_id, variant, content_id)
+        catalog.append(
+            {
+                "content_id": content_id,
+                "kind": "short",
+                "fitness_window": "72h",
+                "fitness": {
+                    "score": 0.45 if variant == "control" else 0.55,
+                    "confidence": 0.9,
+                },
+            }
+        )
+    results = conclude_ready_experiments(ledger, catalog)
+    assert results[0]["status"] == "supported"
+    assert results[0]["samples"] == 30
+    assert results[0]["raw_treatment_effect"] == pytest.approx(0.1)

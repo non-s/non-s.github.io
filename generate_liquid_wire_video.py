@@ -44,6 +44,7 @@ from utils.creative_models import ENGINE_VERSION, STRATEGY_VERSION, AudioDNA, Ge
 from utils.drums import DrumSequencer
 from utils.dsp.dynamics import SideChainDuck
 from utils.evolution_engine import evolve_profile
+from utils.experiment_engine import assign_experiment, record_assignment
 from utils.flow_field import FlowField, render_flow_particles
 from utils.fluid_deform import fluid_deform
 from utils.genres.registry import GENRES, get_genre
@@ -1870,17 +1871,29 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
         catalog = load_catalog()
     except (OSError, ValueError, json.JSONDecodeError):
         catalog = []
-    evolution_decision = evolve_profile(profile, preset, catalog, mode=autonomy.evolution_mode)
-    profile["evolution_decision"] = evolution_decision.to_dict()
-    if evolution_decision.applied:
-        candidate_report = {"stage": "skipped", "reason": "controlled evolution already changed one variable"}
+    experiment_assignment = assign_experiment(data_dir() / "research_ledger.json", profile, preset)
+    if experiment_assignment:
+        profile["evolution_decision"] = {
+            "mode": "controlled_experiment",
+            "applied": False,
+            "reason": "evolution paused to isolate one randomized experimental variable",
+        }
+        candidate_report = {
+            "stage": "skipped",
+            "reason": "controlled causal experiment isolates its declared variable",
+        }
     else:
-        profile, candidate_report = select_candidate(
-            profile,
-            preset,
-            catalog,
-            recent_rejection_counts(data_dir() / "rejection_memory.json"),
-        )
+        evolution_decision = evolve_profile(profile, preset, catalog, mode=autonomy.evolution_mode)
+        profile["evolution_decision"] = evolution_decision.to_dict()
+        if evolution_decision.applied:
+            candidate_report = {"stage": "skipped", "reason": "controlled evolution already changed one variable"}
+        else:
+            profile, candidate_report = select_candidate(
+                profile,
+                preset,
+                catalog,
+                recent_rejection_counts(data_dir() / "rejection_memory.json"),
+            )
     profile["candidate_selection"] = candidate_report
     profile["scene"] = identify_scene(profile["scene"])
     profile["scene_music"] = scene_music(profile)
@@ -2024,6 +2037,11 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     meta["audio_novelty"] = profile["audio_novelty"]
     meta["semantic_signature"] = profile["semantic_signature"]
     meta["semantic_novelty"] = profile["semantic_novelty"]
+    if experiment_assignment:
+        meta["experiment_id"] = experiment_assignment["experiment_id"]
+        meta["hypothesis_id"] = experiment_assignment["hypothesis_id"]
+        meta["experiment_variant"] = experiment_assignment["variant"]
+        meta["experiment"] = experiment_assignment
     publication = evaluate_publication(
         quality.to_dict(), visual_dna.to_dict(), audio_dna.to_dict(), puzzle=genome.puzzle,
         experiment=profile.get("experiment"), semantic_novelty=profile["semantic_novelty"],
@@ -2066,6 +2084,13 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     }
     # Trending topics: enrich title/description with trending inspiration.
     meta = enrich_with_trends(meta, profile.get("family", "orb"), str(profile.get("genre", "lofi_ambient")), preset)
+    if experiment_assignment:
+        record_assignment(
+            data_dir() / "research_ledger.json",
+            str(experiment_assignment["experiment_id"]),
+            str(experiment_assignment["variant"]),
+            str(meta["content_id"]),
+        )
     atomic_write_json(output.with_suffix(".json"), meta, backup=False)
     record_creation(meta)
     audio_path.unlink(missing_ok=True)
