@@ -35,6 +35,7 @@ from utils.quota_tracker import (
     daily_call_count,
     daily_total,
 )
+from utils.seo_keywords import record_used_title
 from utils.state_lock import state_lock
 from utils.youtube_oauth import get_youtube_service
 from utils.youtube_post_upload import add_to_playlists, apply_captions, apply_thumbnail
@@ -515,6 +516,7 @@ def _upload_video_inner(
         )
 
     _post_upload(service, video_id, meta, thumbnail, publish_after_check, target_privacy)
+    record_used_title(str(meta.get("title", "")))
     return video_id
 
 

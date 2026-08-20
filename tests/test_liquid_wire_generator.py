@@ -156,7 +156,15 @@ def test_metadata_fallback_has_no_timestamp(tmp_path: Path, monkeypatch) -> None
     profile = liquid._profile(789, "long")
     metadata = liquid._metadata(tmp_path / "video.mp4", tmp_path / "thumb.jpg", 180, "long", profile)
     assert not re.search(r"\b\d{4}[-/]\d{2}[-/]\d{2}\b|\b\d{1,2}:\d{2}\b", metadata["title"])
-    assert metadata["title"] == "A Shape Dreaming in Color | Original Lo-Fi Piano"
+    assert metadata["title"].endswith("| Original Generative Score")
+
+
+def test_metadata_fallback_is_seed_specific(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setattr(liquid, "ai_text", lambda *args, **kwargs: None)
+    first = liquid._metadata(tmp_path / "a.mp4", tmp_path / "a.jpg", 35, "short", liquid._profile(789, "short"))
+    second = liquid._metadata(tmp_path / "b.mp4", tmp_path / "b.jpg", 35, "short", liquid._profile(790, "short"))
+    assert first["title"] != second["title"]
+    assert first["title"].endswith("#Shorts")
 
 
 def test_frame_background_is_pure_black(tmp_path: Path, monkeypatch) -> None:

@@ -252,8 +252,19 @@ def analyze_performance() -> dict | None:
     try:
         data = json.loads(raw)
     except (json.JSONDecodeError, TypeError) as exc:
-        log.warning("ai_evolution: JSON invalido do Gemini: %s", exc)
-        return None
+        log.warning("ai_evolution: JSON invalido do Gemini; solicitando autorreparo: %s", exc)
+        repair_prompt = (
+            "Repair the following malformed response into one valid JSON object matching the original schema. "
+            "Preserve its factual values, add no prose and no markdown fences.\n\n" + raw[:12_000]
+        )
+        repaired = ai_text(repair_prompt, json_mode=True, task="aesthetic_evolution_repair", timeout=30)
+        try:
+            data = json.loads(repaired) if repaired else None
+        except (json.JSONDecodeError, TypeError):
+            data = None
+        if data is None:
+            log.warning("ai_evolution: autorreparo JSON falhou; mantendo pesos anteriores.")
+            return None
     if not isinstance(data, dict):
         log.warning("ai_evolution: resposta do Gemini nao e um objeto JSON.")
         return None

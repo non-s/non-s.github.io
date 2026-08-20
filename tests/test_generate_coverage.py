@@ -278,6 +278,25 @@ def test_metadata_json_decode_error_falls_back(monkeypatch, tmp_path: Path) -> N
     assert meta["audio_source"] == "synthetic_python"
 
 
+def test_metadata_rejects_repeated_gemini_title(monkeypatch, tmp_path: Path) -> None:
+    repeated = "A Quiet Current Finds Its Shape #Shorts"
+    monkeypatch.setattr(
+        liquid,
+        "ai_text",
+        lambda *a, **k: json.dumps({
+            "title": repeated,
+            "description": "Original code-generated visuals and music move through darkness.",
+        }),
+    )
+    monkeypatch.setattr(liquid, "title_is_too_repetitive", lambda title: title == repeated)
+    profile = liquid._profile(91, "short")
+
+    meta = liquid._metadata(tmp_path / "v.mp4", tmp_path / "t.jpg", 30.0, "short", profile)
+
+    assert meta["title"] != repeated
+    assert meta["title"].endswith("#Shorts")
+
+
 def test_metadata_short_has_shorts_hashtag(monkeypatch, tmp_path: Path) -> None:
     monkeypatch.setattr(liquid, "ai_text", lambda *a, **k: None)
     profile = liquid._profile(9, "short")
