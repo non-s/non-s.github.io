@@ -28,8 +28,29 @@ WORKFLOW_FILES = {
     "liquid-wire-engagement.yml": "0 */2 * * *",
     "liquid-wire-analytics.yml": "12 2 * * 1",
     "liquid-wire-identity.yml": "20 3 * * 1",
-    "liquid-wire-weekly.yml": "30 3 * * 1",
 }
+
+
+def test_legacy_weekly_batch_is_manual_only() -> None:
+    data = _load_workflow("liquid-wire-weekly.yml")
+    triggers = data.get("on", {})
+    assert "workflow_dispatch" in triggers
+    assert "schedule" not in triggers
+
+
+def test_primary_workflows_expose_governance_switches() -> None:
+    video = (WORKFLOWS_DIR / "liquid-wire-video.yml").read_text(encoding="utf-8")
+    evolution = (WORKFLOWS_DIR / "liquid-wire-evolution.yml").read_text(encoding="utf-8")
+    for switch in (
+        "LIQUID_WIRE_PAUSE_SCHEDULES",
+        "LIQUID_WIRE_DISABLE_GEMINI",
+        "LIQUID_WIRE_DISABLE_EVOLUTION",
+    ):
+        assert switch in video
+        assert switch in evolution
+    assert "LIQUID_WIRE_DISABLE_UPLOAD" in video
+    assert "LIQUID_WIRE_DISABLE_PUZZLE" in video
+    assert "LIQUID_WIRE_FORCE_PRIVATE" in video
 
 
 @pytest.mark.parametrize("filename", list(WORKFLOW_FILES.keys()))

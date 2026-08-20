@@ -14,6 +14,7 @@ import logging
 from datetime import UTC, datetime
 from pathlib import Path
 
+from utils.atomic_state import atomic_write_json
 from utils.paths import data_dir
 from utils.state_lock import state_lock
 
@@ -26,7 +27,13 @@ def _metrics_file() -> Path:
     return data_dir() / "pipeline_metrics.json"
 
 
-def record_pipeline_run(stage: str, success: bool, duration_seconds: float = 0, kind: str = "") -> None:
+def record_pipeline_run(
+    stage: str,
+    success: bool,
+    duration_seconds: float = 0,
+    kind: str = "",
+    details: dict | None = None,
+) -> None:
     """Acrescenta uma entrada de metrica ao arquivo de metricas de pipeline.
 
     Args:
@@ -41,6 +48,7 @@ def record_pipeline_run(stage: str, success: bool, duration_seconds: float = 0, 
         "duration_seconds": float(duration_seconds),
         "kind": kind,
         "at": datetime.now(UTC).isoformat(),
+        "details": details or {},
     }
     path = _metrics_file()
     with state_lock(path):
@@ -54,7 +62,7 @@ def record_pipeline_run(stage: str, success: bool, duration_seconds: float = 0, 
         existing = existing[-_MAX_ENTRIES:]
         try:
             path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
+            atomic_write_json(path, existing)
         except Exception as exc:
             log.warning("Falha ao salvar metricas de pipeline: %s", exc)
 

@@ -6,6 +6,7 @@ utils/ai_helper.py — chamadas ao Google Gemini.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import os
@@ -30,6 +31,7 @@ def _ai_metrics_file() -> Path:
 
 
 _AI_METRICS_MAX_ENTRIES = 1000
+PROMPT_CONTRACT_VERSION = 1
 
 # Padroes que nunca deveriam aparecer num titulo/descricao/legenda gerados.
 # O system prompt (abaixo) ja instrui o modelo a ignorar instrucoes
@@ -63,6 +65,8 @@ def ai_grounded_research(prompt: str, *, task: str = "grounded_research", timeou
     Returns text plus the source URLs supplied by Gemini. Callers must treat
     this as research input, never as permission to publish automatically.
     """
+    if os.environ.get("LIQUID_WIRE_DISABLE_GEMINI", "0") == "1":
+        return {"text": "", "sources": []}
     key = os.environ.get("GEMINI_API_KEY", "")
     if not key:
         log.warning("Gemini grounded research skipped: GEMINI_API_KEY ausente.")
@@ -166,7 +170,14 @@ def _clear_429_streak() -> None:
         _gemini_429_streak = 0
 
 
-def _record_ai_metric(task: str, latency_ms: float, fell_back: bool) -> None:
+def _record_ai_metric(
+    task: str,
+    latency_ms: float,
+    fell_back: bool,
+    *,
+    prompt_hash: str | None = None,
+    structured: bool = False,
+) -> None:
     """Registra uma metrica de chamada ao Gemini em _data/ai_metrics.json.
 
     Mantem no maximo _AI_METRICS_MAX_ENTRIES entradas (FIFO) para o arquivo
@@ -182,6 +193,10 @@ def _record_ai_metric(task: str, latency_ms: float, fell_back: bool) -> None:
         "task": task,
         "latency_ms": round(float(latency_ms), 2),
         "fell_back": bool(fell_back),
+        "prompt_version": PROMPT_CONTRACT_VERSION,
+        "prompt_hash": prompt_hash,
+        "model": _GEMINI_MODEL,
+        "structured": structured,
         "at": datetime.now(UTC).isoformat(),
     }
     try:
@@ -241,6 +256,10 @@ def ai_text(
     start_ts = time.time()
     fell_back = True
     try:
+        prompt_hash = hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:16]
+        if os.environ.get("LIQUID_WIRE_DISABLE_GEMINI", "0") == "1":
+            log.info("Gemini disabled by kill switch; using deterministic fallback for %s.", task)
+            return ""
         key = os.environ.get("GEMINI_API_KEY", "")
         if not key:
             log.error("GEMINI_API_KEY nao configurada.")
@@ -320,7 +339,13 @@ def ai_text(
                 break
         return ""
     finally:
-        _record_ai_metric(task, (time.time() - start_ts) * 1000.0, fell_back)
+        _record_ai_metric(
+            task,
+            (time.time() - start_ts) * 1000.0,
+            fell_back,
+            prompt_hash=locals().get("prompt_hash"),
+            structured=json_mode,
+        )
 
 
 def ai_text_with_image(
@@ -344,6 +369,10 @@ def ai_text_with_image(
     start_ts = time.time()
     fell_back = True
     try:
+        prompt_hash = hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:16]
+        if os.environ.get("LIQUID_WIRE_DISABLE_GEMINI", "0") == "1":
+            log.info("Gemini Vision disabled by kill switch; using fallback for %s.", task)
+            return None
         key = os.environ.get("GEMINI_API_KEY", "")
         if not key:
             log.error("GEMINI_API_KEY nao configurada para thumbnail_vision.")
@@ -431,7 +460,12 @@ def ai_text_with_image(
                 return None
         return None
     finally:
-        _record_ai_metric(task, (time.time() - start_ts) * 1000.0, fell_back)
+        _record_ai_metric(
+            task,
+            (time.time() - start_ts) * 1000.0,
+            fell_back,
+            prompt_hash=locals().get("prompt_hash"),
+        )
 
 
 def ai_batch_metadata(

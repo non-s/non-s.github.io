@@ -27,7 +27,7 @@ sys.path.insert(0, str(ROOT))
 
 from googleapiclient.http import MediaFileUpload
 
-from upload_youtube import _build_tags, _meta_path, _record_video_tags
+from upload_youtube import _build_tags, _meta_path, _production_contract_issues, _record_video_tags
 from utils import ffmpeg_helpers
 from utils.content_funnel import record_funnel_candidate
 from utils.log_config import configure_logging, log_exception_to_file
@@ -64,6 +64,9 @@ def _find_unpublished_videos(prefix: str = "") -> list[tuple[Path, dict]]:
     for meta_path in candidates:
         try:
             data = json.loads(meta_path.read_text(encoding="utf-8"))
+            if data.get("generator_profile") and _production_contract_issues(data):
+                log.warning("Metadata %s rejected by current production contract.", meta_path.name)
+                continue
             if data.get("published") or data.get("video_id"):
                 continue
             if data.get("publish_attempts", 0) >= _MAX_PUBLISH_ATTEMPTS:
@@ -89,6 +92,8 @@ def _publish_video(service, video_path: Path, meta: dict, language: str = "en") 
     apenas atualiza o privacyStatus para public (custa ~50 unidades).
     """
     privacy = os.environ.get("YOUTUBE_PRIVACY", "public")
+    if meta.get("publication_readiness", {}).get("required_privacy") == "private":
+        privacy = "private"
     title = str(meta.get("title", "Liquid Wire"))[:100]
     description = str(meta.get("description", ""))[:5000]
     tags = _build_tags(meta.get("scene", ""), meta.get("hashtags"))

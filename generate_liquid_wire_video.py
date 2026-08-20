@@ -17,7 +17,9 @@ import os
 import secrets
 import shutil
 import subprocess
+import time
 import wave
+from dataclasses import replace
 from datetime import UTC, datetime
 from multiprocessing import Pool, cpu_count
 from pathlib import Path
@@ -29,15 +31,22 @@ from utils.ai_composer import ai_compose as ai_compose_music
 from utils.ai_director import ai_direct as ai_direct_narrative
 from utils.ai_evolution import apply_evolution_to_profile
 from utils.ai_helper import ai_text
+from utils.atomic_state import atomic_write_json
 from utils.audio_mix import BUS_NAMES as MIX_BUS_NAMES
 from utils.audio_mix import Mixer
+from utils.autonomy import assess_autonomy
+from utils.candidate_selector import select_candidate
 from utils.chapter_markers import prepend_chapters
 from utils.content_strategy import current_brt_hour, min_quality_score_for_slot
+from utils.creative_memory import load_catalog, record_creation
+from utils.creative_models import ENGINE_VERSION, STRATEGY_VERSION, AudioDNA, Genome, content_id
 from utils.drums import DrumSequencer
 from utils.dsp.dynamics import SideChainDuck
+from utils.evolution_engine import evolve_profile
 from utils.flow_field import FlowField, render_flow_particles
 from utils.fluid_deform import fluid_deform
 from utils.genres.registry import GENRES, get_genre
+from utils.geometry_audio import couple_geometry_to_audio
 from utils.instruments import advanced as advanced_instruments
 from utils.instruments import drums as drums_instruments
 from utils.instruments import drums_extended as drums_extended_instruments
@@ -59,13 +68,19 @@ from utils.liquid_wire_composer import (
 from utils.liquid_wire_quality import QualityGateError, QualityReport, assess_video
 from utils.liquid_wire_timeline import CreativeEvent, build_timeline, event_envelope, visual_state
 from utils.lufs_mastering import master_audio as lufs_master
+from utils.metadata_audit import audit_description, audit_title
 from utils.organic_growth import OrganicGrowth, render_branches
 from utils.particle_system import ParticleSystem
 from utils.particle_system import render as render_particles
 from utils.paths import data_dir
+from utils.pipeline_metrics import record_pipeline_run
 from utils.post_process import apply_all as apply_post
+from utils.publication_policy import evaluate_publication
+from utils.puzzle_engine import prepare_puzzle, validate_puzzle_carrier
+from utils.rejection_memory import recent_rejection_counts, record_rejection
 from utils.state_lock import state_lock
 from utils.trending_topics import enrich_metadata as enrich_with_trends
+from utils.visual_intelligence import analyze_visual_dna
 
 log = logging.getLogger(__name__)
 
@@ -345,7 +360,7 @@ def _record_quality(profile: dict, report: QualityReport) -> None:
                 **report.to_dict(),
             }
         )
-        path.write_text(json.dumps(history[-QUALITY_HISTORY_LIMIT:], ensure_ascii=False, indent=2), encoding="utf-8")
+        atomic_write_json(path, history[-QUALITY_HISTORY_LIMIT:])
 
 
 def _recent_quality_fingerprints(limit: int = 96) -> list[tuple[float, ...]]:
@@ -431,7 +446,7 @@ def _load_style_drift() -> dict:
         path.parent.mkdir(parents=True, exist_ok=True)
         with state_lock(path):
             if not path.exists():
-                path.write_text(json.dumps(fallback, ensure_ascii=False, indent=2), encoding="utf-8")
+                atomic_write_json(path, fallback)
     except OSError:
         pass
     return fallback
@@ -471,7 +486,7 @@ def _update_style_drift(force: bool = False) -> dict:
                 "rotation": rotation,
             }
             try:
-                path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+                atomic_write_json(path, data)
             except OSError:
                 pass
         return data
@@ -499,7 +514,7 @@ def _profile(seed: int, preset: str) -> dict:
     rng = np.random.default_rng(seed)
     family = str(rng.choice(OBJECT_FAMILIES))
     genre_name = _pick_genre_for_seed(seed)
-    return {
+    profile = {
         "family": family,
         "seed": seed,
         "preset": preset,
@@ -558,6 +573,7 @@ def _profile(seed: int, preset: str) -> dict:
             },
         },
     }
+    return couple_geometry_to_audio(profile)
 
 
 def _signature(profile: dict) -> str:
@@ -640,7 +656,7 @@ def _reserve_profile(preset: str, requested_seed: int | None) -> dict:
             )
             if len(history) > GENERATOR_HISTORY_LIMIT:
                 history = history[-GENERATOR_HISTORY_LIMIT:]
-            path.write_text(json.dumps(history, ensure_ascii=False, indent=2), encoding="utf-8")
+            atomic_write_json(path, history)
             return profile
     raise RuntimeError("Could not reserve a unique Liquid Wire generator profile.")
 
@@ -665,7 +681,23 @@ def _deform_radius(
     rupture = state["rupture"] * 0.24 * np.sign(np.sin((folds_theta + 1) * theta + phase))
     tide = state["tide"] * 0.18 * np.sin(phi * 2 + theta + t * 0.35)
     stillness = max(0.25, 1.0 - state["stillness"] * 0.72)
-    return 1.0 + stillness * (breath + fold_a + fold_b + melt + slow_pull) + bloom + compression + rupture + tide
+    raw_puzzle = profile.get("puzzle")
+    puzzle: dict = raw_puzzle if isinstance(raw_puzzle, dict) else {}
+    glyph_codes = puzzle.get("glyph_codes") if puzzle.get("enabled") else ()
+    glyph_modulation = 0.0
+    if isinstance(glyph_codes, (list, tuple)):
+        density = float(puzzle.get("density", 0.0))
+        for index, code in enumerate(glyph_codes[:24]):
+            glyph_modulation += density * 0.006 * np.sin((int(code) % 9 + 1) * theta + (index % 5 + 1) * phi)
+    return (
+        1.0
+        + stillness * (breath + fold_a + fold_b + melt + slow_pull)
+        + bloom
+        + compression
+        + rupture
+        + tide
+        + glyph_modulation
+    )
 
 
 def _rotate(points: np.ndarray, ax: float, ay: float, az: float) -> np.ndarray:
@@ -1627,7 +1659,12 @@ def _metadata(output: Path, thumbnail: Path, duration: float, preset: str, profi
             value = json.loads(generated)
             candidate_title = str(value.get("title", "")).strip()
             candidate_description = str(value.get("description", "")).strip()
-            if candidate_title and candidate_description:
+            if (
+                candidate_title
+                and candidate_description
+                and not audit_title(candidate_title)
+                and not audit_description(candidate_title, candidate_description)
+            ):
                 title = candidate_title[:100]
                 description = candidate_description[:5000]
         except (json.JSONDecodeError, AttributeError):
@@ -1668,6 +1705,9 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     WIDTH, HEIGHT = render_w, render_h
     OUTPUT_DIR.mkdir(exist_ok=True)
     THUMB_DIR.mkdir(parents=True, exist_ok=True)
+    autonomy = assess_autonomy(data_dir())
+    if not autonomy.generation_allowed:
+        raise RuntimeError(f"Liquid Wire generation stopped: {', '.join(autonomy.reasons)}")
     if FRAME_DIR.exists():
         shutil.rmtree(FRAME_DIR)
     FRAME_DIR.mkdir(parents=True)
@@ -1677,6 +1717,26 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     # AI Evolution: adjust profile based on learned aesthetic weights.
     rng = np.random.default_rng(int(profile["seed"]))
     profile = apply_evolution_to_profile(profile, rng)
+    try:
+        catalog = load_catalog()
+    except (OSError, ValueError, json.JSONDecodeError):
+        catalog = []
+    evolution_decision = evolve_profile(profile, preset, catalog, mode=autonomy.evolution_mode)
+    profile["evolution_decision"] = evolution_decision.to_dict()
+    if evolution_decision.applied:
+        candidate_report = {"stage": "skipped", "reason": "controlled evolution already changed one variable"}
+    else:
+        profile, candidate_report = select_candidate(
+            profile,
+            preset,
+            catalog,
+            recent_rejection_counts(data_dir() / "rejection_memory.json"),
+        )
+    profile["candidate_selection"] = candidate_report
+    profile["puzzle"] = prepare_puzzle(
+        int(profile["seed"]), len(catalog) + 1, enabled=autonomy.puzzles_allowed, observations=catalog
+    ).to_dict()
+    profile["autonomy_state"] = autonomy.to_dict()
     # AI Director: plan narrative arc via Gemini (falls back to procedural timeline).
     ai_events, ai_plan = ai_direct_narrative(
         int(profile["seed"]), duration,
@@ -1693,11 +1753,13 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     else:
         # AI Composer: Gemini generates musical structure, motor renders it.
         composition = ai_compose_music(int(profile["seed"]), duration, get_genre(genre_name))
-    profile["engine_version"] = "4.0"
+    profile["engine_version"] = ENGINE_VERSION
+    profile["strategy_version"] = STRATEGY_VERSION
     profile["timeline"] = [event.to_dict() for event in events]
     profile["composition"] = composition.to_dict()
     if ai_plan:
         profile["ai_plan"] = ai_plan
+    genome = Genome.from_profile(profile, preset)
     # Carry the supersampled render size in the profile for the worker.
     profile["_render_w"] = render_w
     profile["_render_h"] = render_h
@@ -1715,19 +1777,90 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     quality = assess_video(output, (width, height), events, _recent_quality_fingerprints(), min_score=min_score)
     _record_quality(profile, quality)
     if not quality.passed:
+        record_rejection(
+            data_dir() / "rejection_memory.json",
+            "quality_failure",
+            seed=int(profile["seed"]),
+            family=str(profile.get("family", "unknown")),
+            details={"score": quality.score, "issues": list(quality.issues)},
+        )
         output.unlink(missing_ok=True)
         audio_path.unlink(missing_ok=True)
         shutil.rmtree(FRAME_DIR, ignore_errors=True)
         raise QualityGateError(
             f"Render rejected with score {quality.score:.4f}: {', '.join(quality.issues) or 'score_below_threshold'}"
         )
+    recent_visual_fingerprints: list[list[float] | tuple[float, ...]] = []
+    for item in catalog[-96:]:
+        visual = item.get("visual_dna") if isinstance(item, dict) else None
+        novelty = visual.get("novelty") if isinstance(visual, dict) else None
+        fingerprint = novelty.get("fingerprint") if isinstance(novelty, dict) else None
+        if isinstance(fingerprint, list) and all(isinstance(value, (int, float)) for value in fingerprint):
+            recent_visual_fingerprints.append([float(value) for value in fingerprint])
+    visual_dna = analyze_visual_dna(output, recent_fingerprints=recent_visual_fingerprints)
+    if visual_dna is None:
+        output.unlink(missing_ok=True)
+        audio_path.unlink(missing_ok=True)
+        shutil.rmtree(FRAME_DIR, ignore_errors=True)
+        raise QualityGateError("Render rejected: final encoded video could not be perceived")
+    puzzle_payload = dict(genome.puzzle)
+    puzzle_payload["render_validation"] = validate_puzzle_carrier(
+        puzzle_payload, visual_dna.to_dict(), quality.to_dict()
+    )
+    genome = replace(genome, puzzle=puzzle_payload)
     thumbnail = THUMB_DIR / f"{stem}.jpg"
     Image.open(thumb_frame).save(thumbnail, quality=94)
     meta = _metadata(output, thumbnail, duration, preset, profile)
     meta["quality_report"] = quality.to_dict()
+    meta["content_id"] = content_id(genome, visual_dna)
+    meta["genome"] = genome.to_dict()
+    meta["genome_id"] = genome.genome_id
+    meta["engine_version"] = ENGINE_VERSION
+    meta["strategy_version"] = genome.strategy_version
+    meta["visual_dna"] = visual_dna.to_dict()
+    meta["visual_dna_id"] = visual_dna.dna_id
+    audio_dna = AudioDNA.from_quality_report(quality.to_dict())
+    meta["audio_dna"] = audio_dna.to_dict()
+    meta["audio_dna_id"] = audio_dna.dna_id
+    publication = evaluate_publication(
+        quality.to_dict(), visual_dna.to_dict(), audio_dna.to_dict(), puzzle=genome.puzzle,
+        experiment=profile.get("experiment"), force_private=autonomy.force_private,
+    )
+    meta["publication_readiness"] = publication.to_dict()
+    meta["autonomy_state"] = autonomy.to_dict()
+    if not autonomy.publication_allowed:
+        meta["publication_readiness"]["passed"] = False
+        meta["publication_readiness"]["blocking_issues"] = [
+            *meta["publication_readiness"].get("blocking_issues", []),
+            *autonomy.reasons,
+        ]
+    if not publication.passed:
+        record_rejection(
+            data_dir() / "rejection_memory.json",
+            "publication_policy_failure",
+            seed=int(profile["seed"]),
+            family=str(profile.get("family", "unknown")),
+            details={"issues": list(publication.blocking_issues)},
+        )
+        output.unlink(missing_ok=True)
+        audio_path.unlink(missing_ok=True)
+        thumbnail.unlink(missing_ok=True)
+        shutil.rmtree(FRAME_DIR, ignore_errors=True)
+        raise QualityGateError(f"Publication policy rejected render: {', '.join(publication.blocking_issues)}")
+    meta["provenance"] = {
+        "engine_version": ENGINE_VERSION,
+        "strategy_version": genome.strategy_version,
+        "seed": genome.seed,
+        "genome_version": genome.version,
+        "visual_dna_version": visual_dna.version,
+        "runtime": "python",
+        "visual_source": "procedural_python",
+        "audio_source": "synthetic_python",
+    }
     # Trending topics: enrich title/description with trending inspiration.
     meta = enrich_with_trends(meta, profile.get("family", "orb"), str(profile.get("genre", "lofi_ambient")), preset)
-    output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    atomic_write_json(output.with_suffix(".json"), meta, backup=False)
+    record_creation(meta)
     audio_path.unlink(missing_ok=True)
     shutil.rmtree(FRAME_DIR, ignore_errors=True)
     return output
@@ -1752,7 +1885,7 @@ def _record_dead_letter(slot: str, seed: int, error: str, profile: dict) -> None
         })
         # Keep last 100 entries
         queue = queue[-100:]
-        path.write_text(json.dumps(queue, ensure_ascii=False, indent=2), encoding="utf-8")
+        atomic_write_json(path, queue)
     send_alert(
         f"Liquid Wire dead-letter: slot={slot} seed={seed} error={error}",
         level="error",
@@ -1784,6 +1917,7 @@ def _short_duration_for_slot() -> float:
 
 
 def main() -> int:
+    started_at = time.monotonic()
     parser = argparse.ArgumentParser(description="Generate Liquid Wire procedural videos")
     parser.add_argument("--preset", choices=["short", "long", "live-test"], default="short")
     parser.add_argument("--duration", type=float, default=None, help="Duration in seconds")
@@ -1833,9 +1967,23 @@ def main() -> int:
                 pass
             if args.seed is not None or attempt == args.attempts:
                 _record_dead_letter(slot, attempt_seed, last_error, last_profile)
+                record_pipeline_run(
+                    stage="generate",
+                    success=False,
+                    duration_seconds=time.monotonic() - started_at,
+                    kind=args.preset,
+                    details={"attempts": attempt, "last_error": last_error[:500]},
+                )
                 raise
     if output is None:  # pragma: no cover - defensive invariant
         raise RuntimeError("No render was produced.")
+    record_pipeline_run(
+        stage="generate",
+        success=True,
+        duration_seconds=time.monotonic() - started_at,
+        kind=args.preset,
+        details={"attempts": attempt, "output_bytes": output.stat().st_size},
+    )
     print(output)
     return 0
 

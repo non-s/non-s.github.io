@@ -1,7 +1,7 @@
 name: Liquid Wire Weekly Batch
 on:
-  schedule:
-    - cron: "30 3 * * 1"  # weekly Monday 03:30 UTC
+  # Legacy recovery surface: manual-only. Normal publication belongs to the
+  # quality-gated generate/upload workflow and its Content ID pre-check.
   workflow_dispatch:
 permissions:
   contents: read
@@ -26,7 +26,7 @@ jobs:
       - name: Publish weekly batch
         env:
           YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
-          YOUTUBE_PRIVACY: public
+          YOUTUBE_PRIVACY: private
         run: python scripts/publish_weekly_batch.py
       - name: Delete token
         if: always()

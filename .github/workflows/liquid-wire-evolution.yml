@@ -12,11 +12,17 @@ permissions:
 jobs:
   evolve:
     name: "Evolve aesthetic weights from analytics"
-    if: ${{ vars.LIQUID_WIRE_ENABLED == '1' }}
+    if: >-
+      ${{ vars.LIQUID_WIRE_ENABLED == '1' &&
+      (github.event_name == 'workflow_dispatch' || vars.LIQUID_WIRE_PAUSE_SCHEDULES != '1') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      LIQUID_WIRE_DISABLE_GEMINI: ${{ vars.LIQUID_WIRE_DISABLE_GEMINI || '0' }}
+      LIQUID_WIRE_DISABLE_EVOLUTION: ${{ vars.LIQUID_WIRE_DISABLE_EVOLUTION || '0' }}
+      LIQUID_WIRE_PAUSE_SCHEDULES: ${{ vars.LIQUID_WIRE_PAUSE_SCHEDULES || '0' }}
+      LIQUID_WIRE_EVOLUTION_MODE: ${{ vars.LIQUID_WIRE_EVOLUTION_MODE || 'shadow' }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -29,13 +35,19 @@ jobs:
         with:
           youtube-token: ${{ secrets.YOUTUBE_TOKEN }}
       - name: "Run aesthetic evolution"
+        run: python scripts/run_research_cycle.py
+      - name: "Run governed aesthetic evolution"
         run: python scripts/evolve_aesthetics.py
       - name: "Upload evolution report"
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: evolution-report-${{ github.run_id }}
-          path: _data/evolution_report.json
+          path: |
+            _data/evolution_report.json
+            _data/research_report.json
+            _data/research_report.md
+            _data/research_ledger.json
           if-no-files-found: ignore
           retention-days: 30
       - name: "Apagar token"

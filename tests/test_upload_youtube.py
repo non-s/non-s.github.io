@@ -255,6 +255,27 @@ class TestRecordVideoTags:
         assert data["vid1"]["title_pattern"] == "{emoji} {style} {scene}"
         assert "uploaded_at" in data["vid1"]
 
+    def test_writes_autonomous_traceability_ids(self, tmp_path, monkeypatch):
+        tags_file = tmp_path / "video_tags.json"
+        monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
+        upload_youtube._record_video_tags(
+            "vid1",
+            {
+                "scene": "wire",
+                "content_id": "lw_1",
+                "genome_id": "genome_1",
+                "visual_dna_id": "dna_1",
+                "experiment_id": "exp_1",
+                "hypothesis_id": "hyp_1",
+            },
+        )
+        data = json.loads(tags_file.read_text(encoding="utf-8"))["vid1"]
+        assert data["content_id"] == "lw_1"
+        assert data["genome_id"] == "genome_1"
+        assert data["visual_dna_id"] == "dna_1"
+        assert data["experiment_id"] == "exp_1"
+        assert data["hypothesis_id"] == "hyp_1"
+
     def test_title_pattern_defaults_to_empty_string_when_missing(self, tmp_path, monkeypatch):
         tags_file = tmp_path / "video_tags.json"
         monkeypatch.setattr(upload_youtube, "_VIDEO_TAGS_FILE", tags_file)
@@ -374,6 +395,8 @@ class TestRecordVideoTags:
         data = json.loads(tags_file.read_text(encoding="utf-8"))
         assert data["vid_e2e"]["scene"] == "cat"
         assert data["vid_e2e"]["mood"] == "relax"
+        assert "engine_version" in data["vid_e2e"]
+        assert "strategy_version" in data["vid_e2e"]
 
 
 class TestQuotaGuard:

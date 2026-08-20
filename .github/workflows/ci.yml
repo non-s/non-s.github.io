@@ -55,6 +55,8 @@ jobs:
         run: python -m compileall -q .
       - name: "Pytest"
         run: pytest -q --cov --cov-report=term-missing --cov-fail-under=85
+      - name: "Autonomous control-plane benchmark"
+        run: python scripts/benchmark_autonomous_core.py
       - name: "Vulnerability audit"
         # Falha o build se pip-audit encontrar CVEs conhecidas nas dependencias
         # declaradas. Mantido limpo em main: qualquer nova CVE exige bump ou

@@ -337,6 +337,8 @@ class TestRecordAiMetric:
         assert len(data) == 2
         assert data[0]["task"] == "short_metadata"
         assert data[0]["fell_back"] is False
+        assert data[0]["prompt_version"] == 1
+        assert data[0]["model"]
         assert data[0]["latency_ms"] == 123.4
         assert "at" in data[0]
         assert data[1]["task"] == "short_caption"

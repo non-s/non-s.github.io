@@ -19,10 +19,12 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 from utils import ffmpeg_helpers
+from utils.atomic_state import atomic_write_json
 from utils.channel_config import active_channel
 from utils.chapter_markers import prepend_chapters
 from utils.content_funnel import append_related_video_cta, record_funnel_candidate
 from utils.log_config import configure_logging, log_exception_to_file
+from utils.metadata_audit import audit_description, audit_title
 from utils.notifier import send_alert
 from utils.paths import data_dir
 from utils.pipeline_metrics import record_pipeline_run
@@ -64,6 +66,22 @@ def _production_contract_issues(meta: dict) -> list[str]:
         version_parts = ()
     if version_parts < (2, 1):
         issues.append("engine_version_below_2_1")
+    if version_parts >= (4, 1):
+        issues.extend(f"metadata:{issue}" for issue in audit_title(str(meta.get("title", ""))))
+        issues.extend(
+            f"metadata:{issue}"
+            for issue in audit_description(str(meta.get("title", "")), str(meta.get("description", "")))
+        )
+        if not meta.get("content_id") or not isinstance(meta.get("genome"), dict):
+            issues.append("autonomous_identity_missing")
+        if not isinstance(meta.get("visual_dna"), dict) or not isinstance(meta.get("audio_dna"), dict):
+            issues.append("observed_dna_missing")
+        readiness = meta.get("publication_readiness")
+        if not isinstance(readiness, dict) or readiness.get("passed") is not True:
+            issues.append("publication_policy_not_approved")
+        autonomy = meta.get("autonomy_state")
+        if isinstance(autonomy, dict) and autonomy.get("publication_allowed") is not True:
+            issues.append("publication_kill_switch_active")
     fingerprint = quality.get("fingerprint") if isinstance(quality, dict) else None
     # Frente E expandiu o fingerprint perceptual de 20 para 32 dim. Aceitamos
     # ambas: 32 (engine atual) ou 20 (legacy, pre-Frente E). O proprio
@@ -150,6 +168,13 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
         except Exception:
             existing = {}
         existing[video_id] = {
+            "content_id": meta.get("content_id", ""),
+            "genome_id": meta.get("genome_id", ""),
+            "engine_version": meta.get("engine_version", ""),
+            "strategy_version": meta.get("strategy_version", ""),
+            "visual_dna_id": meta.get("visual_dna_id", ""),
+            "experiment_id": meta.get("experiment_id", ""),
+            "hypothesis_id": meta.get("hypothesis_id", ""),
             "scene": scene,
             "hook": meta.get("hook", ""),
             "mood": meta.get("mood", ""),
@@ -172,7 +197,7 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
                 del existing[old_key]
         try:
             tags_file.parent.mkdir(parents=True, exist_ok=True)
-            tags_file.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
+            atomic_write_json(tags_file, existing)
         except Exception as exc:
             log.warning("Falha ao salvar video_tags: %s", exc)
 
@@ -377,8 +402,9 @@ def _build_upload_body(
     # and the Content ID pre-check clears, the privacy is flipped to the
     # requested value (only "public" is actionable; unlisted/private stay as-is).
     target_privacy = ""
-    if publish_after_check and privacy == "public":
-        target_privacy = "public"
+    requires_private_validation = meta.get("publication_readiness", {}).get("required_privacy") == "private"
+    if (publish_after_check or requires_private_validation) and privacy == "public":
+        target_privacy = "public" if publish_after_check else ""
         privacy = "private"
         status["privacyStatus"] = privacy
 

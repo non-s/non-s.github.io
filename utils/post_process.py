@@ -66,7 +66,7 @@ def film_grain(img: Image.Image, intensity: float = 0.04) -> Image.Image:
     arr = np.asarray(base, dtype=np.float32)
     rng = np.random.default_rng(0)  # static seed keeps grain stable per frame
     # Poisson-shaped noise via normal approximation of Poisson(lambda) centering.
-    noise = rng.normal(0.0, 1.0, arr.shape).astype(np.float32)
+    noise: np.ndarray = np.asarray(rng.normal(0.0, 1.0, arr.shape), dtype=np.float32)
     grain = (np.sqrt(np.maximum(arr, 0.0)) * noise) * float(intensity) * 255.0
     out_arr = np.clip(arr + grain, 0.0, 255.0).astype(np.uint8)
     out = Image.fromarray(out_arr, "RGB")

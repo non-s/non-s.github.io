@@ -1,5 +1,42 @@
 # Changelog
 
+## 4.2.0 - 2026-08-20
+
+- Bumped the engine to 4.2, Genome to v2, strategy to v2 and puzzle protocol to v2 for the exhaustive
+  Master Mandate closure contracts; the uploader remains backward-compatible with validated 4.1 metadata.
+
+## Master Mandate V2 — exhaustive closure pass
+
+- Added independently enforced generation/upload/Gemini/evolution/puzzle/private/schedule controls.
+- Expanded pre-publication self-critique to all seven mandated dimensions and added bounded rejection memory.
+- Added strategy versioning, compacted long-term catalog aggregates, Pareto analysis, creative-space mapping,
+  value-of-information scoring and a dependency-free lineage graph.
+- Added prompt provenance (version, model, prompt hash, structured/fallback state) without storing prompt text or secrets.
+- Added a cached, schema-validated Gemini research advisor over bounded experiments, canon and non-causal evidence.
+- Prevented analytics research from mixing formats or maturity windows and attached explicit observation cutoffs.
+- Migrated central plain-JSON state to atomic replacement while preserving legacy schemas and rollback copies.
+- Added objective rollback criteria and bounded rejection-memory influence on candidate selection.
+- Expanded traceability from 178 sections to all 658 explicit bullet sub-requirements.
+
+## 4.1.0 - 2026-08-20
+
+- Added versioned procedural genomes, final-render visual DNA and stable
+  content/provenance identifiers.
+- Added OpenCV composition, palette, entropy, temporal-change and optical-flow
+  observation of the encoded MP4.
+- Added bounded catalog memory with atomic versioned JSON writes and rollback
+  copies.
+- Added explainable, confidence-aware and format-specific fitness primitives.
+- Added the Master Mandate V2 baseline/audit and autonomous-core tests.
+- Joined YouTube metrics to catalog memory in comparable maturity windows and
+  added deterministic research reports, hypotheses and experiment ledgers.
+- Added governed lineage, semantic mutations, adaptive exploration, novelty
+  pressure, archive of elites and cheap candidate selection.
+- Added audio DNA, Quality Gate 2.0, private validation, safe mode, canary and
+  kill-switch enforcement.
+- Added a fictional, versioned Liquid Wire glyph/puzzle protocol and canon;
+  it explicitly does not claim historical cuneiform.
+
 All notable changes to Liquid Wire are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
