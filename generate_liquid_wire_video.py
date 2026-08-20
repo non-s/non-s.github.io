@@ -67,7 +67,15 @@ from utils.liquid_wire_composer import (
     build_composition_for_genre,
 )
 from utils.liquid_wire_quality import QualityGateError, QualityReport, assess_video
-from utils.liquid_wire_timeline import CreativeEvent, build_timeline, event_envelope, visual_state
+from utils.liquid_wire_timeline import (
+    CreativeEvent,
+    audit_narrative_arc,
+    build_timeline,
+    ensure_narrative_arc,
+    event_envelope,
+    narrative_state,
+    visual_state,
+)
 from utils.living_scene import build_scene, identify_scene, orchestrate_scene, scene_distance, scene_music
 from utils.lufs_mastering import master_audio as lufs_master
 from utils.metadata_audit import audit_description, audit_title
@@ -696,6 +704,7 @@ def _deform_radius(
     melt = 0.11 * np.sin((folds_theta + 3) * theta + (folds_phi + 1) * phi + t * melt_rate)
     slow_pull = 0.08 * np.cos(2 * theta - 3 * phi + t * 0.18 + phase)
     state = visual_state(t, events)
+    memory = narrative_state(t, events)
     directional = np.cos(theta - math.atan2(state["direction_y"], state["direction_x"] + 1e-9))
     bloom = state["bloom"] * (0.22 + 0.10 * np.sin(3 * phi))
     compression = -state["compression"] * (0.18 + 0.08 * directional)
@@ -710,6 +719,12 @@ def _deform_radius(
         density = float(puzzle.get("density", 0.0))
         for index, code in enumerate(glyph_codes[:24]):
             glyph_modulation += density * 0.006 * np.sin((int(code) % 9 + 1) * theta + (index % 5 + 1) * phi)
+    irreversible_growth = memory["metamorphosis"] * (
+        .11 + .05 * np.sin((folds_theta - 1) * theta - (folds_phi + 2) * phi + phase)
+    )
+    rupture_scar = memory["scar"] * .07 * np.tanh(
+        4 * np.sin((folds_theta + folds_phi) * theta + 2 * phi + phase)
+    )
     return (
         1.0
         + stillness * (breath + fold_a + fold_b + melt + slow_pull)
@@ -718,6 +733,8 @@ def _deform_radius(
         + rupture
         + tide
         + glyph_modulation
+        + irreversible_growth
+        + rupture_scar
     )
 
 
@@ -738,6 +755,7 @@ def _surface(
     phi = np.linspace(0.06, np.pi - 0.06, n_phi)
     th, ph = np.meshgrid(theta, phi)
     radius = _deform_radius(th, ph, t, profile, events)
+    story = narrative_state(t, events)
     family = str(profile["family"])
     twist = float(profile["twist"])
     if family == "torus":
@@ -882,9 +900,9 @@ def _surface(
     pts = np.stack([x, y, z], axis=-1).reshape(-1, 3)
     pts = _rotate(
         pts,
-        0.42 + 0.08 * np.sin(t * 0.4 + float(profile["phase"])),
-        float(profile["camera_yaw"]) * t,
-        float(profile["camera_roll"]) * np.cos(t * 0.23),
+        0.42 + 0.08 * np.sin(t * 0.4 + float(profile["phase"])) + .12 * story["scar"],
+        float(profile["camera_yaw"]) * t + .16 * story["metamorphosis"],
+        float(profile["camera_roll"]) * np.cos(t * 0.23) * (1 - .35 * story["settling"]),
     )
     x, y, z = pts[:, 0].reshape(ph.shape), pts[:, 1].reshape(ph.shape), pts[:, 2].reshape(ph.shape)
     scale = 1.72 / (4.4 - z)
@@ -1071,6 +1089,7 @@ def _draw_frame_mesh(
     glow_draw = ImageDraw.Draw(glow)
     draw = ImageDraw.Draw(lines)
     state = visual_state(t, events)
+    story = narrative_state(t, events)
     raw_scene = profile.get("scene")
     scene: dict = raw_scene if isinstance(raw_scene, dict) else {}
     organisms = scene.get("organisms") if isinstance(scene.get("organisms"), list) else []
@@ -1081,11 +1100,15 @@ def _draw_frame_mesh(
     ordered = sorted(organisms, key=lambda item: float(item.get("depth", 0)))
     raw_matter = scene.get("matter")
     matter: dict = raw_matter if isinstance(raw_matter, dict) else {}
-    cohesion = float(matter.get("cohesion", .7))
+    cohesion = float(np.clip(float(matter.get("cohesion", .7)) + .13 * story["metamorphosis"], .45, .95))
     viscosity = float(matter.get("viscosity", .85))
     centers: dict[str, tuple[float, float]] = {}
     for organism in ordered:
-        angle = float(organism.get("phase", 0)) + t * float(organism.get("orbit_rate", 0))
+        angle = (
+            float(organism.get("phase", 0))
+            + t * float(organism.get("orbit_rate", 0)) * (1 - .62 * story["settling"])
+            + .28 * story["scar"]
+        )
         ox, oy = float(organism.get("x", 0)), float(organism.get("y", 0))
         x = ox * math.cos(angle) - oy * math.sin(angle)
         y = ox * math.sin(angle) + oy * math.cos(angle)
@@ -1102,7 +1125,10 @@ def _draw_frame_mesh(
         child["seed"] = int(organism.get("seed", profile["seed"]))
         child["phase"] = float(profile["phase"]) + float(organism.get("phase", 0))
         palette = dict(profile["palette"])
-        palette["base_hue"] = (float(palette["base_hue"]) + float(organism.get("hue_offset", 0))) % 1.0
+        palette["base_hue"] = (
+            float(palette["base_hue"]) + float(organism.get("hue_offset", 0))
+            + .16 * story["scar"] + .09 * story["metamorphosis"]
+        ) % 1.0
         child["palette"] = palette
         sx, sy = _surface(
             t + float(organism.get("phase", 0)), child, events, n_theta=mesh_theta, n_phi=mesh_phi
@@ -1117,14 +1143,26 @@ def _draw_frame_mesh(
                 t - float(organism.get("phase", 0)), morph, events, n_theta=mesh_theta, n_phi=mesh_phi
             )
             amount = float(organism.get("topology_mix", .5))
-            amount = float(np.clip(amount + .12 * math.sin(t * float(organism.get("pulse_rate", 0))), 0, 1))
+            amount = float(np.clip(
+                amount + .12 * math.sin(t * float(organism.get("pulse_rate", 0)))
+                + .38 * story["metamorphosis"] + .24 * story["scar"], 0, 1,
+            ))
             sx, sy = sx * (1 - amount) + mx * amount, sy * (1 - amount) + my * amount
-        angle = float(organism.get("phase", 0)) + t * float(organism.get("orbit_rate", 0))
+        angle = (
+            float(organism.get("phase", 0))
+            + t * float(organism.get("orbit_rate", 0)) * (1 - .62 * story["settling"])
+            + .28 * story["scar"]
+        )
         ox, oy = float(organism.get("x", 0)), float(organism.get("y", 0))
         x = ox * math.cos(angle) - oy * math.sin(angle)
         y = ox * math.sin(angle) + oy * math.cos(angle)
-        pulse = 1.0 + .08 * math.sin(t * float(organism.get("pulse_rate", 0)) + angle)
-        scale = float(organism.get("scale", 1)) * pulse * (1.22 + cohesion*.24)
+        pulse = 1.0 + .08 * (1 - .72 * story["settling"]) * math.sin(
+            t * float(organism.get("pulse_rate", 0)) + angle
+        )
+        scale = (
+            float(organism.get("scale", 1)) * pulse * (1.22 + cohesion*.24)
+            * (1 + .18 * story["metamorphosis"] - .07 * story["settling"])
+        )
         center_x, center_y = centers[str(organism.get("id"))]
         sx = center_x + (sx - WIDTH * .5) * scale
         sy = center_y + (sy - HEIGHT * .5) * scale
@@ -1845,6 +1883,8 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
         log.info("Using AI Director narrative plan (%d events)", len(events))
     else:
         events = build_timeline(int(profile["seed"]), duration, profile["music"])
+    events = ensure_narrative_arc(events, duration, int(profile["seed"]))
+    profile["narrative_arc_audit"] = audit_narrative_arc(events, duration)
     genre_name = str(profile.get("genre") or "lofi_ambient")
     if genre_name == "lofi_ambient":
         composition = build_composition(int(profile["seed"]), duration, profile["music"], events)
@@ -1987,7 +2027,11 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
             "publication_policy_failure",
             seed=int(profile["seed"]),
             family=str(profile.get("family", "unknown")),
-            details={"issues": list(publication.blocking_issues)},
+            details={
+                "issues": list(publication.blocking_issues),
+                "temporal": visual_dna.temporal,
+                "semantic_novelty": profile.get("semantic_novelty"),
+            },
         )
         output.unlink(missing_ok=True)
         audio_path.unlink(missing_ok=True)

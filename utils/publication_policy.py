@@ -45,7 +45,11 @@ def evaluate_publication(
     else:
         dimensions["visual"] = "pass"
     temporal = visual_dna.get("temporal")
-    dimensions["temporal"] = "pass" if isinstance(temporal, dict) and temporal else "unmeasured"
+    if isinstance(temporal, dict) and temporal.get("narrative_pass") is False:
+        blocking.append("final render does not demonstrate a complete temporal narrative")
+        dimensions["temporal"] = "fail"
+    else:
+        dimensions["temporal"] = "pass" if isinstance(temporal, dict) and temporal else "unmeasured"
     fill = visual_dna.get("composition", {}).get("screen_fill")
     if isinstance(fill, (int, float)) and fill < 0.02:
         prompts.append("very low screen occupancy; review mobile legibility")

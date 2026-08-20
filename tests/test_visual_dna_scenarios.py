@@ -33,6 +33,21 @@ def test_static_and_high_motion_are_distinguishable(monkeypatch, tmp_path):
     dynamic = _dna(monkeypatch, tmp_path, moving)
     assert static.motion["frame_difference_mean"] == 0
     assert dynamic.motion["frame_difference_mean"] > static.motion["frame_difference_mean"]
+    assert static.temporal["narrative_pass"] is False
+
+
+def test_three_visually_distinct_acts_pass_temporal_narrative(monkeypatch, tmp_path):
+    frames = []
+    for index in range(12):
+        frame = np.zeros((90, 160, 3), dtype=np.uint8)
+        act = index // 4
+        x = 10 + act * 45 + index * 2
+        size = 15 + act * 8
+        frame[20 : 20 + size, x : x + size] = (40 + act * 80, 120, 240 - act * 60)
+        frames.append(frame)
+    dna = _dna(monkeypatch, tmp_path, frames)
+    assert dna.temporal["narrative_pass"] is True
+    assert dna.temporal["opening_ending_distance"] > 0
 
 
 def test_symmetric_asymmetric_and_dense_compositions_are_observed(monkeypatch, tmp_path):
