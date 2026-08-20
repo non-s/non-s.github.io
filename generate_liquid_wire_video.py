@@ -34,6 +34,7 @@ from utils.ai_helper import ai_text
 from utils.atomic_state import atomic_write_json
 from utils.audio_mix import BUS_NAMES as MIX_BUS_NAMES
 from utils.audio_mix import Mixer
+from utils.audio_novelty import AUDIO_PLAN_MIN_DISTANCE, audio_plan_vector, nearest_audio_plan
 from utils.autonomy import assess_autonomy
 from utils.candidate_selector import select_candidate
 from utils.chapter_markers import prepend_chapters
@@ -1337,8 +1338,7 @@ def _render_instrument_role(
     # All registered instrument subclasses accept a ``seed`` keyword, but the
     # base ``Instrument`` class does not declare it, so cast for the type checker.
     instrument: Instrument = cls(seed=seed)  # type: ignore[call-arg]
-    voice = _voice_for_role(role)
-    role_notes = [ne for ne in notes if ne.voice == voice]
+    role_notes = _notes_for_role(notes, role)
     if not role_notes:
         return np.zeros(n, dtype=np.float64)
     buffer = np.zeros(n, dtype=np.float64)
@@ -1359,6 +1359,12 @@ def _render_instrument_role(
             continue
         buffer[start_i:end_i] += rendered[: end_i - start_i]
     return buffer
+
+
+def _notes_for_role(notes: list, role: str) -> list:
+    """Select both the principal voice and its organism-agent descendants."""
+    voice = _voice_for_role(role)
+    return [ne for ne in notes if ne.voice == voice or ne.voice.startswith(f"{voice}:organism-")]
 
 
 def duration_of_buffer(n: int, sample_rate: int) -> float:
@@ -1851,6 +1857,19 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
             separators=(",", ":"),
         ).encode("utf-8")
     ).hexdigest()[:24]
+    profile["audio_intent_vector"] = audio_plan_vector(composition)
+    nearest_distance, nearest_content_id = nearest_audio_plan(profile["audio_intent_vector"], catalog)
+    profile["audio_novelty"] = {
+        "version": 1,
+        "nearest_distance": nearest_distance,
+        "nearest_content_id": nearest_content_id,
+        "minimum_distance": AUDIO_PLAN_MIN_DISTANCE,
+    }
+    if nearest_content_id is not None and nearest_distance < AUDIO_PLAN_MIN_DISTANCE:
+        raise QualityGateError(
+            f"Audio composition rejected: perceptually similar to {nearest_content_id} "
+            f"(distance={nearest_distance:.6f})"
+        )
     if any(
         item.get("audio_composition_id") == profile["audio_composition_id"]
         for item in catalog
@@ -1923,6 +1942,8 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     meta["audio_dna"] = audio_dna.to_dict()
     meta["audio_dna_id"] = audio_dna.dna_id
     meta["audio_composition_id"] = profile["audio_composition_id"]
+    meta["audio_intent_vector"] = profile["audio_intent_vector"]
+    meta["audio_novelty"] = profile["audio_novelty"]
     publication = evaluate_publication(
         quality.to_dict(), visual_dna.to_dict(), audio_dna.to_dict(), puzzle=genome.puzzle,
         experiment=profile.get("experiment"), force_private=autonomy.force_private,

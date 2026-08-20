@@ -36,3 +36,8 @@ def test_scene_orchestration_creates_distinct_counterpoint():
     assert len(result.notes) > len(base.notes)
     assert any("organism-" in note.voice for note in result.notes)
     assert mapping["voices"] == len(profile["scene"]["organisms"])
+    assert mapping["version"] == 2
+    agent_notes = [note for note in result.notes if "organism-" in note.voice]
+    assert len({note.voice for note in agent_notes}) == mapping["voices"] - 1
+    assert len({(note.note, note.start, note.duration) for note in agent_notes}) > 1
+    assert orchestrate_scene(base, mapping, 12) == result
