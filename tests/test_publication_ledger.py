@@ -36,7 +36,13 @@ def test_rebuild_merges_out_of_order_receipts_idempotently(tmp_path) -> None:
     first = rebuild_publication_state(evidence, data)
     second = rebuild_publication_state(evidence, data)
 
-    assert first == second == {"receipts": 2, "legacy_matches": 0, "catalog_records": 2, "video_tags": 2}
+    assert first == second == {
+        "receipts": 2,
+        "legacy_matches": 0,
+        "catalog_records": 2,
+        "video_tags": 2,
+        "experiment_assignments": 0,
+    }
     catalog = load_versioned(data / "catalog_memory.json", 1, {}, [])
     assert {row["content_id"] for row in catalog} == {"lw-1", "lw-2"}
     assert set(json.loads((data / "video_tags.json").read_text())) == {"v1", "v2"}
@@ -78,3 +84,45 @@ def test_rebuild_refuses_ambiguous_legacy_match(tmp_path) -> None:
     result = rebuild_publication_state(evidence, data)
 
     assert result["legacy_matches"] == 0
+
+
+def test_rebuild_recovers_causal_cohort_from_self_contained_receipt(tmp_path) -> None:
+    evidence, data = tmp_path / "evidence", tmp_path / "data"
+    evidence.mkdir()
+    metadata = _metadata("lw-treatment", "Measured Melt")
+    metadata.update(
+        {
+            "experiment_id": "exp-1",
+            "hypothesis_id": "hyp-1",
+            "experiment_variant": "treatment",
+            "experiment": {
+                "experiment_id": "exp-1",
+                "hypothesis_id": "hyp-1",
+                "variant": "treatment",
+                "changed_variables": {
+                    "genome.motion.melt_rate": {"operation": "multiply", "factor": 1.2}
+                },
+                "target_window": "72h",
+                "hypothesis": {
+                    "statement": "Melt rate improves fitness",
+                    "independent_variable": "genome.motion.melt_rate",
+                    "dependent_metric": "fitness.score",
+                    "expected_direction": "increase",
+                    "rationale": "Observed cohort",
+                    "status": "planned",
+                    "samples": 0,
+                    "confidence": 0.0,
+                },
+            },
+        }
+    )
+    receipt = publication_receipt("video-1", metadata, uploaded_at="2026-08-20T11:00:00Z")
+    (evidence / "publication_receipt_video-1.json").write_text(json.dumps(receipt), encoding="utf-8")
+
+    first = rebuild_publication_state(evidence, data)
+    second = rebuild_publication_state(evidence, data)
+
+    assert first["experiment_assignments"] == second["experiment_assignments"] == 1
+    ledger = load_versioned(data / "research_ledger.json", 1, {}, {})
+    assert ledger["experiments"]["exp-1"]["treatment_content_ids"] == ["lw-treatment"]
+    assert ledger["hypotheses"]["hyp-1"]["independent_variable"] == "genome.motion.melt_rate"

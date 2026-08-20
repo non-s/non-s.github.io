@@ -12,7 +12,12 @@ import numpy as np
 
 from utils.ai_research_advisor import advise
 from utils.atomic_state import atomic_write_json, load_versioned
-from utils.experiment_engine import Hypothesis, record_hypothesis
+from utils.experiment_engine import (
+    Hypothesis,
+    conclude_ready_experiments,
+    plan_experiment,
+    record_hypothesis,
+)
 from utils.strategy_intelligence import (
     creative_map,
     experiment_meta_learning,
@@ -66,14 +71,14 @@ def _family_statistics(items: list[dict[str, Any]]) -> dict[str, dict[str, float
 
 
 def _correlations(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    # Independent variables must be controls the renderer can intervene on.
+    # Perceived output measurements remain useful outcomes, but cannot be
+    # assigned as treatments and therefore must never be labelled causal inputs.
     dimensions = {
-        "visual_dna.composition.screen_fill": "screen fill",
-        "visual_dna.composition.symmetry": "symmetry",
-        "visual_dna.composition.entropy": "visual entropy",
-        "visual_dna.motion.optical_flow_mean": "apparent motion",
-        "visual_dna.appearance.brightness": "brightness",
-        "visual_dna.appearance.saturation": "saturation",
-        "visual_dna.temporal.opening_activity": "opening activity",
+        "genome.motion.melt_rate": "melt rate",
+        "genome.geometry.folds_theta": "theta folds",
+        "genome.geometry.folds_phi": "phi folds",
+        "genome.geometry.strand_count": "strand count",
     }
     results: list[dict[str, Any]] = []
     cohorts: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
@@ -204,6 +209,33 @@ def run_research_cycle(data_root: Path) -> dict[str, Any]:
     ledger_path = data_root / "research_ledger.json"
     for hypothesis in hypotheses:
         record_hypothesis(ledger_path, hypothesis)
+    priorities = _experiment_priorities(hypotheses, correlations)
+    hypothesis_by_id = {item.hypothesis_id: item for item in hypotheses}
+    planned_experiment_id = None
+    for priority in priorities:
+        selected_hypothesis = hypothesis_by_id.get(str(priority["hypothesis_id"]))
+        signal = next(
+            (
+                item
+                for item in correlations
+                if selected_hypothesis and item["variable"] == selected_hypothesis.independent_variable
+            ),
+            None,
+        )
+        if selected_hypothesis is None or signal is None:
+            continue
+        planned_experiment_id = plan_experiment(
+            ledger_path,
+            selected_hypothesis.hypothesis_id,
+            independent_variable=selected_hypothesis.independent_variable,
+            format=str(signal["format"]),
+            target_window=str(signal["window"]),
+        )
+        if planned_experiment_id:
+            break
+    concluded_experiments = conclude_ready_experiments(
+        ledger_path, catalog if isinstance(catalog, list) else []
+    )
     ledger = load_versioned(ledger_path, 1, {}, {"hypotheses": {}, "experiments": {}})
     generated_at = datetime.now(UTC).isoformat()
     report: dict[str, Any] = {
@@ -214,7 +246,9 @@ def run_research_cycle(data_root: Path) -> dict[str, Any]:
         "family_statistics": _family_statistics(items),
         "correlations": correlations,
         "proposed_hypothesis_ids": [hypothesis.hypothesis_id for hypothesis in hypotheses],
-        "experiment_priorities": _experiment_priorities(hypotheses, correlations),
+        "experiment_priorities": priorities,
+        "planned_experiment_id": planned_experiment_id,
+        "concluded_experiments": concluded_experiments,
         "pareto_content_ids": pareto_frontier(items),
         "creative_map": creative_map(items),
         "lineage_graph": lineage_graph(items),
