@@ -14,6 +14,7 @@ import logging
 from datetime import UTC, datetime
 from pathlib import Path
 
+from utils.atomic_state import atomic_write_json
 from utils.paths import data_dir
 from utils.state_lock import state_lock
 
@@ -61,7 +62,7 @@ def record_pipeline_run(
         existing = existing[-_MAX_ENTRIES:]
         try:
             path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
+            atomic_write_json(path, existing)
         except Exception as exc:
             log.warning("Falha ao salvar metricas de pipeline: %s", exc)
 

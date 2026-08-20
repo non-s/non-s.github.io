@@ -5,7 +5,7 @@ import json
 import numpy as np
 import pytest
 
-from utils.atomic_state import load_versioned, save_versioned
+from utils.atomic_state import atomic_write_json, load_versioned, save_versioned
 from utils.creative_models import ENGINE_VERSION, Genome, VisualDNA, content_id
 from utils.research_engine import compute_fitness, hypothesis_status
 from utils.visual_intelligence import analyze_visual_dna
@@ -65,6 +65,15 @@ def test_versioned_state_rejects_legacy_payload(tmp_path):
     path.write_text("[]", encoding="utf-8")
     with pytest.raises(ValueError, match="unversioned"):
         load_versioned(path, 1, {}, [])
+
+
+def test_plain_json_compatibility_write_is_atomic_and_backed_up(tmp_path):
+    path = tmp_path / "legacy.json"
+    atomic_write_json(path, {"value": 1})
+    atomic_write_json(path, {"value": 2})
+    assert json.loads(path.read_text(encoding="utf-8")) == {"value": 2}
+    assert json.loads(path.with_suffix(".json.bak").read_text(encoding="utf-8")) == {"value": 1}
+    assert list(tmp_path.glob("*.tmp")) == []
 
 
 def test_catalog_memory_is_bounded_and_versioned(monkeypatch, tmp_path):

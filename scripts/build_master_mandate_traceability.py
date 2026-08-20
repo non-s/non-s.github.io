@@ -53,6 +53,7 @@ EVIDENCE_RANGES = (
         35,
         [
             "utils/ai_helper.py",
+            "utils/ai_research_advisor.py",
             "utils/ai_evolution.py",
             "utils/ai_director.py",
             "tests/test_ai_helper.py",
@@ -120,6 +121,7 @@ EVIDENCE_RANGES = (
             "SECURITY.md",
             "utils/autonomy.py",
             "utils/atomic_state.py",
+            "utils/rollback_policy.py",
             "utils/youtube_retry.py",
             "scripts/healthcheck.py",
             ".github/workflows/ci.yml",
@@ -190,6 +192,7 @@ EVIDENCE_RANGES = (
         131,
         [
             "utils/ai_helper.py",
+            "utils/ai_research_advisor.py",
             "utils/research_cycle.py",
             ".github/workflows/liquid-wire-evolution.yml",
             "tests/test_ai_helper.py",
@@ -306,12 +309,22 @@ def build(source: Path) -> dict:
                 "body_sha256": hashlib.sha256(body.encode("utf-8")).hexdigest(),
                 "bullet_count": len(bullets),
                 "evidence": _evidence(index),
+                "requirements": [
+                    {
+                        "requirement_id": f"{index}.b{bullet_index:03d}",
+                        "text": bullet,
+                        "status": status,
+                        "evidence": _evidence(index),
+                    }
+                    for bullet_index, bullet in enumerate(bullets, start=1)
+                ],
             }
         )
     return {
         "schema_version": 1,
         "source_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
         "section_count": len(sections),
+        "subrequirement_count": sum(len(section["requirements"]) for section in sections),
         "allowed_statuses": ["satisfied", "satisfied_by_decision", "ready_pending_real_data"],
         "sections": sections,
     }

@@ -31,6 +31,7 @@ from utils.ai_composer import ai_compose as ai_compose_music
 from utils.ai_director import ai_direct as ai_direct_narrative
 from utils.ai_evolution import apply_evolution_to_profile
 from utils.ai_helper import ai_text
+from utils.atomic_state import atomic_write_json
 from utils.audio_mix import BUS_NAMES as MIX_BUS_NAMES
 from utils.audio_mix import Mixer
 from utils.autonomy import assess_autonomy
@@ -74,7 +75,7 @@ from utils.pipeline_metrics import record_pipeline_run
 from utils.post_process import apply_all as apply_post
 from utils.publication_policy import evaluate_publication
 from utils.puzzle_engine import prepare_puzzle, validate_puzzle_carrier
-from utils.rejection_memory import record_rejection
+from utils.rejection_memory import recent_rejection_counts, record_rejection
 from utils.state_lock import state_lock
 from utils.trending_topics import enrich_metadata as enrich_with_trends
 from utils.visual_intelligence import analyze_visual_dna
@@ -357,7 +358,7 @@ def _record_quality(profile: dict, report: QualityReport) -> None:
                 **report.to_dict(),
             }
         )
-        path.write_text(json.dumps(history[-QUALITY_HISTORY_LIMIT:], ensure_ascii=False, indent=2), encoding="utf-8")
+        atomic_write_json(path, history[-QUALITY_HISTORY_LIMIT:])
 
 
 def _recent_quality_fingerprints(limit: int = 96) -> list[tuple[float, ...]]:
@@ -443,7 +444,7 @@ def _load_style_drift() -> dict:
         path.parent.mkdir(parents=True, exist_ok=True)
         with state_lock(path):
             if not path.exists():
-                path.write_text(json.dumps(fallback, ensure_ascii=False, indent=2), encoding="utf-8")
+                atomic_write_json(path, fallback)
     except OSError:
         pass
     return fallback
@@ -483,7 +484,7 @@ def _update_style_drift(force: bool = False) -> dict:
                 "rotation": rotation,
             }
             try:
-                path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+                atomic_write_json(path, data)
             except OSError:
                 pass
         return data
@@ -652,7 +653,7 @@ def _reserve_profile(preset: str, requested_seed: int | None) -> dict:
             )
             if len(history) > GENERATOR_HISTORY_LIMIT:
                 history = history[-GENERATOR_HISTORY_LIMIT:]
-            path.write_text(json.dumps(history, ensure_ascii=False, indent=2), encoding="utf-8")
+            atomic_write_json(path, history)
             return profile
     raise RuntimeError("Could not reserve a unique Liquid Wire generator profile.")
 
@@ -1717,10 +1718,15 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     if evolution_decision.applied:
         candidate_report = {"stage": "skipped", "reason": "controlled evolution already changed one variable"}
     else:
-        profile, candidate_report = select_candidate(profile, preset, catalog)
+        profile, candidate_report = select_candidate(
+            profile,
+            preset,
+            catalog,
+            recent_rejection_counts(data_dir() / "rejection_memory.json"),
+        )
     profile["candidate_selection"] = candidate_report
     profile["puzzle"] = prepare_puzzle(
-        int(profile["seed"]), len(catalog) + 1, enabled=autonomy.puzzles_allowed
+        int(profile["seed"]), len(catalog) + 1, enabled=autonomy.puzzles_allowed, observations=catalog
     ).to_dict()
     profile["autonomy_state"] = autonomy.to_dict()
     # AI Director: plan narrative arc via Gemini (falls back to procedural timeline).
@@ -1843,7 +1849,7 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     }
     # Trending topics: enrich title/description with trending inspiration.
     meta = enrich_with_trends(meta, profile.get("family", "orb"), str(profile.get("genre", "lofi_ambient")), preset)
-    output.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    atomic_write_json(output.with_suffix(".json"), meta, backup=False)
     record_creation(meta)
     audio_path.unlink(missing_ok=True)
     shutil.rmtree(FRAME_DIR, ignore_errors=True)
@@ -1869,7 +1875,7 @@ def _record_dead_letter(slot: str, seed: int, error: str, profile: dict) -> None
         })
         # Keep last 100 entries
         queue = queue[-100:]
-        path.write_text(json.dumps(queue, ensure_ascii=False, indent=2), encoding="utf-8")
+        atomic_write_json(path, queue)
     send_alert(
         f"Liquid Wire dead-letter: slot={slot} seed={seed} error={error}",
         level="error",

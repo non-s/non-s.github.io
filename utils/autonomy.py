@@ -5,8 +5,11 @@ from __future__ import annotations
 import json
 import os
 from dataclasses import asdict, dataclass
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any, Literal
+
+from utils.rollback_policy import assess_rollback
 
 
 @dataclass(frozen=True)
@@ -31,7 +34,15 @@ def _recent_failures(data_root: Path) -> int:
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return 0
-    return len(value[-6:]) if isinstance(value, list) else 0
+    cutoff = datetime.now(UTC) - timedelta(hours=24)
+    count = 0
+    for item in value[-20:] if isinstance(value, list) else []:
+        try:
+            timestamp = datetime.fromisoformat(str(item.get("timestamp", "")).replace("Z", "+00:00"))
+        except (AttributeError, TypeError, ValueError):
+            continue
+        count += int(timestamp >= cutoff)
+    return count
 
 
 def assess_autonomy(data_root: Path) -> AutonomyState:
@@ -46,6 +57,7 @@ def assess_autonomy(data_root: Path) -> AutonomyState:
     force_private = os.environ.get("LIQUID_WIRE_FORCE_PRIVATE", "0") == "1"
     forced_safe = os.environ.get("LIQUID_WIRE_SAFE_MODE", "0") == "1"
     failures = _recent_failures(data_root)
+    rollback = assess_rollback(data_root)
     if killed:
         reasons.append("global kill switch enabled")
     if publication_killed:
@@ -56,7 +68,8 @@ def assess_autonomy(data_root: Path) -> AutonomyState:
         reasons.append("safe mode explicitly enabled")
     if failures >= 3:
         reasons.append(f"failure-rate guardrail: {failures} recent dead letters")
-    safe = forced_safe or failures >= 3
+    reasons.extend(reason for reason in rollback.reasons if reason not in reasons)
+    safe = forced_safe or failures >= 3 or rollback.required
     configured = os.environ.get("LIQUID_WIRE_EVOLUTION_MODE", "shadow")
     configured_evolution: Literal["off", "shadow", "canary", "active"] = (
         configured if configured in {"off", "shadow", "canary", "active"} else "shadow"  # type: ignore[assignment]
@@ -71,7 +84,9 @@ def assess_autonomy(data_root: Path) -> AutonomyState:
         reasons.append("schedule pause enabled")
     return AutonomyState(
         generation_allowed=not killed,
-        publication_allowed=not killed and not publication_killed and not upload_killed,
+        publication_allowed=(
+            not killed and not publication_killed and not upload_killed and not rollback.block_publication
+        ),
         safe_mode=safe,
         reasons=tuple(reasons),
         evolution_mode="off" if safe or evolution_killed else configured_evolution,

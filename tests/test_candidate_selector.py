@@ -41,6 +41,17 @@ def test_family_saturation_reduces_candidate_score(monkeypatch):
     assert fresh["selected"]["score"] > saturated["selected"]["score"]
 
 
+def test_rejection_memory_influences_but_cannot_dominate_candidate_score():
+    _, report = select_candidate(
+        _profile(),
+        "short",
+        [],
+        {"low_motion": 5, "too_similar": 5, "bad_composition": 5},
+    )
+    assert report["rejection_memory"]["low_motion"] == 5
+    assert all(-0.1 <= row["rejection_adjustment"] <= 0.1 for row in report["candidates"])
+
+
 def test_audio_dna_uses_observed_quality_fingerprint():
     report = {
         "audio_rms_db": -18.0,

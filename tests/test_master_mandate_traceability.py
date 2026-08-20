@@ -11,6 +11,7 @@ def test_every_numbered_mandate_section_is_traced_with_existing_evidence():
     payload = json.loads(TRACE.read_text(encoding="utf-8"))
     sections = payload["sections"]
     assert payload["section_count"] == 178
+    assert payload["subrequirement_count"] == 658
     assert [row["section"] for row in sections] == list(range(178))
     allowed = set(payload["allowed_statuses"])
     for row in sections:
@@ -19,6 +20,12 @@ def test_every_numbered_mandate_section_is_traced_with_existing_evidence():
         assert row["evidence"]
         for relative in row["evidence"]:
             assert (ROOT / relative).exists(), f"section {row['section']} has missing evidence: {relative}"
+        assert len(row["requirements"]) == row["bullet_count"]
+        for position, requirement in enumerate(row["requirements"], start=1):
+            assert requirement["requirement_id"] == f"{row['section']}.b{position:03d}"
+            assert requirement["text"]
+            assert requirement["status"] == row["status"]
+            assert requirement["evidence"] == row["evidence"]
 
 
 def test_traceability_has_no_unresolved_implementation_status():

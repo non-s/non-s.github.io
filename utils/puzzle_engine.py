@@ -73,7 +73,40 @@ def validate_puzzle(state: PuzzleState) -> list[str]:
     return issues
 
 
-def prepare_puzzle(seed: int, episode: int, *, enabled: bool | None = None) -> PuzzleState:
+def calibrate_difficulty(episode: int, observations: list[dict[str, Any]] | None = None) -> str:
+    """Follow a humane discovery curve and move at most one level with evidence."""
+    levels = ("discoverable", "layered", "deep")
+    baseline = "discoverable" if episode <= 5 else "layered" if episode <= 15 else "deep"
+    comparable: list[float] = []
+    for item in observations or []:
+        puzzle = item.get("puzzle") if isinstance(item, dict) else None
+        windows = item.get("performance_windows") if isinstance(item, dict) else None
+        if not isinstance(puzzle, dict) or not puzzle.get("enabled") or not isinstance(windows, dict):
+            continue
+        metrics = next(
+            (windows[name] for name in ("mature", "72h", "24h") if isinstance(windows.get(name), dict)),
+            None,
+        )
+        if isinstance(metrics, dict) and isinstance(metrics.get("average_percentage_viewed"), (int, float)):
+            comparable.append(float(metrics["average_percentage_viewed"]))
+    if len(comparable) < 8:
+        return baseline
+    index = levels.index(baseline)
+    mean_retention = sum(comparable[-20:]) / min(20, len(comparable))
+    if mean_retention < 55:
+        index = max(0, index - 1)
+    elif mean_retention > 95:
+        index = min(len(levels) - 1, index + 1)
+    return levels[index]
+
+
+def prepare_puzzle(
+    seed: int,
+    episode: int,
+    *,
+    enabled: bool | None = None,
+    observations: list[dict[str, Any]] | None = None,
+) -> PuzzleState:
     configured = os.environ.get("LIQUID_WIRE_PUZZLES_ENABLED", "1") == "1" if enabled is None else enabled
     # At most one in five works carries a puzzle. Identity is consistent,
     # while ordinary videos preserve a humane discovery curve.
@@ -87,7 +120,7 @@ def prepare_puzzle(seed: int, episode: int, *, enabled: bool | None = None) -> P
         )
     message = _CANON_MESSAGES[(episode - 1) % len(_CANON_MESSAGES)]
     codes, checksum = encode_message(message)
-    difficulty = ("discoverable", "layered", "deep")[(episode - 1) % 3]
+    difficulty = calibrate_difficulty(episode, observations)
     density = {"discoverable": 0.08, "layered": 0.12, "deep": 0.16}[difficulty]
     state = PuzzleState(
         True, False, PUZZLE_PROTOCOL_VERSION, GLYPH_LANGUAGE_VERSION, CANON_VERSION,

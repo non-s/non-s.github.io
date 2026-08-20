@@ -16,6 +16,7 @@ class CandidateScore:
     mutation: dict[str, Any]
     intent_novelty: float
     family_saturation: float
+    rejection_adjustment: float
     score: float
 
 
@@ -88,7 +89,10 @@ def _variant(base: dict[str, Any], index: int, rng: np.random.Generator) -> tupl
 
 
 def select_candidate(
-    profile: dict[str, Any], preset: str, catalog: list[dict[str, Any]]
+    profile: dict[str, Any],
+    preset: str,
+    catalog: list[dict[str, Any]],
+    rejection_counts: dict[str, int] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Select one single-variable intent; the final render gate remains authoritative."""
     budget = candidate_budget(preset)
@@ -98,12 +102,21 @@ def select_candidate(
     family = profile.get("family")
     saturation = recent_families.count(family) / max(1, len(recent_families))
     scored: list[tuple[dict[str, Any], CandidateScore]] = []
+    failures = rejection_counts or {}
     for index in range(budget):
         candidate, mutation = _variant(profile, index, rng)
         vector = _intent_vector(candidate)
         novelty = min((float(np.linalg.norm(vector - old)) / 2.0 for old in old_vectors), default=1.0)
-        score = 0.75 * novelty + 0.25 * (1.0 - saturation)
-        scored.append((candidate, CandidateScore(index, mutation, novelty, saturation, score)))
+        adjustment = 0.0
+        if failures.get("low_motion", 0) and mutation.get("field") == "melt_rate":
+            adjustment += 0.08 if float(mutation["after"]) > float(mutation["before"]) else -0.08
+        if failures.get("too_similar", 0):
+            adjustment += min(0.05, novelty * 0.05)
+        if failures.get("bad_composition", 0) and mutation.get("field") == "folds_theta":
+            adjustment += 0.03
+        adjustment = float(np.clip(adjustment, -0.1, 0.1))
+        score = 0.75 * novelty + 0.25 * (1.0 - saturation) + adjustment
+        scored.append((candidate, CandidateScore(index, mutation, novelty, saturation, adjustment, score)))
     selected, selected_score = max(scored, key=lambda pair: pair[1].score)
     report = {
         "stage": "cheap_genome",
@@ -111,6 +124,7 @@ def select_candidate(
         "selected_index": selected_score.index,
         "selected": asdict(selected_score),
         "candidates": [asdict(score) for _, score in scored],
+        "rejection_memory": failures,
         "limitations": "Intent novelty is a cheap prefilter; final visual DNA and quality gate govern publication.",
     }
     return selected, report

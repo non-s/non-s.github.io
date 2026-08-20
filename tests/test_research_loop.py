@@ -62,6 +62,8 @@ def test_catalog_feedback_matches_content_id_and_computes_fitness(tmp_path):
     assert updated["performance_windows"]["1h"]["views"] == 250
     assert updated["fitness"]["model"] == "short_v1"
     assert updated["fitness"]["confidence"] < 1
+    assert updated["fitness_window"] == "1h"
+    assert updated["fitness_observed_at"] == "2026-01-01T02:00:00+00:00"
 
 
 def test_catalog_feedback_refuses_phantom_creations(tmp_path):
@@ -128,6 +130,8 @@ def test_research_cycle_proposes_traceable_noncausal_hypothesis(tmp_path):
         catalog.append(
             {
                 "content_id": f"lw_{index}",
+                "kind": "short",
+                "fitness_window": "72h",
                 "genome": {"family": "orb" if index % 2 else "ribbon"},
                 "fitness": {"score": value, "confidence": 0.8},
                 "visual_dna": {
@@ -143,5 +147,29 @@ def test_research_cycle_proposes_traceable_noncausal_hypothesis(tmp_path):
     assert report["data_status"] == "sufficient_for_hypotheses"
     assert report["proposed_hypothesis_ids"]
     assert all(signal["causal"] is False for signal in report["correlations"])
+    assert all(signal["format"] == "short" and signal["window"] == "72h" for signal in report["correlations"])
     ledger = load_versioned(tmp_path / "research_ledger.json", 1, {}, {})
     assert report["proposed_hypothesis_ids"][0] in ledger["hypotheses"]
+
+
+def test_research_never_mixes_formats_or_maturity_windows(tmp_path):
+    catalog = []
+    for index in range(14):
+        catalog.append(
+            {
+                "content_id": f"lw_{index}",
+                "kind": "short" if index % 2 else "long",
+                "fitness_window": "24h" if index % 3 else "72h",
+                "fitness": {"score": index / 14, "confidence": 0.8},
+                "visual_dna": {
+                    "composition": {"screen_fill": index / 14, "symmetry": 0.5, "entropy": 0.4},
+                    "motion": {"optical_flow_mean": index / 14},
+                    "appearance": {"brightness": index / 14, "saturation": 0.3},
+                    "temporal": {"opening_activity": index / 14},
+                },
+            }
+        )
+    save_versioned(tmp_path / "catalog_memory.json", catalog, 1)
+    report = run_research_cycle(tmp_path)
+    assert report["correlations"] == []
+    assert report["data_status"] == "insufficient_data"

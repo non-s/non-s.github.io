@@ -4,6 +4,7 @@ from utils.atomic_state import load_versioned
 from utils.canon_memory import record_canon_event
 from utils.puzzle_engine import (
     PuzzleState,
+    calibrate_difficulty,
     encode_message,
     prepare_puzzle,
     validate_puzzle,
@@ -93,3 +94,17 @@ def test_final_compressed_carrier_requires_decoded_edges_and_contrast():
         {"passed": True},
     )
     assert failed["passed"] is False
+
+
+def test_difficulty_progresses_slowly_and_requires_real_comparable_evidence():
+    assert calibrate_difficulty(1) == "discoverable"
+    assert calibrate_difficulty(10) == "layered"
+    assert calibrate_difficulty(30) == "deep"
+    sparse = [{"puzzle": {"enabled": True}, "performance_windows": {"72h": {"average_percentage_viewed": 10}}}]
+    assert calibrate_difficulty(10, sparse) == "layered"
+    weak = sparse * 8
+    assert calibrate_difficulty(10, weak) == "discoverable"
+    strong = [
+        {"puzzle": {"enabled": True}, "performance_windows": {"mature": {"average_percentage_viewed": 120}}}
+    ] * 8
+    assert calibrate_difficulty(10, strong) == "deep"

@@ -19,6 +19,7 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 from utils import ffmpeg_helpers
+from utils.atomic_state import atomic_write_json
 from utils.channel_config import active_channel
 from utils.chapter_markers import prepend_chapters
 from utils.content_funnel import append_related_video_cta, record_funnel_candidate
@@ -188,7 +189,7 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
                 del existing[old_key]
         try:
             tags_file.parent.mkdir(parents=True, exist_ok=True)
-            tags_file.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
+            atomic_write_json(tags_file, existing)
         except Exception as exc:
             log.warning("Falha ao salvar video_tags: %s", exc)
 

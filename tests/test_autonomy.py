@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import UTC, datetime
 
 from utils.autonomy import assess_autonomy
 
@@ -36,7 +37,10 @@ def test_global_kill_switch_stops_generation_and_publication(tmp_path, monkeypat
 
 def test_failure_rate_enters_safe_mode_without_stopping_stable_generation(tmp_path, monkeypatch):
     monkeypatch.delenv("LIQUID_WIRE_KILL_SWITCH", raising=False)
-    (tmp_path / "dead_letter_queue.json").write_text(json.dumps([{}] * 3), encoding="utf-8")
+    timestamp = datetime.now(UTC).isoformat()
+    (tmp_path / "dead_letter_queue.json").write_text(
+        json.dumps([{"timestamp": timestamp}] * 3), encoding="utf-8"
+    )
     state = assess_autonomy(tmp_path)
     assert state.safe_mode is True
     assert state.generation_allowed is True

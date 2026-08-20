@@ -107,6 +107,8 @@ def sync_catalog_performance(
                 windows[window] = snapshot
                 novelty = item.get("visual_dna", {}).get("novelty", {}).get("recent_distance")
                 item["fitness"] = compute_fitness(metrics, str(item.get("kind", "long")), novelty=novelty).to_dict()
+                item["fitness_window"] = window
+                item["fitness_observed_at"] = observed
                 item["youtube_video_id"] = video_id
                 summary["updated"] += 1
         if summary["updated"]:

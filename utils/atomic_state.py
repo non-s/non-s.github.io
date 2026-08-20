@@ -15,6 +15,28 @@ from utils.state_lock import state_lock
 Migration = Callable[[Any], Any]
 
 
+def atomic_write_json(path: Path, data: Any, *, backup: bool = True) -> None:
+    """Atomically replace a legacy plain-JSON file without changing its schema.
+
+    Shared-state callers should keep their existing ``state_lock`` around the
+    read/modify/write transaction. This helper owns durability and rollback.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    encoded = json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+    if backup and path.exists():
+        shutil.copy2(path, path.with_suffix(path.suffix + ".bak"))
+    descriptor, temporary_name = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
+    temporary = Path(temporary_name)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(encoded)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
 def load_versioned(path: Path, current_version: int, migrations: dict[int, Migration], default: Any) -> Any:
     """Load an envelope and migrate its payload without silently overwriting it."""
     if not path.exists():

@@ -7,6 +7,11 @@
 - Added strategy versioning, compacted long-term catalog aggregates, Pareto analysis, creative-space mapping,
   value-of-information scoring and a dependency-free lineage graph.
 - Added prompt provenance (version, model, prompt hash, structured/fallback state) without storing prompt text or secrets.
+- Added a cached, schema-validated Gemini research advisor over bounded experiments, canon and non-causal evidence.
+- Prevented analytics research from mixing formats or maturity windows and attached explicit observation cutoffs.
+- Migrated central plain-JSON state to atomic replacement while preserving legacy schemas and rollback copies.
+- Added objective rollback criteria and bounded rejection-memory influence on candidate selection.
+- Expanded traceability from 178 sections to all 658 explicit bullet sub-requirements.
 
 ## 4.1.0 - 2026-08-20
 

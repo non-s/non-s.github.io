@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 from collections import defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
@@ -10,7 +9,8 @@ from typing import Any
 
 import numpy as np
 
-from utils.atomic_state import load_versioned
+from utils.ai_research_advisor import advise
+from utils.atomic_state import atomic_write_json, load_versioned
 from utils.experiment_engine import Hypothesis, record_hypothesis
 
 
@@ -34,6 +34,8 @@ def _eligible(catalog: list[dict[str, Any]]) -> list[dict[str, Any]]:
         if isinstance(item, dict)
         and _get(item, "fitness.score") is not None
         and _get(item, "fitness.confidence") is not None
+        and item.get("fitness_window") in {"early", "1h", "6h", "24h", "72h", "mature"}
+        and item.get("kind") in {"short", "long"}
     ]
 
 
@@ -41,9 +43,10 @@ def _family_statistics(items: list[dict[str, Any]]) -> dict[str, dict[str, float
     grouped: dict[str, list[float]] = defaultdict(list)
     for item in items:
         family = str(item.get("genome", {}).get("family", "unknown"))
+        cohort = f"{family}|{item.get('kind')}|{item.get('fitness_window')}"
         score = _get(item, "fitness.score")
         if score is not None:
-            grouped[family].append(score)
+            grouped[cohort].append(score)
     return {
         family: {
             "samples": len(scores),
@@ -65,31 +68,41 @@ def _correlations(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
         "visual_dna.temporal.opening_activity": "opening activity",
     }
     results: list[dict[str, Any]] = []
-    for path, label in dimensions.items():
-        pairs: list[tuple[float, float]] = []
-        for item in items:
-            value = _get(item, path)
-            score = _get(item, "fitness.score")
-            if value is not None and score is not None:
-                pairs.append((value, score))
-        if len(pairs) < 8:
-            continue
-        x, y = np.asarray(pairs, dtype=float).T
-        if float(np.std(x)) < 1e-9 or float(np.std(y)) < 1e-9:
-            continue
-        correlation = float(np.corrcoef(x, y)[0, 1])
-        if not np.isfinite(correlation):
-            continue
-        results.append(
-            {
-                "variable": path,
-                "label": label,
-                "samples": len(pairs),
-                "correlation": round(correlation, 6),
-                "strength": "strong" if abs(correlation) >= 0.5 else "weak" if abs(correlation) < 0.25 else "moderate",
-                "causal": False,
-            }
-        )
+    cohorts: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
+    for item in items:
+        cohorts[(str(item["kind"]), str(item["fitness_window"]))].append(item)
+    for (kind, window), cohort_items in sorted(cohorts.items()):
+        for path, label in dimensions.items():
+            pairs: list[tuple[float, float]] = []
+            for item in cohort_items:
+                value = _get(item, path)
+                score = _get(item, "fitness.score")
+                if value is not None and score is not None:
+                    pairs.append((value, score))
+            if len(pairs) < 8:
+                continue
+            x, y = np.asarray(pairs, dtype=float).T
+            if float(np.std(x)) < 1e-9 or float(np.std(y)) < 1e-9:
+                continue
+            correlation = float(np.corrcoef(x, y)[0, 1])
+            if not np.isfinite(correlation):
+                continue
+            results.append(
+                {
+                    "variable": path,
+                    "label": label,
+                    "format": kind,
+                    "window": window,
+                    "samples": len(pairs),
+                    "correlation": round(correlation, 6),
+                    "strength": "strong"
+                    if abs(correlation) >= 0.5
+                    else "weak"
+                    if abs(correlation) < 0.25
+                    else "moderate",
+                    "causal": False,
+                }
+            )
     return sorted(results, key=lambda row: abs(row["correlation"]), reverse=True)
 
 
@@ -101,13 +114,17 @@ def _proposed_hypotheses(correlations: list[dict[str, Any]]) -> list[Hypothesis]
         direction = "increase" if signal["correlation"] > 0 else "decrease"
         proposals.append(
             Hypothesis(
-                statement=f"Increasing {signal['label']} may {direction} age-normalized fitness",
+                statement=(
+                    f"Increasing {signal['label']} may {direction} {signal['format']} "
+                    f"fitness in the {signal['window']} window"
+                ),
                 independent_variable=str(signal["variable"]),
                 dependent_metric="fitness.score",
                 expected_direction=direction,
                 rationale=(
                     f"Observed non-causal correlation {signal['correlation']:.3f} across "
-                    f"{signal['samples']} creations; controlled replication is required."
+                    f"{signal['samples']} {signal['format']} creations observed in the same "
+                    f"{signal['window']} window; controlled replication is required."
                 ),
             )
         )
@@ -138,8 +155,9 @@ def run_research_cycle(data_root: Path) -> dict[str, Any]:
             "Missing YouTube metrics reduce confidence and are not imputed.",
         ],
     }
+    report["ai_advisor"] = advise(data_root, report)
     data_root.mkdir(parents=True, exist_ok=True)
-    (data_root / "research_report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    atomic_write_json(data_root / "research_report.json", report)
     lines = [
         "# Liquid Wire research report",
         "",
@@ -151,7 +169,8 @@ def run_research_cycle(data_root: Path) -> dict[str, Any]:
         "",
     ]
     lines.extend(
-        f"- {row['label']}: r={row['correlation']:.3f}, n={row['samples']} ({row['strength']}; non-causal)"
+        f"- {row['format']}/{row['window']} {row['label']}: r={row['correlation']:.3f}, "
+        f"n={row['samples']} ({row['strength']}; non-causal)"
         for row in correlations
     )
     if not correlations:
