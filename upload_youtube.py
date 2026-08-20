@@ -276,13 +276,19 @@ def upload_video(
 ) -> str | None:
     start_time = time.time()
     success = False
+    remote_attempted = False
     try:
+        candidate = _resolve_upload_candidate(prefix)
+        if candidate is None:
+            return None
+        remote_attempted = True
         video_id = _upload_video_inner(
             language=language,
             privacy=privacy,
             prefix=prefix,
             publish_at=publish_at,
             publish_after_check=publish_after_check,
+            candidate=candidate,
         )
         if video_id is not None:
             success = True
@@ -294,6 +300,7 @@ def upload_video(
             success=success,
             duration_seconds=time.time() - start_time,
             kind=kind,
+            details={"remote_attempted": remote_attempted},
         )
 
 
@@ -462,8 +469,9 @@ def _upload_video_inner(
     prefix: str = "",
     publish_at: str | None = None,
     publish_after_check: bool = False,
+    candidate: tuple[Path, dict] | None = None,
 ) -> str | None:
-    candidate = _resolve_upload_candidate(prefix)
+    candidate = candidate or _resolve_upload_candidate(prefix)
     if candidate is None:
         return None
     video_path, meta = candidate
