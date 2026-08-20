@@ -43,7 +43,7 @@ from utils.creative_memory import load_catalog, record_creation
 from utils.creative_models import ENGINE_VERSION, STRATEGY_VERSION, AudioDNA, Genome, content_id
 from utils.drums import DrumSequencer
 from utils.dsp.dynamics import SideChainDuck
-from utils.evolution_engine import evolve_profile
+from utils.evolution_engine import EvolutionMode, evolve_profile
 from utils.experiment_engine import assign_experiment, record_assignment
 from utils.flow_field import FlowField, render_flow_particles
 from utils.fluid_deform import fluid_deform
@@ -282,6 +282,16 @@ FRAME_DIR = OUTPUT_DIR / "_liquid_wire_frames"
 THUMB_DIR = ROOT / "_assets" / "thumbnails"
 
 FPS = 30
+
+
+def _render_fps_for_preset(preset: str) -> int:
+    """Bound render cost while delivering every encoded video at 30 fps."""
+    defaults = {"short": FPS, "live-test": 15, "long": 10}
+    try:
+        configured = int(os.environ.get("LIQUID_WIRE_RENDER_FPS", defaults.get(preset, FPS)))
+    except ValueError:
+        configured = defaults.get(preset, FPS)
+    return max(8, min(FPS, configured))
 WIDTH = 1280
 HEIGHT = 720
 SAMPLE_RATE = 44_100
@@ -962,7 +972,7 @@ def _draw_frame_special(
     index: int, frame_count: int, profile: dict, events: list[CreativeEvent], frame_dir: Path
 ) -> Path:
     """Render non-mesh families (flow field, particle swarm, coral, nebula)."""
-    t = index / FPS
+    t = index / float(profile.get("_render_fps", FPS))
     palette = profile["palette"]
     family = str(profile["family"])
     canvas = Image.new("RGBA", (WIDTH, HEIGHT), "#000000ff")
@@ -993,10 +1003,6 @@ def _draw_frame_special(
         fh = HEIGHT * (1.0 - 2.0 * margin)
         ox, oy = WIDTH * margin, HEIGHT * margin
         system = ParticleSystem(int(profile["seed"]), 380, float(fw), float(fh))
-        # Warm the system forward to the current frame so motion is continuous.
-        steps = max(1, int(t / 0.033))
-        for step in range(steps):
-            system.update(dt=0.033, t=step * 0.033)
         psx, psy = render_particles(system, profile, t, int(fw), int(fh))
         for i in range(system.num_particles):
             color = _rgb(i / system.num_particles, t, palette)[:3] + (210,)
@@ -1084,7 +1090,7 @@ def _draw_frame(
 def _draw_frame_mesh(
     index: int, frame_count: int, profile: dict, events: list[CreativeEvent], frame_dir: Path
 ) -> Path:
-    t = index / FPS
+    t = index / float(profile.get("_render_fps", FPS))
     canvas = Image.new("RGBA", (WIDTH, HEIGHT), "#000000ff")
     glow = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 0))
     lines = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 0))
@@ -1639,12 +1645,12 @@ def _synth_audio(
         _synth_audio_universal(path, duration, seed, profile, events, composition)
 
 
-def _run_ffmpeg(frame_dir: Path, audio_path: Path, output: Path) -> None:
+def _run_ffmpeg(frame_dir: Path, audio_path: Path, output: Path, *, source_fps: int = FPS) -> None:
     cmd = [
         "ffmpeg",
         "-y",
         "-framerate",
-        str(FPS),
+        str(source_fps),
         "-i",
         str(frame_dir / "frame_%05d.png"),
         "-i",
@@ -1657,6 +1663,7 @@ def _run_ffmpeg(frame_dir: Path, audio_path: Path, output: Path) -> None:
         "medium",
         "-crf",
         "18",
+        *(["-vf", f"minterpolate=fps={FPS}:mi_mode=blend"] if source_fps < FPS else []),
         "-c:a",
         "aac",
         "-b:a",
@@ -1689,11 +1696,12 @@ def _run_ffmpeg(frame_dir: Path, audio_path: Path, output: Path) -> None:
         # Log the ffmpeg stderr for diagnosis, then try a minimal fallback.
         log.error("ffmpeg failed (rc=%d): %s", exc.returncode, (exc.stderr or "")[:500])
         fallback_cmd = [
-            "ffmpeg", "-y", "-framerate", str(FPS),
+            "ffmpeg", "-y", "-framerate", str(source_fps),
             "-i", str(frame_dir / "frame_%05d.png"),
             "-i", str(audio_path),
             "-c:v", "libx264", "-pix_fmt", "yuv420p",
             "-preset", "ultrafast", "-crf", "23",
+            *(["-vf", f"minterpolate=fps={FPS}:mi_mode=blend"] if source_fps < FPS else []),
             "-c:a", "aac", "-b:a", "128k",
             "-shortest", str(output),
         ]
@@ -1847,7 +1855,13 @@ def _metadata(output: Path, thumbnail: Path, duration: float, preset: str, profi
     }
 
 
-def generate(duration: float, preset: str, seed: int | None = None) -> Path:
+def generate(
+    duration: float,
+    preset: str,
+    seed: int | None = None,
+    *,
+    evolution_mode: EvolutionMode | None = None,
+) -> Path:
     global WIDTH, HEIGHT
     width, height = _dimensions_for_preset(preset)
     # Supersampling: render at SS_FACTOR x then downscale to the nominal size.
@@ -1862,8 +1876,11 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
         shutil.rmtree(FRAME_DIR)
     FRAME_DIR.mkdir(parents=True)
     stem = f"liquid_wire_{preset}_{datetime.now(UTC).strftime('%Y%m%d_%H%M%S')}"
-    frame_count = max(1, int(duration * FPS))
+    render_fps = _render_fps_for_preset(preset)
+    frame_count = max(1, int(duration * render_fps))
     profile = _reserve_profile(preset, seed)
+    profile["_render_fps"] = render_fps
+    profile["output_fps"] = FPS
     # AI Evolution: adjust profile based on learned aesthetic weights.
     rng = np.random.default_rng(int(profile["seed"]))
     profile = apply_evolution_to_profile(profile, rng)
@@ -1883,7 +1900,9 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
             "reason": "controlled causal experiment isolates its declared variable",
         }
     else:
-        evolution_decision = evolve_profile(profile, preset, catalog, mode=autonomy.evolution_mode)
+        evolution_decision = evolve_profile(
+            profile, preset, catalog, mode=evolution_mode or autonomy.evolution_mode
+        )
         profile["evolution_decision"] = evolution_decision.to_dict()
         if evolution_decision.applied:
             candidate_report = {"stage": "skipped", "reason": "controlled evolution already changed one variable"}
@@ -1974,12 +1993,12 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     profile["_render_w"] = render_w
     profile["_render_h"] = render_h
     _render_frames_parallel(frame_count, profile, events, FRAME_DIR, width, height)
-    thumb_index = min(frame_count - 1, FPS * 2)
+    thumb_index = min(frame_count - 1, render_fps * 2)
     thumb_frame = FRAME_DIR / f"frame_{thumb_index:05d}.png"
     audio_path = OUTPUT_DIR / f"{stem}.wav"
     output = OUTPUT_DIR / f"{stem}.mp4"
     _synth_audio(audio_path, duration, int(profile["seed"]), profile, events, composition)
-    _run_ffmpeg(FRAME_DIR, audio_path, output)
+    _run_ffmpeg(FRAME_DIR, audio_path, output, source_fps=render_fps)
     # The quality gate expects the nominal output dimensions. The minimum
     # score is configurable per slot (Frente E): morning hours require a
     # higher score, late night is more lenient.
@@ -2148,6 +2167,11 @@ def _short_duration_for_slot() -> float:
     return float(rng.uniform(27.0, 60.0))
 
 
+def _retry_evolution_mode(error: str, current: EvolutionMode | None) -> EvolutionMode | None:
+    """Escape inherited lineages after a measured novelty rejection."""
+    return "off" if "duplicate" in error.lower() else current
+
+
 def main() -> int:
     started_at = time.monotonic()
     parser = argparse.ArgumentParser(description="Generate Liquid Wire procedural videos")
@@ -2174,6 +2198,7 @@ def main() -> int:
     effective_seed = args.seed if args.seed is not None else _slot_seed()
     last_profile: dict = {}
     last_error = ""
+    evolution_mode_override: EvolutionMode | None = None
     for attempt in range(1, args.attempts + 1):
         if args.seed is not None or attempt == 1:
             attempt_seed = effective_seed
@@ -2182,11 +2207,20 @@ def main() -> int:
             seed_entropy = int(hashlib.sha256(f"attempt:{attempt}:{slot}".encode()).hexdigest(), 16)
             attempt_seed = (effective_seed + attempt * 10007 + seed_entropy) % (2**32)
         try:
-            output = generate(duration=duration, preset=args.preset, seed=attempt_seed)
+            output = generate(
+                duration=duration,
+                preset=args.preset,
+                seed=attempt_seed,
+                evolution_mode=evolution_mode_override,
+            )
             break
         except QualityGateError as exc:
             print(f"Quality attempt {attempt}/{args.attempts} failed: {exc}")
             last_error = str(exc)
+            next_mode = _retry_evolution_mode(last_error, evolution_mode_override)
+            if next_mode == "off" and evolution_mode_override != "off":
+                print("Novelty escape activated: retrying from a fresh non-inherited lineage.")
+            evolution_mode_override = next_mode
             try:
                 history = _load_history()
                 if history:

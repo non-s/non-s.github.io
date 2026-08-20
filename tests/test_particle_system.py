@@ -62,3 +62,17 @@ def test_different_seed_different_output() -> None:
     a = ParticleSystem(seed=1, num_particles=15, width=300, height=300)
     b = ParticleSystem(seed=2, num_particles=15, width=300, height=300)
     assert not np.allclose(a.positions(), b.positions())
+
+
+def test_closed_form_long_horizon_is_deterministic_and_does_not_replay_updates(monkeypatch) -> None:
+    system = ParticleSystem(seed=99, num_particles=380, width=1920, height=1080)
+    before = system.positions()
+    monkeypatch.setattr(system, "update", lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("replay")))
+
+    first_x, first_y = render(system, {}, 180.0, width=1920, height=1080)
+    second_x, second_y = render(system, {}, 180.0, width=1920, height=1080)
+
+    assert np.allclose(first_x, second_x)
+    assert np.allclose(first_y, second_y)
+    assert not np.allclose(first_x, render(system, {}, 0.0, width=1920, height=1080)[0])
+    assert np.allclose(system.positions(), before)

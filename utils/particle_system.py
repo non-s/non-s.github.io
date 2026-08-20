@@ -8,6 +8,8 @@ All randomness is driven by a single numpy Generator for reproducibility.
 
 from __future__ import annotations
 
+import math
+
 import numpy as np
 
 
@@ -41,6 +43,8 @@ class ParticleSystem:
         self.damping = 0.92
         self.interaction_radius = 140.0
         self._max_speed = 320.0
+        self._initial_pos = self.pos.copy()
+        self._initial_vel = self.vel.copy()
 
     def update(self, dt: float, t: float) -> None:
         """Advance the physics by ``dt`` seconds. ``t`` is available for forcing."""
@@ -91,6 +95,43 @@ class ParticleSystem:
         """Return a copy of current particle positions as (n, 2) array."""
         return self.pos.copy()
 
+    def positions_at(self, t: float) -> np.ndarray:
+        """Evaluate a bounded swarm trajectory in O(n), independently per frame.
+
+        The old renderer replayed every 33 ms physics step from time zero for
+        every frame. That made a long render quadratic in duration. This
+        closed-form orbit retains deterministic charge, mass, velocity and
+        multi-frequency motion without accumulating state between workers.
+        """
+        seconds = max(0.0, float(t))
+        centre = np.asarray([self.width * 0.5, self.height * 0.5], dtype=np.float64)
+        relative = self._initial_pos - centre
+        indices = np.arange(self.num_particles, dtype=np.float64)
+        angle = self.charge * (0.10 + 0.035 / self.mass) * seconds
+        angle += 0.11 * np.sin(seconds * 0.31 + indices * 0.17)
+        cosine, sine = np.cos(angle), np.sin(angle)
+        rotated = np.column_stack(
+            (
+                relative[:, 0] * cosine - relative[:, 1] * sine,
+                relative[:, 0] * sine + relative[:, 1] * cosine,
+            )
+        )
+        phase = indices * 0.37 + self.charge
+        scale = 1.0 + 0.12 * (np.sin(seconds * 0.43 + phase) - np.sin(phase))
+        # The scalar damping integral broadcasts over the initial velocity.
+        drift_scale = (1.0 - math.exp(-seconds * 0.35)) / 0.35
+        drift = self._initial_vel * drift_scale
+        wave = np.column_stack(
+            (
+                np.sin(seconds * 0.73 + phase) - np.sin(phase),
+                np.cos(seconds * 0.59 + phase) - np.cos(phase),
+            )
+        ) * np.minimum(self.width, self.height) * 0.035
+        result = centre + rotated * scale[:, None] + drift + wave
+        result[:, 0] = np.clip(result[:, 0], 0.0, self.width)
+        result[:, 1] = np.clip(result[:, 1], 0.0, self.height)
+        return result
+
 
 def render(state: ParticleSystem, profile: dict, t: float, width: int, height: int) -> tuple[np.ndarray, np.ndarray]:
     """Return (sx, sy) screen coordinates for drawing the swarm.
@@ -98,7 +139,7 @@ def render(state: ParticleSystem, profile: dict, t: float, width: int, height: i
     ``profile`` may carry a ``palette`` for hue cycling; this helper only maps
     simulation coordinates to pixel space so the renderer stays decoupled.
     """
-    pos = state.positions()
+    pos = state.positions_at(t)
     sx = (pos[:, 0] / state.width) * width
     sy = (pos[:, 1] / state.height) * height
     return sx, sy

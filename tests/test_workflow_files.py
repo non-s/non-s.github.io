@@ -59,6 +59,8 @@ def test_horizontal_schedule_is_never_downgraded_to_short() -> None:
     horizontal = horizontal.split("else", 1)[0]
     assert 'preset="long"' in horizontal
     assert "check_long_form_candidate.py" not in horizontal
+    assert 'if [ "${{ steps.format.outputs.preset }}" = "long" ]' in video
+    assert "attempts=2" in video
 
 
 def test_video_and_analytics_rebuild_append_only_publication_ledger() -> None:
