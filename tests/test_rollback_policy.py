@@ -48,3 +48,16 @@ def test_old_failures_do_not_trigger_rollback_and_corruption_does(tmp_path):
     decision = assess_rollback(tmp_path, now=now)
     assert decision.required is True
     assert decision.block_publication is True
+
+
+def test_historical_duplicate_enters_safe_mode_without_bricking_future_publication(tmp_path):
+    (tmp_path / "video_tags.json").write_text(
+        json.dumps({"yt1": {"content_id": "lw-x"}, "yt2": {"content_id": "lw-x"}}),
+        encoding="utf-8",
+    )
+
+    decision = assess_rollback(tmp_path)
+
+    assert decision.required is True
+    assert decision.block_publication is False
+    assert decision.reasons == ("duplicate content publication detected",)
