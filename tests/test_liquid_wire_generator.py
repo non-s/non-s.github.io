@@ -18,6 +18,20 @@ def test_dimensions_match_youtube_format() -> None:
     assert liquid._dimensions_for_preset("live-test") == (1920, 1080)
 
 
+def test_long_render_cost_is_bounded_but_short_keeps_full_source_rate(monkeypatch) -> None:
+    monkeypatch.delenv("LIQUID_WIRE_RENDER_FPS", raising=False)
+    assert liquid._render_fps_for_preset("short") == 30
+    assert liquid._render_fps_for_preset("live-test") == 15
+    assert liquid._render_fps_for_preset("long") == 10
+    assert 180 * liquid._render_fps_for_preset("long") == 1800
+
+
+def test_duplicate_rejection_forces_fresh_non_inherited_retry() -> None:
+    assert liquid._retry_evolution_mode("perceptual_near_duplicate", None) == "off"
+    assert liquid._retry_evolution_mode("final render is a perceptual near-duplicate", "active") == "off"
+    assert liquid._retry_evolution_mode("audio clipping", "active") == "active"
+
+
 def test_profile_is_deterministic_for_seed() -> None:
     assert liquid._profile(123, "short") == liquid._profile(123, "short")
 

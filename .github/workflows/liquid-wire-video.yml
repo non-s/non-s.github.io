@@ -119,7 +119,13 @@ jobs:
       - name: "Generate procedural video"
         if: steps.cadence.outputs.generate == 'true'
         run: |
-          args=(--preset "${{ steps.format.outputs.preset }}" --attempts 3)
+          attempts=3
+          if [ "${{ steps.format.outputs.preset }}" = "long" ]; then
+            # 180 s at the bounded 10 fps source rate fits two complete,
+            # quality-gated attempts plus encoding/upload inside the 90m SLO.
+            attempts=2
+          fi
+          args=(--preset "${{ steps.format.outputs.preset }}" --attempts "$attempts")
           if [ -n "${{ steps.format.outputs.duration }}" ]; then
             args+=(--duration "${{ steps.format.outputs.duration }}")
           fi
