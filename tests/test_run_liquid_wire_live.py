@@ -200,11 +200,12 @@ def test_resilient_broadcast_records_recovery_latency_and_chaos_evidence(tmp_pat
     ):
         ids = broadcast_resilient(
             _LiveService(), video, 10, "unlisted", max_restarts=2,
-            chaos_after_seconds=2, journal_path=journal,
+            chaos_after_seconds=2, journal_path=journal, preparation_seconds=7.25,
         )
     payload = __import__("json").loads(journal.read_text())
     assert ids == ["b1", "b2"]
     assert payload["completed"] is True
+    assert payload["source_preparation_seconds"] == 7.25
     assert payload["attempts"][0]["outcome"] == "disconnected"
     assert payload["attempts"][1]["recovery_latency_seconds"] == .4
     assert stream.call_args_list[0].kwargs["chaos_after_seconds"] == 2

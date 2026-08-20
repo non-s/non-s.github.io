@@ -77,8 +77,11 @@ jobs:
           fi
           duration="${{ inputs.duration_minutes || '330' }}"
           handoff_pid=""
-          if [ "${{ inputs.continuous }}" = "true" ] && [ "$duration" -gt 20 ]; then
-            delay_seconds=$((duration * 60 - 900))
+          # Production renders can need multiple quality-gated attempts. Start
+          # the next isolated runner one hour early so even a slow fresh render
+          # is ready before this broadcast ends.
+          if [ "${{ inputs.continuous }}" = "true" ] && [ "$duration" -gt 65 ]; then
+            delay_seconds=$((duration * 60 - 3600))
             (
               sleep "$delay_seconds"
               gh workflow run liquid-wire-live.yml --ref main \
