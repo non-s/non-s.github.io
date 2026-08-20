@@ -94,6 +94,7 @@ from utils.semantic_memory import (
     load_archive_signatures,
     nearest_semantic_signature,
 )
+from utils.seo_keywords import title_is_too_repetitive
 from utils.soft_matter import bridge_strands, interaction_deform, jelly_deform
 from utils.state_lock import state_lock
 from utils.trending_topics import enrich_metadata as enrich_with_trends
@@ -1753,13 +1754,27 @@ def _render_frames_parallel(
         return pool.map(_render_frame_worker, args)
 
 
+def _fallback_metadata_title(profile: dict, preset: str) -> str:
+    """Create a seed-specific editorial fallback instead of a repeated slogan."""
+    seed = int(profile.get("seed", 0))
+    digest = hashlib.sha256(f"{seed}:{profile.get('family')}:{preset}".encode()).digest()
+    qualities = ("Luminous", "Velvet", "Prismatic", "Tidal", "Weightless", "Chromatic", "Quiet", "Molten")
+    motions = ("Bloom", "Current", "Drift", "Rupture", "Orbit", "Fold", "Tide", "Unfurling")
+    places = ("in the Void", "Across Soft Light", "Between Two Tides", "Inside a Dream", "Beyond Stillness")
+    family = str(profile.get("family", "living form")).replace("_", " ").title()
+    title = (
+        f"{qualities[digest[0] % len(qualities)]} {family}: "
+        f"{motions[digest[1] % len(motions)]} {places[digest[2] % len(places)]}"
+    )
+    if preset == "short":
+        title = f"{title} #Shorts"
+    elif preset == "long":
+        title = f"{title} | Original Generative Score"
+    return title[:100]
+
+
 def _metadata(output: Path, thumbnail: Path, duration: float, preset: str, profile: dict) -> dict:
-    fallback_titles = {
-        "short": "Color Learns to Breathe | Liquid Wire #Shorts",
-        "long": "A Shape Dreaming in Color | Original Lo-Fi Piano",
-        "live-test": "Liquid Wire Live | Forms in Slow Motion",
-    }
-    title = fallback_titles[preset]
+    title = _fallback_metadata_title(profile, preset)
     description = (
         "A living wireframe drifts through a black void while an original lo-fi piano piece unfolds.\n\n"
         "Every shape, color and note was generated from code for this Liquid Wire session."
@@ -1795,6 +1810,7 @@ def _metadata(output: Path, thumbnail: Path, duration: float, preset: str, profi
             if (
                 candidate_title
                 and candidate_description
+                and not title_is_too_repetitive(candidate_title)
                 and not audit_title(candidate_title)
                 and not audit_description(candidate_title, candidate_description)
             ):

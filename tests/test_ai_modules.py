@@ -778,6 +778,22 @@ def test_analyze_performance_gemini_invalid_json_returns_none(monkeypatch, tmp_p
     assert ai_evolution.analyze_performance() is None
 
 
+def test_analyze_performance_repairs_malformed_gemini_json(monkeypatch, tmp_path):
+    import utils.ai_evolution as ai_evolution
+
+    (tmp_path / "analytics.json").write_text('{"total_videos": 1}', encoding="utf-8")
+    monkeypatch.setattr(ai_evolution, "data_dir", lambda: tmp_path)
+    valid = json.dumps({"best_genres": ["ambient"], "best_families": ["orb"]})
+    responses = iter(["{malformed", valid])
+    monkeypatch.setattr(ai_evolution, "ai_text", lambda *a, **k: next(responses))
+
+    result = ai_evolution.analyze_performance()
+
+    assert result is not None
+    assert result["best_genres"] == ["ambient"]
+    assert result["best_families"] == ["orb"]
+
+
 def test_analyze_performance_gemini_non_object_returns_none(monkeypatch, tmp_path):
     import utils.ai_evolution as ai_evolution
 
