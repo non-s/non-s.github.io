@@ -2,7 +2,13 @@ from __future__ import annotations
 
 from utils.atomic_state import load_versioned
 from utils.canon_memory import record_canon_event
-from utils.puzzle_engine import PuzzleState, encode_message, prepare_puzzle, validate_puzzle
+from utils.puzzle_engine import (
+    PuzzleState,
+    encode_message,
+    prepare_puzzle,
+    validate_puzzle,
+    validate_puzzle_carrier,
+)
 
 
 def test_glyph_encoding_is_reproducible_and_has_checksum():
@@ -71,3 +77,19 @@ def test_canon_memory_links_puzzle_to_lineage_without_duplicates(tmp_path):
     canon = load_versioned(path, 1, {}, {})
     assert len(canon["events"]) == 1
     assert canon["events"][0]["parents"] == ["lw_parent"]
+
+
+def test_final_compressed_carrier_requires_decoded_edges_and_contrast():
+    puzzle = {"enabled": True, "validated": True}
+    passing = validate_puzzle_carrier(
+        puzzle,
+        {"sample_count": 12, "composition": {"edge_density": 0.04}, "appearance": {"contrast": 0.2}},
+        {"passed": True},
+    )
+    assert passing["passed"] is True
+    failed = validate_puzzle_carrier(
+        puzzle,
+        {"sample_count": 1, "composition": {"edge_density": 0.0}, "appearance": {"contrast": 0.0}},
+        {"passed": True},
+    )
+    assert failed["passed"] is False

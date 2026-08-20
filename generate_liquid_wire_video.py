@@ -19,6 +19,7 @@ import shutil
 import subprocess
 import time
 import wave
+from dataclasses import replace
 from datetime import UTC, datetime
 from multiprocessing import Pool, cpu_count
 from pathlib import Path
@@ -72,7 +73,7 @@ from utils.paths import data_dir
 from utils.pipeline_metrics import record_pipeline_run
 from utils.post_process import apply_all as apply_post
 from utils.publication_policy import evaluate_publication
-from utils.puzzle_engine import prepare_puzzle
+from utils.puzzle_engine import prepare_puzzle, validate_puzzle_carrier
 from utils.rejection_memory import record_rejection
 from utils.state_lock import state_lock
 from utils.trending_topics import enrich_metadata as enrich_with_trends
@@ -1788,6 +1789,11 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
         audio_path.unlink(missing_ok=True)
         shutil.rmtree(FRAME_DIR, ignore_errors=True)
         raise QualityGateError("Render rejected: final encoded video could not be perceived")
+    puzzle_payload = dict(genome.puzzle)
+    puzzle_payload["render_validation"] = validate_puzzle_carrier(
+        puzzle_payload, visual_dna.to_dict(), quality.to_dict()
+    )
+    genome = replace(genome, puzzle=puzzle_payload)
     thumbnail = THUMB_DIR / f"{stem}.jpg"
     Image.open(thumb_frame).save(thumbnail, quality=94)
     meta = _metadata(output, thumbnail, duration, preset, profile)

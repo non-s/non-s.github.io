@@ -39,6 +39,7 @@ class PuzzleState:
     density: float
     disclosure: str
     historical_cuneiform: bool = False
+    render_validation: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -82,6 +83,7 @@ def prepare_puzzle(seed: int, episode: int, *, enabled: bool | None = None) -> P
             False, True, PUZZLE_PROTOCOL_VERSION, GLYPH_LANGUAGE_VERSION, CANON_VERSION,
             None, None, (), None, "discoverable", 0.0,
             "No puzzle in this work; Liquid Wire glyphs are a fictional visual language.",
+            render_validation={"status": "not_applicable", "passed": True},
         )
     message = _CANON_MESSAGES[(episode - 1) % len(_CANON_MESSAGES)]
     codes, checksum = encode_message(message)
@@ -91,6 +93,39 @@ def prepare_puzzle(seed: int, episode: int, *, enabled: bool | None = None) -> P
         True, False, PUZZLE_PROTOCOL_VERSION, GLYPH_LANGUAGE_VERSION, CANON_VERSION,
         episode, f"msg_{checksum}", codes, checksum, difficulty, density,
         "Original fictional wedge-inspired Liquid Wire glyph language; not historical cuneiform.",
+        render_validation={"status": "pending_final_render", "passed": False},
     )
     issues = validate_puzzle(state)
     return PuzzleState(**{**state.to_dict(), "validated": not issues})
+
+
+def validate_puzzle_carrier(
+    puzzle: dict[str, Any], visual_dna: dict[str, Any], quality: dict[str, Any]
+) -> dict[str, Any]:
+    """Verify that the encoded MP4 retained a usable geometric carrier.
+
+    This does not claim to OCR the secret. It verifies the final compressed
+    artifact—not source parameters—has enough decoded samples, edges and
+    contrast for the bounded modulation to remain perceptible.
+    """
+    if not puzzle.get("enabled"):
+        return {"status": "not_applicable", "passed": True, "issues": []}
+    issues: list[str] = []
+    if not quality.get("passed"):
+        issues.append("final quality gate failed")
+    if int(visual_dna.get("sample_count") or 0) < 3:
+        issues.append("insufficient final-render samples")
+    edge_density = visual_dna.get("composition", {}).get("edge_density")
+    contrast = visual_dna.get("appearance", {}).get("contrast")
+    if not isinstance(edge_density, (int, float)) or edge_density < 0.001:
+        issues.append("encoded geometric carrier has insufficient edge density")
+    if not isinstance(contrast, (int, float)) or contrast < 0.02:
+        issues.append("encoded geometric carrier has insufficient contrast")
+    return {
+        "status": "passed" if not issues else "failed",
+        "passed": not issues,
+        "issues": issues,
+        "edge_density": edge_density,
+        "contrast": contrast,
+        "sample_count": visual_dna.get("sample_count"),
+    }

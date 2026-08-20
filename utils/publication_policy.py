@@ -65,6 +65,9 @@ def evaluate_publication(
     if puzzle_state.get("enabled") and not puzzle_state.get("validated"):
         blocking.append("enabled puzzle has not passed validation")
         dimensions["puzzle"] = "fail"
+    elif puzzle_state.get("enabled") and not puzzle_state.get("render_validation", {}).get("passed"):
+        blocking.append("enabled puzzle carrier did not survive final-render validation")
+        dimensions["puzzle"] = "fail"
     else:
         dimensions["puzzle"] = "pass" if puzzle_state.get("enabled") else "not_applicable"
     experiment_state = experiment or {}

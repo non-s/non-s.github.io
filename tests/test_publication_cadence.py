@@ -19,7 +19,7 @@ def test_cadence_enforces_learning_interval(tmp_path):
     )
     decision = decide_cadence(tmp_path, now=now)
     assert decision.generate is False
-    assert "four-hour" in decision.reason
+    assert "six-hour" in decision.reason
 
 
 def test_cadence_enforces_daily_limit(tmp_path, monkeypatch):
@@ -41,3 +41,8 @@ def test_cadence_allows_when_budget_and_interval_are_clear(tmp_path):
         json.dumps({"v": {"uploaded_at": (now - timedelta(hours=8)).isoformat()}}), encoding="utf-8"
     )
     assert decide_cadence(tmp_path, now=now).generate is True
+
+
+def test_configured_daily_limit_cannot_exceed_anti_spam_ceiling(tmp_path, monkeypatch):
+    monkeypatch.setenv("LIQUID_WIRE_DAILY_PUBLICATION_LIMIT", "99")
+    assert decide_cadence(tmp_path).daily_limit == 4

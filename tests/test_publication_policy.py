@@ -45,6 +45,14 @@ def test_near_duplicate_silence_and_unvalidated_puzzle_block():
     assert decision.dimensions["puzzle"] == "fail"
 
 
+def test_enabled_puzzle_requires_final_render_carrier_evidence():
+    decision = evaluate_publication(
+        *_valid(), puzzle={"enabled": True, "validated": True, "render_validation": {"passed": False}}
+    )
+    assert decision.passed is False
+    assert decision.dimensions["puzzle"] == "fail"
+
+
 def test_invalid_multi_variable_experiment_blocks_publication():
     decision = evaluate_publication(*_valid(), experiment={"changed_variables": {"motion": 1, "audio": 2}})
     assert decision.passed is False
