@@ -150,3 +150,13 @@ The same scene graph drives both media:
 Resource bounds vary by format so combinatorial diversity does not compromise
 the live handoff or scheduled publishing SLA. Every scene remains reproducible
 from its seed and versioned genome, and every mutation remains inspectable.
+
+## Soft-matter wireframe
+
+Scene Genome v2 treats the ensemble as one elastic, viscous material. A
+deterministic interaction field deforms facing surfaces toward one another,
+creates multi-strand curved necks between bodies, and applies volume-preserving
+wobble, shear, breathing and topology morphing. Cohesion pulls organisms into a
+single abstract mass while independent hue phases keep the constituent bodies
+multicoloured and legible. Fusion, attraction, braid and resonance produce
+different deformation fields rather than decorative connector lines.

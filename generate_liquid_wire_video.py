@@ -79,6 +79,7 @@ from utils.post_process import apply_all as apply_post
 from utils.publication_policy import evaluate_publication
 from utils.puzzle_engine import prepare_puzzle, validate_puzzle_carrier
 from utils.rejection_memory import recent_rejection_counts, record_rejection
+from utils.soft_matter import bridge_strands, interaction_deform, jelly_deform
 from utils.state_lock import state_lock
 from utils.trending_topics import enrich_metadata as enrich_with_trends
 from utils.visual_intelligence import analyze_visual_dna
@@ -1070,8 +1071,21 @@ def _draw_frame_mesh(
         organisms = [{"id": "o0", "family": profile["family"], "seed": profile["seed"], "x": 0,
                       "y": 0, "scale": 1, "phase": 0, "orbit_rate": 0, "pulse_rate": 0,
                       "hue_offset": 0, "depth": 0}]
-    centers: dict[str, tuple[float, float]] = {}
     ordered = sorted(organisms, key=lambda item: float(item.get("depth", 0)))
+    raw_matter = scene.get("matter")
+    matter: dict = raw_matter if isinstance(raw_matter, dict) else {}
+    cohesion = float(matter.get("cohesion", .7))
+    viscosity = float(matter.get("viscosity", .85))
+    centers: dict[str, tuple[float, float]] = {}
+    for organism in ordered:
+        angle = float(organism.get("phase", 0)) + t * float(organism.get("orbit_rate", 0))
+        ox, oy = float(organism.get("x", 0)), float(organism.get("y", 0))
+        x = ox * math.cos(angle) - oy * math.sin(angle)
+        y = ox * math.sin(angle) + oy * math.cos(angle)
+        centers[str(organism.get("id"))] = (
+            WIDTH * (.5 + x*(1-cohesion*.48)),
+            HEIGHT * (.5 + y*(1-cohesion*.48)),
+        )
     mesh_theta = max(38, int(78 / math.sqrt(max(1.0, len(ordered) / 2))))
     mesh_phi = max(20, mesh_theta // 2)
     for organism_index, organism in enumerate(ordered):
@@ -1103,10 +1117,25 @@ def _draw_frame_mesh(
         x = ox * math.cos(angle) - oy * math.sin(angle)
         y = ox * math.sin(angle) + oy * math.cos(angle)
         pulse = 1.0 + .08 * math.sin(t * float(organism.get("pulse_rate", 0)) + angle)
-        scale = float(organism.get("scale", 1)) * pulse
-        sx = WIDTH * (.5 + x) + (sx - WIDTH * .5) * scale
-        sy = HEIGHT * (.5 + y) + (sy - HEIGHT * .5) * scale
-        centers[str(organism.get("id"))] = (WIDTH * (.5 + x), HEIGHT * (.5 + y))
+        scale = float(organism.get("scale", 1)) * pulse * (1.22 + cohesion*.24)
+        center_x, center_y = centers[str(organism.get("id"))]
+        sx = center_x + (sx - WIDTH * .5) * scale
+        sy = center_y + (sy - HEIGHT * .5) * scale
+        organism_id = str(organism.get("id"))
+        center = centers[organism_id]
+        sx, sy = jelly_deform(sx, sy, center, t, float(organism.get("phase", 0)), viscosity)
+        for relation in scene.get("relations", []):
+            source_id, target_id = str(relation.get("source")), str(relation.get("target"))
+            if organism_id == source_id and target_id in centers:
+                sx, sy = interaction_deform(
+                    sx, sy, centers[target_id], str(relation.get("kind")), float(relation.get("strength", .5)),
+                    t, float(relation.get("phase", 0)), min(WIDTH, HEIGHT)*(.27 + cohesion*.11),
+                )
+            elif organism_id == target_id and source_id in centers:
+                sx, sy = interaction_deform(
+                    sx, sy, centers[source_id], str(relation.get("kind")), float(relation.get("strength", .5))*.72,
+                    t, float(relation.get("phase", 0))+math.pi, min(WIDTH, HEIGHT)*(.27 + cohesion*.11),
+                )
         rows, cols = sx.shape
         material = profile["material"]
         visible = _rupture_visibility(cols, state)
@@ -1127,8 +1156,14 @@ def _draw_frame_mesh(
         if source and target:
             strength = float(relation.get("strength", .5))
             phase = float(relation.get("phase", 0))
-            alpha = int(20 + 45 * strength * (.5 + .5 * math.sin(t + phase)))
-            draw.line((source, target), fill=_rgb(phase / (2*np.pi), t, profile["palette"])[:3] + (alpha,), width=1)
+            alpha = int(34 + 78 * strength * (.5 + .5 * math.sin(t + phase)))
+            strand_count = int(matter.get("bridge_strands", 11))
+            for strand_index, points in enumerate(bridge_strands(source, target, relation, t, strand_count)):
+                hue = phase/(2*np.pi) + strand_index*.045 + t*.01
+                bridge_color = _rgb(hue, t, profile["palette"])[:3]
+                draw.line(points, fill=bridge_color + (alpha,), width=1 + int(strength > .72), joint="curve")
+                if strand_index % 2 == 0:
+                    glow_draw.line(points, fill=bridge_color + (max(12, alpha//3),), width=5, joint="curve")
 
     canvas.alpha_composite(glow.filter(ImageFilter.GaussianBlur(float(profile["material"]["glow_radius"]))))
     canvas.alpha_composite(lines)

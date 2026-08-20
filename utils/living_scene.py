@@ -15,7 +15,7 @@ from typing import Any
 
 import numpy as np
 
-SCENE_VERSION = 1
+SCENE_VERSION = 2
 RELATIONS = ("orbit", "resonance", "braid", "mirror", "attraction", "emergence", "fusion")
 ROLES = ("anchor", "satellite", "counterpoint", "echo", "catalyst", "wanderer")
 
@@ -101,8 +101,17 @@ def build_scene(seed: int, preset: str, families: Sequence[str], primary: str) -
         kind=str(rng.choice(RELATIONS)), strength=round(float(rng.uniform(0.2, 1.0)), 6),
         phase=round(float(rng.uniform(0, 2*np.pi)), 6),
     ) for index in range(1, count)]
-    body = {"version": SCENE_VERSION, "organisms": [asdict(x) for x in organisms],
-            "relations": [asdict(x) for x in relations]}
+    body = {
+        "version": SCENE_VERSION,
+        "organisms": [asdict(x) for x in organisms],
+        "relations": [asdict(x) for x in relations],
+        "matter": {
+            "cohesion": round(float(rng.uniform(.58, .82)), 6),
+            "viscosity": round(float(rng.uniform(.72, 1.0)), 6),
+            "elasticity": round(float(rng.uniform(.65, 1.0)), 6),
+            "bridge_strands": int(rng.integers(9, 16)),
+        },
+    }
     return identify_scene(body)
 
 
