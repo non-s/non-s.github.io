@@ -109,6 +109,21 @@ def test_catalog_memory_is_bounded_and_versioned(monkeypatch, tmp_path):
     assert sum(cell["count"] for cell in archive["data"]["cells"].values()) == 1
 
 
+def test_catalog_persists_audio_intent_memory(monkeypatch, tmp_path):
+    import utils.creative_memory as memory
+
+    monkeypatch.setattr(memory, "data_dir", lambda: tmp_path)
+    memory.record_creation({
+        "content_id": "lw_audio",
+        "kind": "short",
+        "audio_intent_vector": [0.1, 0.2],
+        "audio_novelty": {"nearest_distance": 0.4},
+    })
+    item = memory.load_catalog()[0]
+    assert item["audio_intent_vector"] == [0.1, 0.2]
+    assert item["audio_novelty"]["nearest_distance"] == 0.4
+
+
 def test_fitness_models_are_distinct_explainable_and_uncertain():
     metrics = {
         "views": 100,

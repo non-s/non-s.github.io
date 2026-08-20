@@ -116,44 +116,77 @@ def build_scene(seed: int, preset: str, families: Sequence[str], primary: str) -
 
 
 def scene_music(profile: dict[str, Any]) -> dict[str, Any]:
-    """Derive polyphonic intent from the entire scene, not only its anchor."""
+    """Derive a deterministic musical identity for every visual organism."""
     scene = profile.get("scene", {})
     organisms = scene.get("organisms", []) if isinstance(scene, dict) else []
     relations = scene.get("relations", []) if isinstance(scene, dict) else []
-    intervals = [int(round((float(o.get("hue_offset", 0)) - .5) * 14)) for o in organisms]
+    transforms = ("rotate", "invert", "retrograde", "fragment", "expand")
+    agents = []
+    for index, organism in enumerate(organisms):
+        seed = int(organism.get("seed", 0))
+        agents.append({
+            "id": str(organism.get("id", f"o{index}")),
+            "role": str(organism.get("role", "counterpoint")),
+            "seed": seed,
+            "interval": int(round((float(organism.get("hue_offset", 0)) - .5) * 14)),
+            "polyrhythm": 2 + seed % 7,
+            "rotation": seed % 5,
+            "octave": (-1, 0, 0, 1)[seed % 4],
+            "phase": round(float(organism.get("phase", 0)) / (2 * np.pi), 6),
+            "transform": transforms[(seed // 7) % len(transforms)],
+            "gate": round(.48 + .07 * (seed % 6), 6),
+        })
     return {
-        "version": 1,
+        "version": 2,
         "voices": len(organisms),
-        "intervals": intervals,
-        "polyrhythm": [2 + (int(o.get("seed", 0)) % 7) for o in organisms],
+        "agents": agents,
+        # Kept for readers of scene-music v1 metadata.
+        "intervals": [agent["interval"] for agent in agents],
+        "polyrhythm": [agent["polyrhythm"] for agent in agents],
         "relation_accents": [str(r.get("kind")) for r in relations],
         "scene_id": scene.get("scene_id"),
     }
 
 
 def orchestrate_scene(composition: Any, scene_map: dict[str, Any], duration: float) -> Any:
-    """Turn organisms into bounded counterpoint while preserving the base score."""
-    intervals = [int(x) for x in scene_map.get("intervals", [])][1:]
-    rhythms = [max(2, int(x)) for x in scene_map.get("polyrhythm", [])][1:]
-    if not intervals or not getattr(composition, "notes", None):
+    """Turn organisms into bounded thematic agents, preserving the base score."""
+    agents = list(scene_map.get("agents", []))[1:]
+    if not agents or not getattr(composition, "notes", None):
         return composition
     original = tuple(composition.notes)
     additions = []
-    # A sparse selection prevents clipping while making each organism audible.
-    for voice_index, (interval, rhythm) in enumerate(zip(intervals, rhythms, strict=False), start=1):
-        for note_index, note in enumerate(original):
+    # Each agent independently transforms contour, rhythm, register and phase.
+    # Sparse entrances and energy scaling keep the combined score bounded.
+    for voice_index, agent in enumerate(agents, start=1):
+        rhythm = max(2, int(agent.get("polyrhythm", 4)))
+        selected = list(original[int(agent.get("rotation", 0)) % max(1, len(original)) :]) + list(
+            original[: int(agent.get("rotation", 0)) % max(1, len(original))]
+        )
+        transform = str(agent.get("transform", "rotate"))
+        if transform == "retrograde":
+            selected.reverse()
+        anchor = int(np.median([int(note.note) for note in original]))
+        for note_index, note in enumerate(selected):
             if note_index % rhythm:
                 continue
-            delay = (voice_index * composition.beat_seconds / rhythm) % max(.1, duration)
-            start = float(note.start) + delay
+            delay = (float(agent.get("phase", 0)) + voice_index / rhythm) * composition.beat_seconds
+            start = float(note.start) + delay + (note_index % 3) * composition.beat_seconds / rhythm
             if start >= duration:
                 continue
+            pitch = int(note.note)
+            if transform == "invert":
+                pitch = anchor - (pitch - anchor)
+            elif transform == "expand":
+                pitch = anchor + int(round((pitch - anchor) * 1.5))
+            elif transform == "fragment":
+                pitch += (0, 2, -3)[note_index % 3]
+            pitch += int(agent.get("interval", 0)) + 12 * int(agent.get("octave", 0))
             additions.append(replace(
                 note,
-                note=int(np.clip(int(note.note) + interval, 24, 108)),
+                note=int(np.clip(pitch, 24, 108)),
                 start=round(start, 6),
-                duration=round(min(float(note.duration) * (.55 + .07 * rhythm), duration - start), 6),
-                velocity=round(float(note.velocity) / np.sqrt(1 + len(intervals)), 6),
+                duration=round(min(float(note.duration) * float(agent.get("gate", .65)), duration - start), 6),
+                velocity=round(float(note.velocity) / np.sqrt(1 + len(agents)), 6),
                 voice=f"{note.voice}:organism-{voice_index}",
             ))
     return replace(composition, notes=tuple(sorted((*original, *additions), key=lambda n: (n.start, n.voice))))
