@@ -2,6 +2,12 @@ name: "Liquid Wire - Continuous Live Watchdog"
 
 on:
   workflow_dispatch:
+  # GitHub cron delivery is best-effort and can be delayed under load. Every
+  # completed live runner therefore invokes the same idempotent recovery check
+  # immediately; an already-dispatched replacement makes this a no-op.
+  workflow_run:
+    workflows: ["Liquid Wire - Continuous Live"]
+    types: [completed]
   schedule:
     # Recover a broken chain within at most 10 minutes.
     - cron: "7,17,27,37,47,57 * * * *"
