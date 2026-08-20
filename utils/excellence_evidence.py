@@ -12,6 +12,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from utils.atomic_state import load_versioned
+
 
 def _read_json(path: Path) -> dict[str, Any]:
     try:
@@ -115,13 +117,89 @@ def verified_claims(
     return result, accepted
 
 
+def youtube_learning_claims(
+    data_root: Path, *, now: datetime | None = None
+) -> tuple[dict[str, bool], dict[str, Any]]:
+    """Derive learning claims from actual joined observations, never source code."""
+    current = now or datetime.now(UTC)
+    analytics = _read_json(data_root / "analytics.json")
+    collected = _iso(analytics.get("collected_at"))
+    analytics_age_hours = (
+        (current - collected).total_seconds() / 3600.0
+        if collected and collected <= current
+        else None
+    )
+    catalog = load_versioned(data_root / "catalog_memory.json", 1, {}, [])
+    rows = catalog if isinstance(catalog, list) else []
+    joined = [
+        row
+        for row in rows
+        if isinstance(row, dict)
+        and row.get("youtube_video_id")
+        and isinstance(row.get("fitness"), dict)
+        and row.get("fitness_window")
+    ]
+    fitness_rows = [
+        row
+        for row in rows
+        if isinstance(row, dict)
+        and isinstance(row.get("fitness"), dict)
+        and isinstance(row["fitness"].get("score"), (int, float))
+        and isinstance(row["fitness"].get("confidence"), (int, float))
+        and row.get("fitness_window")
+    ]
+    evolved = [
+        row
+        for row in rows
+        if isinstance(row, dict)
+        and isinstance(row.get("genome"), dict)
+        and int(row["genome"].get("generation", 0)) > 0
+        and len(row["genome"].get("mutations", [])) == 1
+    ]
+    ledger = load_versioned(
+        data_root / "research_ledger.json", 1, {}, {"hypotheses": {}, "experiments": {}}
+    )
+    experiments = ledger.get("experiments", {}) if isinstance(ledger, dict) else {}
+    causal_results = [
+        {"experiment_id": experiment_id, **experiment["result"]}
+        for experiment_id, experiment in experiments.items()
+        if isinstance(experiment, dict)
+        and isinstance(experiment.get("result"), dict)
+        and int(experiment["result"].get("samples", 0)) >= 30
+        and experiment["result"].get("status") in {"supported", "contradicted", "inconclusive"}
+    ]
+    claims = {
+        "daily_analytics": analytics_age_hours is not None and analytics_age_hours <= 36,
+        "catalog_performance_join": bool(joined),
+        "fitness_samples_min_30": len(fitness_rows) >= 30,
+        "active_governed_evolution": bool(evolved),
+        "causal_experiment_results": bool(causal_results),
+    }
+    details = {
+        "analytics_collected_at": collected.isoformat() if collected else None,
+        "analytics_age_hours": round(analytics_age_hours, 3) if analytics_age_hours is not None else None,
+        "catalog_records": len(rows),
+        "joined_fitness_records": len(joined),
+        "fitness_records": len(fitness_rows),
+        "governed_evolution_records": len(evolved),
+        "causal_results": causal_results,
+    }
+    return claims, details
+
+
 def build_evidence(data_root: Path, manifest_paths: Iterable[Path] = ()) -> dict[str, Any]:
     live, live_details = live_claims(data_root.glob("**/live_continuity.json"))
+    learning, learning_details = youtube_learning_claims(data_root)
     external, accepted = verified_claims(manifest_paths)
     evidence = {area: dict(criteria) for area, criteria in external.items()}
     evidence.setdefault("live_continuity", {}).update(live)
+    evidence.setdefault("youtube_learning", {}).update(learning)
     return {
         "generated_at": datetime.now(UTC).isoformat(),
         "evidence": evidence,
-        "details": {"live_continuity": live_details, "accepted_external_observations": accepted},
+        "details": {
+            "live_continuity": live_details,
+            "youtube_learning": learning_details,
+            "accepted_external_observations": accepted,
+        },
     }
