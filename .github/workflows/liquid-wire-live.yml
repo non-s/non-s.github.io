@@ -78,7 +78,9 @@ jobs:
             --duration-minutes "${{ inputs.duration_minutes || '330' }}" \
             --privacy "$YOUTUBE_PRIVACY"
       - name: "Chain next continuous session"
-        if: ${{ success() && inputs.continuous == true }}
+        # Handoff is a recovery mechanism too. A broken RTMP connection must
+        # start a fresh broadcast immediately instead of waiting for watchdog.
+        if: ${{ always() && !cancelled() && inputs.continuous == true }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-

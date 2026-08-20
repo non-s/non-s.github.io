@@ -1,7 +1,7 @@
 name: Liquid Wire Analytics
 on:
   schedule:
-    - cron: "12 2 * * 1"  # weekly Monday 02:12 UTC
+    - cron: "12 2 * * *"  # daily: fitness needs age-window observations
   workflow_dispatch:
 permissions:
   contents: read
@@ -28,6 +28,15 @@ jobs:
           YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scripts/collect_analytics.py
+      - name: Close research and evolution loop
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          LIQUID_WIRE_EVOLUTION_MODE: ${{ vars.LIQUID_WIRE_EVOLUTION_MODE || 'active' }}
+          LIQUID_WIRE_DISABLE_GEMINI: ${{ vars.LIQUID_WIRE_DISABLE_GEMINI || '0' }}
+          LIQUID_WIRE_DISABLE_EVOLUTION: ${{ vars.LIQUID_WIRE_DISABLE_EVOLUTION || '0' }}
+        run: |
+          python scripts/run_research_cycle.py
+          python scripts/evolve_aesthetics.py
       - name: Generate dashboard
         run: python scripts/generate_dashboard.py
       - name: Upload dashboard artifact
@@ -36,6 +45,18 @@ jobs:
           name: dashboard
           path: _site/
           if-no-files-found: ignore
+      - name: Upload learning evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: learning-evidence-${{ github.run_id }}
+          path: |
+            _data/analytics.json
+            _data/research_report.json
+            _data/research_report.md
+            _data/evolution_report.json
+          if-no-files-found: warn
+          retention-days: 30
       - name: Delete token
         if: always()
         run: rm -f youtube_token.json

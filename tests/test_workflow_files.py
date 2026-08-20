@@ -26,7 +26,7 @@ def _load_workflow(filename: str) -> dict:
 
 WORKFLOW_FILES = {
     "liquid-wire-engagement.yml": "0 */2 * * *",
-    "liquid-wire-analytics.yml": "12 2 * * 1",
+    "liquid-wire-analytics.yml": "12 2 * * *",
     "liquid-wire-identity.yml": "20 3 * * 1",
 }
 

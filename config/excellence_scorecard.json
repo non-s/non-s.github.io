@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "target": 10.0,
+  "rule": "An area scores 10 only when every mandatory criterion has current evidence.",
+  "areas": {
+    "operational_automation": {
+      "criteria": ["scheduled_short_success", "scheduled_long_success", "public_upload_verified", "cadence_decision_audited"]
+    },
+    "engineering_quality": {
+      "criteria": ["ci_green", "full_tests_green", "typecheck_green", "security_green", "dependency_audit_green"]
+    },
+    "visual_originality": {
+      "criteria": ["scene_genome_v2", "soft_matter_enabled", "semantic_novelty_pass", "temporal_narrative_pass", "human_review_sample"]
+    },
+    "music_engine": {
+      "criteria": ["independent_organism_voices", "perceptual_audio_novelty", "mix_quality_pass", "thematic_memory", "human_review_sample"]
+    },
+    "live_continuity": {
+      "criteria": ["immediate_failure_handoff", "watchdog_recovery", "six_hour_session", "chaos_disconnect_recovery", "public_playback_verified"]
+    },
+    "creative_memory": {
+      "criteria": ["intent_memory", "visual_dna", "audio_dna", "semantic_long_term_memory", "cross_format_memory"]
+    },
+    "youtube_learning": {
+      "criteria": ["daily_analytics", "catalog_performance_join", "fitness_samples_min_30", "active_governed_evolution", "causal_experiment_results"]
+    },
+    "total_autonomy": {
+      "criteria": ["external_service_fallbacks", "self_recovery", "state_persistence", "observable_slos", "thirty_day_unattended_run"]
+    }
+  }
+}
