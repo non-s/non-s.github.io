@@ -1,7 +1,8 @@
 import json
 from datetime import UTC, datetime
 
-from utils.excellence_evidence import live_claims, verified_claims
+from utils.atomic_state import save_versioned
+from utils.excellence_evidence import live_claims, verified_claims, youtube_learning_claims
 
 
 def test_live_claims_measure_recovery_but_do_not_invent_six_hours(tmp_path):
@@ -55,3 +56,66 @@ def test_external_claim_requires_current_attributed_https_evidence(tmp_path):
 
     assert claims == {"engineering_quality": {"ci_green": True}}
     assert len(accepted) == 1
+
+
+def test_youtube_learning_claims_require_observed_joined_samples(tmp_path):
+    (tmp_path / "analytics.json").write_text(
+        json.dumps({"collected_at": "2026-08-20T10:00:00Z", "total_videos": 30}),
+        encoding="utf-8",
+    )
+    catalog = []
+    for index in range(30):
+        catalog.append(
+            {
+                "content_id": f"lw-{index}",
+                "youtube_video_id": f"yt-{index}",
+                "fitness_window": "72h",
+                "fitness": {"score": 0.5, "confidence": 0.8},
+                "genome": {
+                    "generation": 1 if index == 0 else 0,
+                    "mutations": [{"field": "melt_rate"}] if index == 0 else [],
+                },
+            }
+        )
+    save_versioned(tmp_path / "catalog_memory.json", catalog, 1)
+    save_versioned(
+        tmp_path / "research_ledger.json",
+        {
+            "hypotheses": {},
+            "experiments": {
+                "exp-1": {
+                    "result": {
+                        "samples": 30,
+                        "confidence": 0.7,
+                        "effect": 0.08,
+                        "status": "supported",
+                    }
+                }
+            },
+        },
+        1,
+    )
+
+    claims, details = youtube_learning_claims(
+        tmp_path, now=datetime(2026, 8, 20, 12, tzinfo=UTC)
+    )
+
+    assert all(claims.values())
+    assert details["joined_fitness_records"] == 30
+    assert details["fitness_records"] == 30
+    assert details["governed_evolution_records"] == 1
+    assert details["causal_results"][0]["experiment_id"] == "exp-1"
+
+
+def test_youtube_learning_claims_fail_closed_for_stale_or_sparse_data(tmp_path):
+    (tmp_path / "analytics.json").write_text(
+        json.dumps({"collected_at": "2026-08-01T10:00:00Z", "total_videos": 100}),
+        encoding="utf-8",
+    )
+
+    claims, details = youtube_learning_claims(
+        tmp_path, now=datetime(2026, 8, 20, 12, tzinfo=UTC)
+    )
+
+    assert not any(claims.values())
+    assert details["fitness_records"] == 0
