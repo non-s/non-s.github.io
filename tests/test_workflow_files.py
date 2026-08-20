@@ -82,6 +82,8 @@ def test_continuous_live_chains_and_has_watchdog() -> None:
     assert "group: liquid-wire-live" not in live
     assert "_data/live_continuity.json" in live
     assert "status == \"in_progress\"" in watchdog
+    assert 'workflows: ["Liquid Wire - Continuous Live"]' in watchdog
+    assert "types: [completed]" in watchdog
 
 
 @pytest.mark.parametrize("filename", list(WORKFLOW_FILES.keys()))
