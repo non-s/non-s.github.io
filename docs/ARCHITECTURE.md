@@ -14,15 +14,17 @@ stock footage or stock music.
    `generator_profile`.
 6. `upload_youtube.py` uploads the latest `liquid_wire_*.mp4` using OAuth.
 
-## Autonomous core contract (engine 4.1)
+## Autonomous core contract (engine 4.2)
 
 The stable loop is now:
 
 ```text
-profile -> versioned genome -> render -> final-MP4 perception
-        -> versioned visual DNA -> quality gate -> catalog memory
-        -> age-normalized YouTube evidence -> explainable fitness
-        -> hypothesis/experiment -> controlled evolution
+profile -> Genome v2 + Geometry-to-Sound -> bounded candidates
+        -> render/FFmpeg -> final-MP4 Visual DNA + Audio DNA
+        -> puzzle-carrier/quality/publication gates -> private upload
+        -> same-format/same-window YouTube evidence -> fitness/confidence
+        -> deterministic research + optional schema-validated Gemini advice
+        -> hypothesis/experiment -> Pareto/elites/lineage/mutation
 ```
 
 `utils/creative_models.py` separates creative intent (`Genome`) from observed
@@ -59,7 +61,8 @@ non-overlapping maturity windows: `early`, `1h`, `6h`, `24h`, `72h` and
 `mature`. Shorts and long-form use separate explainable fitness models;
 missing API metrics lower confidence rather than being imputed.
 
-The weekly research cycle produces JSON and Markdown reports and may propose
+The weekly research cycle produces JSON and Markdown reports, Pareto content,
+a creative map, lineage graph, experiment-yield meta-learning and may propose
 at most three testable hypotheses when at least eight comparable observations
 exist. Correlations are always labelled non-causal. Experiments reference a
 known hypothesis and may change exactly one variable.
@@ -73,17 +76,28 @@ records exactly one bounded semantic mutation.
 
 Quality Gate 2.0 separates objective blocking failures from subjective review
 prompts and requires private validation by default. The uploader independently
-enforces the 4.1 metadata contract and publication kill switch.
+enforces the 4.2 metadata contract, truthful procedural provenance and the
+publication kill switch.
 
 The Liquid Wire glyph language is original and fictional—not historical
 cuneiform. At most one in five creations carries a message. Encoding,
-checksum, density, difficulty, disclosure and canon are versioned, validated
-and linked to lineage. The glyph codes subtly modulate geometry; they are not
-an unrelated text overlay.
+checksum, density, evidence-calibrated difficulty, disclosure and canon are
+versioned, validated and linked to lineage. The glyph codes subtly modulate
+geometry; they are not an unrelated text overlay. Enabled puzzles must also
+prove that their geometric carrier retained decoded edges and contrast after
+final compression.
 
 Safe mode disables evolution and puzzles while preserving stable offline
-generation. Separate global and publication kill switches are checked before
-generation and again by the uploader contract.
+generation. Independent generation, upload, Gemini, evolution, puzzle,
+force-private and schedule controls are enforced. Objective rollback policy
+detects upload/render spikes, duplicate publication and corrupt central state.
+
+## Traceability
+
+`config/master_mandate_traceability.json` accounts for every section 0–177 and
+all 658 bullet sub-requirements. It stores source-body hashes, controlled status,
+evidence paths and evidence hashes. CI rejects missing numbers, missing evidence,
+stale hashes and unresolved implementation statuses.
 
 ## Active Workflows
 

@@ -76,13 +76,21 @@ before the 4.1 autonomous-core changes.
   checksum-validated, canon-linked and explicitly disclaims historical
   cuneiform.
 
-## Remaining sequence
+## Final 4.2 closure checkpoint
 
-1. Collect enough real channel observations to graduate evolution from shadow
-   to canary; no code can manufacture that evidence.
-2. Add an optional low-resolution rendered-preview stage if runner benchmarks
-   prove that cheap intent ranking is insufficient.
-3. Consolidate legacy state writers into atomic/versioned envelopes by risk,
-   without breaking rollback compatibility.
-4. Consolidate workflows only after schedule/run-duration evidence identifies
-   safe combinations.
+- Genome v2, strategy v2 and puzzle protocol v2 are explicit contracts with
+  migrations and backward-compatible upload validation.
+- Legacy core state touched by the autonomous loop now uses atomic,
+  migration-aware persistence and rollback copies.
+- Research includes Pareto, creative-map, value-of-information, lineage and
+  experiment-yield analysis plus a bounded optional AI adviser.
+- Independent kill switches, objective rollback, truthful metadata policy,
+  comparable analytics cohorts and compressed puzzle-carrier validation close
+  the remaining governance paths.
+- The traceability ledger covers sections 0–177 and all 658 bullet
+  sub-requirements with hashed evidence.
+
+No implementation sequence remains under this mandate. Future promotion from
+shadow to canary, clustering, preview rendering or workflow consolidation is
+conditional on real production evidence and must not be manufactured merely
+to make a checklist appear complete.

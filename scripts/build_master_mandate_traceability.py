@@ -227,7 +227,16 @@ EVIDENCE_RANGES = (
             "tests/test_autonomy.py",
         ],
     ),
-    (150, 158, ["docs/FINAL_REPORT_MASTER_MANDATE_V2.md", "tests", ".github/workflows/ci.yml"]),
+    (
+        150,
+        158,
+        [
+            "docs/FINAL_REPORT_MASTER_MANDATE_V2.md",
+            "docs/MASTER_MANDATE_CLOSURE.md",
+            "tests",
+            ".github/workflows/ci.yml",
+        ],
+    ),
     (
         159,
         177,
@@ -236,6 +245,7 @@ EVIDENCE_RANGES = (
             "docs/ARCHITECTURE.md",
             "docs/DECISIONS_MASTER_MANDATE_V2.md",
             "docs/FINAL_REPORT_MASTER_MANDATE_V2.md",
+            "docs/MASTER_MANDATE_CLOSURE.md",
             "CHANGELOG.md",
             ".github/workflows/ci.yml",
         ],

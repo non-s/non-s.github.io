@@ -48,3 +48,13 @@ def test_traceability_has_no_unresolved_implementation_status():
     payload = json.loads(TRACE.read_text(encoding="utf-8"))
     forbidden = {"missing", "partial", "todo", "unknown"}
     assert not forbidden.intersection(row["status"] for row in payload["sections"])
+
+
+def test_only_declared_external_outcomes_wait_for_real_data():
+    payload = json.loads(TRACE.read_text(encoding="utf-8"))
+    pending = [
+        row["section"]
+        for row in payload["sections"]
+        if row["status"] == "ready_pending_real_data"
+    ]
+    assert pending == [13, 44, 55, 116, 119, 121, 132, 138, 147, 148]
