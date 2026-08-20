@@ -6,7 +6,7 @@ on:
   # completed live runner therefore invokes the same idempotent recovery check
   # immediately; an already-dispatched replacement makes this a no-op.
   workflow_run:
-    workflows: ["Liquid Wire - Continuous Live"]
+    workflows: ["Liquid Wire - Live Broadcast"]
     types: [completed]
   schedule:
     # Recover a broken chain within at most 10 minutes.

@@ -6,6 +6,7 @@ import json
 import os
 import shutil
 import tempfile
+import time
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -13,6 +14,24 @@ from typing import Any
 from utils.state_lock import state_lock
 
 Migration = Callable[[Any], Any]
+
+
+def _replace_atomic(temporary: Path, target: Path) -> None:
+    """Cross-platform atomic replace with a short retry backoff.
+
+    On Windows ``os.replace`` raises ``PermissionError`` if another handle
+    still holds ``target`` open (common under parallel test runs and onedrive
+    sync agents). Retry a few times before giving up so transient locks do
+    not surface as hard failures.
+    """
+    for attempt in range(6):
+        try:
+            os.replace(temporary, target)
+            return
+        except PermissionError:
+            if attempt == 5:
+                raise
+            time.sleep(0.05 * (2 ** attempt))
 
 
 def atomic_write_json(path: Path, data: Any, *, backup: bool = True) -> None:
@@ -32,7 +51,7 @@ def atomic_write_json(path: Path, data: Any, *, backup: bool = True) -> None:
             handle.write(encoded)
             handle.flush()
             os.fsync(handle.fileno())
-        os.replace(temporary, path)
+        _replace_atomic(temporary, path)
     finally:
         temporary.unlink(missing_ok=True)
 
@@ -72,6 +91,6 @@ def save_versioned(path: Path, data: Any, schema_version: int, *, backup: bool =
                 handle.write(encoded)
                 handle.flush()
                 os.fsync(handle.fileno())
-            os.replace(temporary, path)
+            _replace_atomic(temporary, path)
         finally:
             temporary.unlink(missing_ok=True)

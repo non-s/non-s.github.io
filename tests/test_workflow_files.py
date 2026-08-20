@@ -82,7 +82,8 @@ def test_continuous_live_chains_and_has_watchdog() -> None:
     assert "group: liquid-wire-live" not in live
     assert "_data/live_continuity.json" in live
     assert "status == \"in_progress\"" in watchdog
-    assert 'workflows: ["Liquid Wire - Continuous Live"]' in watchdog
+    live_name = _load_workflow("liquid-wire-live.yml").get("name", "")
+    assert f'workflows: ["{live_name}"]' in watchdog
     assert "types: [completed]" in watchdog
 
 
