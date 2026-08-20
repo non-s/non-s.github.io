@@ -20,6 +20,11 @@ def test_description_no_conflict() -> None:
     assert audit_description("Liquid Wire | Wireframe", "Generative art and ambient music") == []
 
 
+def test_metadata_audit_rejects_clickbait_and_missing_provenance() -> None:
+    assert "misleading_clickbait" in audit_title("You Won't Believe This Viral Shape")
+    assert audit_description("A shape", "Pretty colors") == ["procedural_provenance_missing"]
+
+
 def test_authenticated_audit_covers_uploads_outside_public_feed_window() -> None:
     class Request:
         def __init__(self, value):

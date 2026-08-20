@@ -7,6 +7,7 @@ import hashlib
 import json
 import re
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -85,6 +86,7 @@ EVIDENCE_RANGES = (
         49,
         [
             "utils/creative_models.py",
+            "utils/geometry_audio.py",
             "utils/audio_mix.py",
             "utils/liquid_wire_quality.py",
             "tests/test_advanced_audio.py",
@@ -98,6 +100,7 @@ EVIDENCE_RANGES = (
             "utils/publication_policy.py",
             "utils/thumbnail_engine.py",
             "utils/metadata_audit.py",
+            "utils/trending_topics.py",
             "upload_youtube.py",
             "tests/test_publication_policy.py",
         ],
@@ -284,12 +287,27 @@ def _evidence(section: int) -> list[str]:
     raise ValueError(f"missing evidence routing for section {section}")
 
 
+def artifact_hash(relative: str) -> str:
+    path = ROOT / relative
+    digest = hashlib.sha256()
+    if path.is_file():
+        digest.update(path.read_bytes())
+        return digest.hexdigest()
+    if path.is_dir():
+        files = sorted(item for item in path.rglob("*.py") if "__pycache__" not in item.parts)
+        for item in files:
+            digest.update(item.relative_to(path).as_posix().encode())
+            digest.update(item.read_bytes())
+        return digest.hexdigest()
+    raise ValueError(f"evidence path does not exist: {relative}")
+
+
 def build(source: Path) -> dict:
     text = source.read_text(encoding="utf-8")
     headers = list(re.finditer(r"(?m)^# (\d+)\. ([^\r\n]+)", text))
     if [int(match.group(1)) for match in headers] != list(range(178)):
         raise ValueError("mandate must contain every section exactly once from 0 through 177")
-    sections = []
+    sections: list[dict[str, Any]] = []
     for index, match in enumerate(headers):
         end = headers[index + 1].start() if index + 1 < len(headers) else len(text)
         body = text[match.end() : end].strip()
@@ -320,12 +338,14 @@ def build(source: Path) -> dict:
                 ],
             }
         )
+    evidence_paths = sorted({path for section in sections for path in section["evidence"]})
     return {
         "schema_version": 1,
         "source_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
         "section_count": len(sections),
         "subrequirement_count": sum(len(section["requirements"]) for section in sections),
         "allowed_statuses": ["satisfied", "satisfied_by_decision", "ready_pending_real_data"],
+        "evidence_manifest": {path: artifact_hash(path) for path in evidence_paths},
         "sections": sections,
     }
 

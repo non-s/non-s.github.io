@@ -1,10 +1,23 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TRACE = ROOT / "config" / "master_mandate_traceability.json"
+
+
+def _artifact_hash(relative: str) -> str:
+    path = ROOT / relative
+    digest = hashlib.sha256()
+    if path.is_file():
+        digest.update(path.read_bytes())
+    else:
+        for item in sorted(entry for entry in path.rglob("*.py") if "__pycache__" not in entry.parts):
+            digest.update(item.relative_to(path).as_posix().encode())
+            digest.update(item.read_bytes())
+    return digest.hexdigest()
 
 
 def test_every_numbered_mandate_section_is_traced_with_existing_evidence():
@@ -14,6 +27,9 @@ def test_every_numbered_mandate_section_is_traced_with_existing_evidence():
     assert payload["subrequirement_count"] == 658
     assert [row["section"] for row in sections] == list(range(178))
     allowed = set(payload["allowed_statuses"])
+    assert payload["evidence_manifest"]
+    for relative, expected_hash in payload["evidence_manifest"].items():
+        assert _artifact_hash(relative) == expected_hash, f"stale evidence hash: {relative}"
     for row in sections:
         assert row["status"] in allowed
         assert len(row["body_sha256"]) == 64

@@ -28,11 +28,22 @@ def test_genome_is_reproducible_and_separate_from_observation():
     first = Genome.from_profile(_profile(), "short")
     second = Genome.from_profile(_profile(), "short")
     assert first.genome_id == second.genome_id
-    assert first.version == 1
+    assert first.version == 2
     assert ENGINE_VERSION
     dna = VisualDNA({}, {}, {}, {}, {"fingerprint": []}, 3)
     assert content_id(first, dna).startswith("lw_")
     assert "brightness" not in first.to_dict()
+
+
+def test_genome_v1_metadata_migrates_explicitly_and_future_version_is_rejected():
+    current = Genome.from_profile(_profile(), "short").to_dict()
+    legacy = {**current, "version": 1}
+    legacy.pop("strategy_version")
+    migrated = Genome.from_dict(legacy)
+    assert migrated.version == 2
+    assert migrated.strategy_version == 1
+    with pytest.raises(ValueError, match="future"):
+        Genome.from_dict({**current, "version": 999})
 
 
 def test_visual_dna_observes_frames(monkeypatch, tmp_path):

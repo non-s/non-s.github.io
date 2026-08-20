@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import time
 from datetime import UTC, datetime
 from pathlib import Path
@@ -93,7 +94,7 @@ def fetch_trending_topics(category: str = "art") -> list[dict]:
     prompt = (
         "Search the web for currently trending topics in generative art, "
         "procedural visuals, ambient music, algorithmic art, creative coding, "
-        "and related visual-arts communities (YouTube, Reddit, TikTok, art blogs). "
+        "and related visual-arts sources (YouTube and established art publications). "
         "Return a JSON object with key \"topics\": a list of 5 to 10 objects, each "
         "with keys \"topic\" (short phrase, max 4 words), \"relevance\" (float 0-1, "
         "how relevant it is to inspiring evocative generative-art video titles), "
@@ -322,6 +323,10 @@ def enrich_metadata(metadata: dict, family: str, genre: str, preset: str) -> dic
     Se sucesso, substitui ``title`` e ``description`` no metadata. Se falha,
     retorna o metadata inalterado (graceful). Loga se usou trending ou nao.
     """
+    if os.environ.get("LIQUID_WIRE_TREND_METADATA", "0") != "1":
+        metadata["trending_inspired"] = False
+        metadata["trending_policy"] = "disabled_by_default_for_authenticity"
+        return metadata
     try:
         topics = fetch_trending_topics()
         if not topics:

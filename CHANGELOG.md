@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.2.0 - 2026-08-20
+
+- Bumped the engine to 4.2, Genome to v2, strategy to v2 and puzzle protocol to v2 for the exhaustive
+  Master Mandate closure contracts; the uploader remains backward-compatible with validated 4.1 metadata.
+
 ## Master Mandate V2 — exhaustive closure pass
 
 - Added independently enforced generation/upload/Gemini/evolution/puzzle/private/schedule controls.

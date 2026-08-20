@@ -1,6 +1,12 @@
 from __future__ import annotations
 
-from utils.strategy_intelligence import creative_map, lineage_graph, pareto_frontier, value_of_information
+from utils.strategy_intelligence import (
+    creative_map,
+    experiment_meta_learning,
+    lineage_graph,
+    pareto_frontier,
+    value_of_information,
+)
 
 
 def _item(index, score, novelty, confidence=0.8):
@@ -39,3 +45,14 @@ def test_lineage_graph_preserves_unresolved_historical_parents():
     graph = lineage_graph([_item(3, 0.5, 0.5)])
     assert graph["nodes"][0]["generation"] == 3
     assert graph["edges"] == [{"from": "lw_2", "to": "lw_3", "resolved": "false"}]
+
+
+def test_meta_learning_measures_decisive_experiment_yield():
+    ledger = {
+        "experiments": {
+            "a": {"changed_variables": {"motion": [1, 2]}, "result": {"status": "supported"}},
+            "b": {"changed_variables": {"motion": [2, 3]}, "result": {"status": "inconclusive"}},
+        }
+    }
+    summary = experiment_meta_learning(ledger)
+    assert summary["variables"]["motion"] == {"experiments": 2, "decisive": 1, "learning_yield": 0.5}

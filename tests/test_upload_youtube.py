@@ -395,6 +395,8 @@ class TestRecordVideoTags:
         data = json.loads(tags_file.read_text(encoding="utf-8"))
         assert data["vid_e2e"]["scene"] == "cat"
         assert data["vid_e2e"]["mood"] == "relax"
+        assert "engine_version" in data["vid_e2e"]
+        assert "strategy_version" in data["vid_e2e"]
 
 
 class TestQuotaGuard:

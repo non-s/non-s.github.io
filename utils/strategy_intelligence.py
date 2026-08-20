@@ -7,7 +7,8 @@ from typing import Any
 
 import numpy as np
 
-STRATEGY_VERSION = 1
+from utils.creative_models import STRATEGY_VERSION
+
 MIN_CREATIVE_MAP_SAMPLES = 8
 
 
@@ -116,3 +117,31 @@ def lineage_graph(catalog: list[dict[str, Any]]) -> dict[str, Any]:
             parent_id = str(parent)
             edges.append({"from": parent_id, "to": content_id, "resolved": str(parent_id in known).lower()})
     return {"strategy_version": STRATEGY_VERSION, "nodes": nodes, "edges": edges}
+
+
+def experiment_meta_learning(ledger: dict[str, Any]) -> dict[str, Any]:
+    """Measure which tested variables produced decisive evidence, not just views."""
+    experiments = ledger.get("experiments") if isinstance(ledger, dict) else None
+    grouped: dict[str, dict[str, int]] = defaultdict(lambda: {"experiments": 0, "decisive": 0})
+    for experiment in experiments.values() if isinstance(experiments, dict) else []:
+        if not isinstance(experiment, dict):
+            continue
+        changed = experiment.get("changed_variables")
+        if not isinstance(changed, dict) or len(changed) != 1:
+            continue
+        variable = str(next(iter(changed)))
+        grouped[variable]["experiments"] += 1
+        raw_result = experiment.get("result")
+        result: dict[str, Any] = raw_result if isinstance(raw_result, dict) else {}
+        if result.get("status") in {"supported", "contradicted"}:
+            grouped[variable]["decisive"] += 1
+    variables = {
+        variable: {
+            **counts,
+            "learning_yield": round(counts["decisive"] / counts["experiments"], 6)
+            if counts["experiments"]
+            else 0.0,
+        }
+        for variable, counts in sorted(grouped.items())
+    }
+    return {"strategy_version": STRATEGY_VERSION, "variables": variables}

@@ -5,6 +5,8 @@ from upload_youtube import _build_upload_body, _production_contract_issues
 
 def _approved_metadata() -> dict:
     return {
+        "title": "A Shape Dreaming in Color",
+        "description": "Original procedural generative art and music made with code.",
         "visual_source": "procedural_python",
         "audio_source": "synthetic_python",
         "generator_profile": {"engine_version": "2.1"},
@@ -58,6 +60,16 @@ def test_engine_4_1_requires_autonomous_evidence_and_governance() -> None:
     assert "autonomous_identity_missing" in issues
     assert "observed_dna_missing" in issues
     assert "publication_policy_not_approved" in issues
+
+
+def test_engine_4_1_rejects_misleading_or_unproven_metadata() -> None:
+    metadata = _approved_metadata()
+    metadata["generator_profile"]["engine_version"] = "4.1"
+    metadata["title"] = "You Won't Believe This Viral Shape"
+    metadata["description"] = "Pretty colors."
+    issues = _production_contract_issues(metadata)
+    assert "metadata:misleading_clickbait" in issues
+    assert "metadata:procedural_provenance_missing" in issues
 
 
 def test_engine_4_1_accepts_complete_contract_and_obeys_kill_switch() -> None:

@@ -38,7 +38,7 @@ def test_validation_rejects_historical_misrepresentation_and_unfair_density():
     state = PuzzleState(
         enabled=True,
         validated=False,
-        protocol_version=1,
+        protocol_version=2,
         language_version=1,
         canon_version=1,
         episode=1,

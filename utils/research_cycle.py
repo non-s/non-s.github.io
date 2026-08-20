@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from collections import defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
@@ -12,6 +13,13 @@ import numpy as np
 from utils.ai_research_advisor import advise
 from utils.atomic_state import atomic_write_json, load_versioned
 from utils.experiment_engine import Hypothesis, record_hypothesis
+from utils.strategy_intelligence import (
+    creative_map,
+    experiment_meta_learning,
+    lineage_graph,
+    pareto_frontier,
+    value_of_information,
+)
 
 
 def _get(item: dict[str, Any], dotted: str) -> float | None:
@@ -131,6 +139,62 @@ def _proposed_hypotheses(correlations: list[dict[str, Any]]) -> list[Hypothesis]
     return proposals[:3]
 
 
+def _experiment_priorities(
+    hypotheses: list[Hypothesis], correlations: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    signals = {str(signal["variable"]): signal for signal in correlations}
+    priorities: list[dict[str, Any]] = []
+    for hypothesis in hypotheses:
+        signal = signals.get(hypothesis.independent_variable)
+        if signal is None:
+            continue
+        correlation = float(signal["correlation"])
+        priorities.append(
+            {
+                "hypothesis_id": hypothesis.hypothesis_id,
+                "value_of_information": value_of_information(
+                    uncertainty=1.0 - min(1.0, abs(correlation)),
+                    novelty=1.0,
+                    expected_performance=max(0.0, correlation),
+                ),
+            }
+        )
+    return sorted(priorities, key=lambda item: item["value_of_information"], reverse=True)
+
+
+def _plain_json(path: Path, default: Any) -> Any:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return default
+
+
+def _operational_summary(data_root: Path, catalog: list[dict[str, Any]]) -> dict[str, int]:
+    candidate_count = sum(
+        int(item.get("candidate_selection", {}).get("budget", 0))
+        for item in catalog
+        if isinstance(item, dict) and isinstance(item.get("candidate_selection"), dict)
+    )
+    rejection_path = data_root / "rejection_memory.json"
+    rejections = load_versioned(rejection_path, 1, {}, []) if rejection_path.exists() else []
+    metrics = _plain_json(data_root / "pipeline_metrics.json", [])
+    metric_rows = metrics if isinstance(metrics, list) else []
+    renders = sum(
+        1
+        for row in metric_rows
+        if isinstance(row, dict)
+        if str(row.get("stage", "")).startswith("generate")
+    )
+    tags = _plain_json(data_root / "video_tags.json", {})
+    return {
+        "candidates_evaluated": candidate_count,
+        "rejections_recorded": len(rejections) if isinstance(rejections, list) else 0,
+        "render_runs": renders,
+        "creations_cataloged": len(catalog),
+        "videos_published_or_uploaded": len(tags) if isinstance(tags, dict) else 0,
+    }
+
+
 def run_research_cycle(data_root: Path) -> dict[str, Any]:
     catalog_path = data_root / "catalog_memory.json"
     catalog = load_versioned(catalog_path, 1, {}, []) if catalog_path.exists() else []
@@ -140,8 +204,9 @@ def run_research_cycle(data_root: Path) -> dict[str, Any]:
     ledger_path = data_root / "research_ledger.json"
     for hypothesis in hypotheses:
         record_hypothesis(ledger_path, hypothesis)
+    ledger = load_versioned(ledger_path, 1, {}, {"hypotheses": {}, "experiments": {}})
     generated_at = datetime.now(UTC).isoformat()
-    report = {
+    report: dict[str, Any] = {
         "schema_version": 1,
         "generated_at": generated_at,
         "eligible_creations": len(items),
@@ -149,6 +214,12 @@ def run_research_cycle(data_root: Path) -> dict[str, Any]:
         "family_statistics": _family_statistics(items),
         "correlations": correlations,
         "proposed_hypothesis_ids": [hypothesis.hypothesis_id for hypothesis in hypotheses],
+        "experiment_priorities": _experiment_priorities(hypotheses, correlations),
+        "pareto_content_ids": pareto_frontier(items),
+        "creative_map": creative_map(items),
+        "lineage_graph": lineage_graph(items),
+        "meta_learning": experiment_meta_learning(ledger if isinstance(ledger, dict) else {}),
+        "operational_summary": _operational_summary(data_root, catalog if isinstance(catalog, list) else []),
         "limitations": [
             "Observational correlations are not causal evidence.",
             "Fitness comparisons are valid only within stored age windows and format-specific models.",
@@ -175,5 +246,29 @@ def run_research_cycle(data_root: Path) -> dict[str, Any]:
     )
     if not correlations:
         lines.append("- Insufficient comparable observations; no hypothesis was manufactured.")
+    summary: dict[str, int] = report["operational_summary"]
+    lines.extend(
+        [
+            "",
+            "## Retained operational evidence",
+            "",
+            f"- Candidates evaluated: {summary['candidates_evaluated']}",
+            f"- Rejections recorded: {summary['rejections_recorded']}",
+            f"- Render runs: {summary['render_runs']}",
+            f"- Creations cataloged: {summary['creations_cataloged']}",
+            f"- Videos uploaded/published: {summary['videos_published_or_uploaded']}",
+            "",
+            "## Next learning action",
+            "",
+        ]
+    )
+    if report["experiment_priorities"]:
+        best = report["experiment_priorities"][0]
+        lines.append(
+            f"- Highest value-of-information hypothesis: {best['hypothesis_id']} "
+            f"(score={best['value_of_information']:.3f}); controlled replication required."
+        )
+    else:
+        lines.append("- No experiment proposed until a same-format, same-window cohort is sufficient.")
     (data_root / "research_report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     return report

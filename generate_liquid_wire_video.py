@@ -39,13 +39,14 @@ from utils.candidate_selector import select_candidate
 from utils.chapter_markers import prepend_chapters
 from utils.content_strategy import current_brt_hour, min_quality_score_for_slot
 from utils.creative_memory import load_catalog, record_creation
-from utils.creative_models import ENGINE_VERSION, AudioDNA, Genome, content_id
+from utils.creative_models import ENGINE_VERSION, STRATEGY_VERSION, AudioDNA, Genome, content_id
 from utils.drums import DrumSequencer
 from utils.dsp.dynamics import SideChainDuck
 from utils.evolution_engine import evolve_profile
 from utils.flow_field import FlowField, render_flow_particles
 from utils.fluid_deform import fluid_deform
 from utils.genres.registry import GENRES, get_genre
+from utils.geometry_audio import couple_geometry_to_audio
 from utils.instruments import advanced as advanced_instruments
 from utils.instruments import drums as drums_instruments
 from utils.instruments import drums_extended as drums_extended_instruments
@@ -67,6 +68,7 @@ from utils.liquid_wire_composer import (
 from utils.liquid_wire_quality import QualityGateError, QualityReport, assess_video
 from utils.liquid_wire_timeline import CreativeEvent, build_timeline, event_envelope, visual_state
 from utils.lufs_mastering import master_audio as lufs_master
+from utils.metadata_audit import audit_description, audit_title
 from utils.organic_growth import OrganicGrowth, render_branches
 from utils.particle_system import ParticleSystem
 from utils.particle_system import render as render_particles
@@ -512,7 +514,7 @@ def _profile(seed: int, preset: str) -> dict:
     rng = np.random.default_rng(seed)
     family = str(rng.choice(OBJECT_FAMILIES))
     genre_name = _pick_genre_for_seed(seed)
-    return {
+    profile = {
         "family": family,
         "seed": seed,
         "preset": preset,
@@ -571,6 +573,7 @@ def _profile(seed: int, preset: str) -> dict:
             },
         },
     }
+    return couple_geometry_to_audio(profile)
 
 
 def _signature(profile: dict) -> str:
@@ -1656,7 +1659,12 @@ def _metadata(output: Path, thumbnail: Path, duration: float, preset: str, profi
             value = json.loads(generated)
             candidate_title = str(value.get("title", "")).strip()
             candidate_description = str(value.get("description", "")).strip()
-            if candidate_title and candidate_description:
+            if (
+                candidate_title
+                and candidate_description
+                and not audit_title(candidate_title)
+                and not audit_description(candidate_title, candidate_description)
+            ):
                 title = candidate_title[:100]
                 description = candidate_description[:5000]
         except (json.JSONDecodeError, AttributeError):
@@ -1746,7 +1754,7 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
         # AI Composer: Gemini generates musical structure, motor renders it.
         composition = ai_compose_music(int(profile["seed"]), duration, get_genre(genre_name))
     profile["engine_version"] = ENGINE_VERSION
-    profile["strategy_version"] = 1
+    profile["strategy_version"] = STRATEGY_VERSION
     profile["timeline"] = [event.to_dict() for event in events]
     profile["composition"] = composition.to_dict()
     if ai_plan:
@@ -1807,6 +1815,8 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     meta["content_id"] = content_id(genome, visual_dna)
     meta["genome"] = genome.to_dict()
     meta["genome_id"] = genome.genome_id
+    meta["engine_version"] = ENGINE_VERSION
+    meta["strategy_version"] = genome.strategy_version
     meta["visual_dna"] = visual_dna.to_dict()
     meta["visual_dna_id"] = visual_dna.dna_id
     audio_dna = AudioDNA.from_quality_report(quality.to_dict())

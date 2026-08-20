@@ -14,6 +14,20 @@ below eight final-render observations; it does not manufacture clusters. Evicted
 raw catalog records are compacted into versioned aggregates so generations remain
 auditable without unbounded state growth.
 
+## ADR-010 — Engine 4.2 makes closure contracts explicit
+
+Geometry-to-Sound, final-MP4 puzzle-carrier validation and strategy provenance
+change creative contracts, so they ship as engine 4.2, Genome v2, strategy v2
+and puzzle protocol v2. A tested v1-to-v2 Genome migration preserves historical
+metadata instead of silently reinterpreting it.
+
+## ADR-011 — Authentic metadata outranks trend capture
+
+External trend-based title rewriting is disabled by default. If explicitly
+enabled, research is limited to YouTube and established art publications; the
+engine 4.2 upload contract still rejects clickbait and descriptions without
+procedural provenance.
+
 ## ADR-001 — Evolve in place
 
 Decision: preserve the existing generator, upload, analytics and quality

@@ -121,6 +121,7 @@ def test_research_cycle_refuses_to_manufacture_hypotheses_without_data(tmp_path)
     assert report["proposed_hypothesis_ids"] == []
     assert (tmp_path / "research_report.json").exists()
     assert "Insufficient" in (tmp_path / "research_report.md").read_text(encoding="utf-8")
+    assert "Retained operational evidence" in (tmp_path / "research_report.md").read_text(encoding="utf-8")
 
 
 def test_research_cycle_proposes_traceable_noncausal_hypothesis(tmp_path):
@@ -150,6 +151,10 @@ def test_research_cycle_proposes_traceable_noncausal_hypothesis(tmp_path):
     assert all(signal["format"] == "short" and signal["window"] == "72h" for signal in report["correlations"])
     ledger = load_versioned(tmp_path / "research_ledger.json", 1, {}, {})
     assert report["proposed_hypothesis_ids"][0] in ledger["hypotheses"]
+    assert report["experiment_priorities"]
+    assert report["creative_map"]["status"] == "ready"
+    assert report["lineage_graph"]["nodes"]
+    assert "meta_learning" in report
 
 
 def test_research_never_mixes_formats_or_maturity_windows(tmp_path):

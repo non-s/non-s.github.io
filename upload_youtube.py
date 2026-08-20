@@ -24,6 +24,7 @@ from utils.channel_config import active_channel
 from utils.chapter_markers import prepend_chapters
 from utils.content_funnel import append_related_video_cta, record_funnel_candidate
 from utils.log_config import configure_logging, log_exception_to_file
+from utils.metadata_audit import audit_description, audit_title
 from utils.notifier import send_alert
 from utils.paths import data_dir
 from utils.pipeline_metrics import record_pipeline_run
@@ -66,6 +67,11 @@ def _production_contract_issues(meta: dict) -> list[str]:
     if version_parts < (2, 1):
         issues.append("engine_version_below_2_1")
     if version_parts >= (4, 1):
+        issues.extend(f"metadata:{issue}" for issue in audit_title(str(meta.get("title", ""))))
+        issues.extend(
+            f"metadata:{issue}"
+            for issue in audit_description(str(meta.get("title", "")), str(meta.get("description", "")))
+        )
         if not meta.get("content_id") or not isinstance(meta.get("genome"), dict):
             issues.append("autonomous_identity_missing")
         if not isinstance(meta.get("visual_dna"), dict) or not isinstance(meta.get("audio_dna"), dict):
@@ -164,6 +170,8 @@ def _record_video_tags(video_id: str, meta: dict) -> None:
         existing[video_id] = {
             "content_id": meta.get("content_id", ""),
             "genome_id": meta.get("genome_id", ""),
+            "engine_version": meta.get("engine_version", ""),
+            "strategy_version": meta.get("strategy_version", ""),
             "visual_dna_id": meta.get("visual_dna_id", ""),
             "experiment_id": meta.get("experiment_id", ""),
             "hypothesis_id": meta.get("hypothesis_id", ""),

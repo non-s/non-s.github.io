@@ -47,6 +47,9 @@ def record_creation(metadata: dict[str, Any]) -> None:
                 "fitness": None,
                 "experiment_id": metadata.get("experiment_id"),
                 "hypothesis_id": metadata.get("hypothesis_id"),
+                "candidate_selection": metadata.get("generator_profile", {}).get("candidate_selection", {}),
+                "publication_readiness": metadata.get("publication_readiness"),
+                "strategy_version": metadata.get("strategy_version"),
             }
         )
         dropped = catalog[:-CATALOG_LIMIT]

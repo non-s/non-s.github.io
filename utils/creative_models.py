@@ -11,11 +11,11 @@ import json
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
-GENOME_VERSION = 1
+GENOME_VERSION = 2
 VISUAL_DNA_VERSION = 1
 AUDIO_DNA_VERSION = 1
-ENGINE_VERSION = "4.1"
-STRATEGY_VERSION = 1
+ENGINE_VERSION = "4.2"
+STRATEGY_VERSION = 2
 
 
 def _canonical_hash(payload: object) -> str:
@@ -82,6 +82,22 @@ class Genome:
             parents=tuple(str(value) for value in profile.get("parents", []) if value),
             mutations=tuple(value for value in profile.get("mutations", []) if isinstance(value, dict)),
         )
+
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> Genome:
+        """Load v1/v2 Genome metadata through an explicit, lossless migration."""
+        version = int(payload.get("version", 1))
+        if version > GENOME_VERSION:
+            raise ValueError(f"unsupported future Genome version: {version}")
+        migrated = dict(payload)
+        if version == 1:
+            migrated.setdefault("strategy_version", 1)
+            migrated["version"] = GENOME_VERSION
+        migrated["parents"] = tuple(str(value) for value in migrated.get("parents", ()))
+        migrated["mutations"] = tuple(
+            value for value in migrated.get("mutations", ()) if isinstance(value, dict)
+        )
+        return cls(**migrated)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
