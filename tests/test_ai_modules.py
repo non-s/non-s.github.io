@@ -32,6 +32,7 @@ from utils.ai_evolution import (
     load_aesthetic_weights,
     weighted_choice,
 )
+from utils.atomic_state import save_versioned
 from utils.genres.registry import get_genre
 from utils.liquid_wire_timeline import CreativeEvent
 
@@ -152,7 +153,38 @@ def test_evolve_aesthetics_fallback(monkeypatch, tmp_path):
     monkeypatch.setattr(ai_evolution, "_weights_file", lambda: tmp_path / "missing.json")
     result = evolve_aesthetics()
     assert isinstance(result, dict)
-    assert result.get("status") == "fallback"
+    assert result.get("status") == "insufficient_data"
+
+
+def test_evolve_aesthetics_uses_comparable_catalog_when_gemini_is_unavailable(monkeypatch, tmp_path):
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    import utils.ai_evolution as ai_evolution
+
+    monkeypatch.setattr(ai_evolution, "data_dir", lambda: tmp_path)
+    monkeypatch.setattr(ai_evolution, "ai_text", lambda *args, **kwargs: None)
+    catalog = []
+    for index in range(8):
+        high = index >= 4
+        catalog.append(
+            {
+                "kind": "short",
+                "fitness_window": "72h",
+                "fitness": {"score": 0.8 if high else 0.3, "confidence": 0.8},
+                "genome": {
+                    "family": "ribbon" if high else "orb",
+                    "audio": {"genre": "jazz" if high else "ambient"},
+                },
+            }
+        )
+    save_versioned(tmp_path / "catalog_memory.json", catalog, 1)
+
+    result = ai_evolution.evolve_aesthetics()
+    weights = ai_evolution.load_aesthetic_weights()
+
+    assert result["status"] == "evolved_deterministic"
+    assert result["eligible_samples"] == 8
+    assert weights["family_weights"]["ribbon"] > weights["family_weights"]["orb"]
+    assert weights["genre_weights"]["jazz"] > weights["genre_weights"]["ambient"]
 
 
 # ---------------------------------------------------------------------------

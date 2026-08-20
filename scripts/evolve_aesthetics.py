@@ -25,7 +25,7 @@ def main() -> int:
     log.info("Starting aesthetic evolution cycle...")
     report = evolve_aesthetics()
     status = report.get("status", "unknown")
-    if status == "evolved":
+    if status in {"evolved", "evolved_deterministic"}:
         log.info("Evolution complete: aesthetic weights updated.")
         weights = load_aesthetic_weights()
         fw = len(weights.get("family_weights", {}))
