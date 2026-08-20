@@ -53,6 +53,24 @@ def test_primary_workflows_expose_governance_switches() -> None:
     assert "LIQUID_WIRE_FORCE_PRIVATE" in video
 
 
+def test_horizontal_schedule_is_never_downgraded_to_short() -> None:
+    video = (WORKFLOWS_DIR / "liquid-wire-video.yml").read_text(encoding="utf-8")
+    horizontal = video.split('elif [ "${{ github.event.schedule }}" = "37 21 * * 2,4,6" ]', 1)[1]
+    horizontal = horizontal.split("else", 1)[0]
+    assert 'preset="long"' in horizontal
+    assert "check_long_form_candidate.py" not in horizontal
+
+
+def test_continuous_live_chains_and_has_watchdog() -> None:
+    live = (WORKFLOWS_DIR / "liquid-wire-live.yml").read_text(encoding="utf-8")
+    watchdog = (WORKFLOWS_DIR / "liquid-wire-live-watchdog.yml").read_text(encoding="utf-8")
+    assert "duration_minutes=330" in live
+    assert "continuous=true" in live
+    assert "gh workflow run liquid-wire-live.yml" in live
+    assert "7,37 * * * *" in watchdog
+    assert "status == \"in_progress\"" in watchdog
+
+
 @pytest.mark.parametrize("filename", list(WORKFLOW_FILES.keys()))
 def test_workflow_file_exists(filename: str) -> None:
     path = WORKFLOWS_DIR / filename

@@ -32,6 +32,17 @@ def test_profiles_vary_shape_and_palette() -> None:
     assert len({profile["material"]["glow_stride"] for profile in profiles}) >= 2
 
 
+def test_genre_selection_uses_full_catalog() -> None:
+    selected = {liquid._pick_genre_for_seed(seed) for seed in range(500)}
+    assert len(selected) > liquid._STYLE_DRIFT_SUBSET_SIZE
+
+
+def test_recent_genre_is_rejected_even_when_visual_family_differs() -> None:
+    profile = liquid._profile(321, "short")
+    history = [{"family": "different", "genre": profile["genre"], "creative_vector": {}}]
+    assert liquid._materially_distinct(profile, history) is False
+
+
 def test_rupture_opens_real_mesh_gaps() -> None:
     intact = liquid._rupture_visibility(100, {"rupture": 0.0, "direction_x": 1.0, "direction_y": 0.0})
     ruptured = liquid._rupture_visibility(100, {"rupture": 0.9, "direction_x": 1.0, "direction_y": 0.0})

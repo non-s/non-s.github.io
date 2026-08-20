@@ -41,6 +41,7 @@ def record_creation(metadata: dict[str, Any]) -> None:
                 "visual_dna": metadata.get("visual_dna"),
                 "audio_dna_id": metadata.get("audio_dna_id"),
                 "audio_dna": metadata.get("audio_dna"),
+                "audio_composition_id": metadata.get("audio_composition_id"),
                 "quality": metadata.get("quality_report"),
                 "puzzle": metadata.get("genome", {}).get("puzzle", {}),
                 "performance_windows": {},

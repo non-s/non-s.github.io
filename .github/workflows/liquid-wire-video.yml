@@ -93,14 +93,10 @@ jobs:
             preset="${{ inputs.preset }}"
             duration="${{ inputs.duration }}"
           elif [ "${{ github.event.schedule }}" = "37 21 * * 2,4,6" ]; then
-            if python scripts/check_long_form_candidate.py; then
-              preset="long"
-              duration="180"
-            else
-              echo "No replicated mature Short winner; using another Short experiment."
-              preset="short"
-              duration=$((27 + ${{ github.run_id }} % 19))
-            fi
+            # Horizontal has its own guaranteed cadence. Analytics may guide
+            # its creative family, but sparse data must never cancel the format.
+            preset="long"
+            duration="180"
           else
             preset="short"
             # 27-45 segundos, deterministico por execucao e sempre dentro do limite de Short.

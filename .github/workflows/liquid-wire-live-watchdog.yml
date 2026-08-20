@@ -1,0 +1,43 @@
+name: "Liquid Wire - Continuous Live Watchdog"
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Recover a broken chain within at most 30 minutes.
+    - cron: "7,37 * * * *"
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: liquid-wire-live-watchdog
+  cancel-in-progress: true
+
+jobs:
+  ensure-live:
+    name: "Ensure continuous live session exists"
+    if: ${{ vars.LIQUID_WIRE_ENABLED == '1' && vars.LIQUID_WIRE_PAUSE_SCHEDULES != '1' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Inspect and recover live chain"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          active=$(gh run list \
+            --repo "${{ github.repository }}" \
+            --workflow liquid-wire-live.yml \
+            --limit 20 \
+            --json status \
+            --jq '[.[] | select(.status == "in_progress" or .status == "queued" or .status == "pending")] | length')
+          if [ "$active" -eq 0 ]; then
+            gh workflow run liquid-wire-live.yml \
+              --repo "${{ github.repository }}" \
+              --ref main \
+              -f duration_minutes=330 \
+              -f privacy=public \
+              -f continuous=true
+            echo "Continuous live chain recovered."
+          else
+            echo "Continuous live session already active or queued."
+          fi

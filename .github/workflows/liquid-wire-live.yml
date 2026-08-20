@@ -6,19 +6,22 @@ on:
       duration_minutes:
         description: "Live duration in minutes (5-330)"
         required: false
-        default: "30"
+        default: "330"
       privacy:
         description: "Broadcast privacy"
         required: false
         default: "public"
         type: choice
         options: ["public", "unlisted", "private"]
-  schedule:
-    # Live semanal aos sabados as 16:00 UTC (13:00 BRT).
-    - cron: "0 16 * * 6"
+      continuous:
+        description: "Start the next session automatically"
+        required: false
+        default: true
+        type: boolean
 
 permissions:
   contents: read
+  actions: write
 
 concurrency:
   group: liquid-wire-live
@@ -35,6 +38,7 @@ jobs:
       YOUTUBE_PRIVACY: ${{ inputs.privacy || 'public' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       LIQUID_WIRE_SS_FACTOR: "1"
+      LIQUID_WIRE_FORCE_PRIVATE: ${{ vars.LIQUID_WIRE_FORCE_PRIVATE || '0' }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -58,18 +62,29 @@ jobs:
         run: python scripts/check_live_readiness.py
       - name: "Generate source video"
         run: |
-          python generate_liquid_wire_video.py --preset long --duration 600
+          # A fresh horizontal audiovisual source is generated for every
+          # session.  A compact source minimizes the hand-off gap while FFmpeg
+          # repeats it for the full five-and-a-half-hour broadcast.
+          python generate_liquid_wire_video.py --preset live-test --duration 30
       - name: "Broadcast to YouTube Live"
         run: |
-          video=$(ls -t _videos/liquid_wire_long_*.mp4 2>/dev/null | head -1)
+          video=$(ls -t _videos/liquid_wire_live-test_*.mp4 2>/dev/null | head -1)
           if [ -z "$video" ]; then
             echo "::error::No source video found in _videos/"
             exit 1
           fi
           python scripts/run_liquid_wire_live.py \
             --video "$video" \
-            --duration-minutes "${{ inputs.duration_minutes || '30' }}" \
+            --duration-minutes "${{ inputs.duration_minutes || '330' }}" \
             --privacy "$YOUTUBE_PRIVACY"
+      - name: "Chain next continuous session"
+        if: ${{ success() && inputs.continuous == true }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh workflow run liquid-wire-live.yml --ref main
+          -f duration_minutes=330 -f privacy=${{ inputs.privacy || 'public' }}
+          -f continuous=true
       - name: "Upload live evidence"
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
