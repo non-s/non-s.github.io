@@ -77,6 +77,7 @@ class Genome:
                 "genre": profile.get("genre", "lofi_ambient"),
                 "music": profile.get("music", {}),
                 "composition_mode": composition.get("mode"),
+                "composition_id": profile.get("audio_composition_id"),
             },
             puzzle=profile.get("puzzle", {"enabled": False}),
             parents=tuple(str(value) for value in profile.get("parents", []) if value),

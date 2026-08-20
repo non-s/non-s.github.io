@@ -53,6 +53,14 @@ Workflow principal:
 
 - `Liquid Wire - Generate and Upload`
 
+Cadência e variedade:
+
+- Shorts horários e horizontais garantidos às terças, quintas e sábados.
+- Gêneros recentes não se repetem e cada composição possui identidade
+  criptográfica própria; visual e áudio duplicados são bloqueados.
+- `Liquid Wire - Live Broadcast` transmite sessões encadeadas de 330 minutos;
+  o watchdog recupera a cadeia em até 30 minutos se uma execução quebrar.
+
 ## Nova identidade
 
 - Nome: Liquid Wire

@@ -46,6 +46,14 @@ runs:
           _data/open_research_catalog.json
           _data/generator_history.json
           _data/quality_history.json
+          _data/style_drift.json
+          _data/catalog_memory.json
+          _data/catalog_archive.json
+          _data/rejection_memory.json
+          _data/canon_state.json
+          _data/evolution_state.json
+          _data/experiment_ledger.json
+          _data/research_state.json
         key: liquid-wire-data-${{ github.run_id }}
         restore-keys: liquid-wire-data-
     - name: "Cache analytics/dash"

@@ -502,10 +502,8 @@ def _current_genres() -> list[str]:
 
 
 def _pick_genre_for_seed(seed: int) -> str:
-    """Deterministically select a genre from the current style-drift subset."""
-    subset = _current_genres()
-    if not subset:
-        subset = sorted(GENRES.keys())
+    """Select deterministically from the full catalog for maximum variation."""
+    subset = sorted(GENRES.keys())
     rng = np.random.default_rng(seed ^ 0x5354594C45)
     return str(rng.choice(subset))
 
@@ -595,6 +593,11 @@ def _materially_distinct(profile: dict, history: list[dict]) -> bool:
     recent = [item for item in history[-48:] if isinstance(item, dict)]
     if any(item.get("family") == profile["family"] for item in recent[-2:]):
         return False
+    # Consecutive works must not reuse the same musical language.  The full
+    # 32-genre registry is available, so a four-release exclusion window is
+    # cheap and makes audible variation explicit instead of incidental.
+    if any(item.get("genre") == profile["genre"] for item in recent[-4:]):
+        return False
     hue = float(profile["palette"]["base_hue"])
     for item in recent:
         vector = item.get("creative_vector")
@@ -643,6 +646,7 @@ def _reserve_profile(preset: str, requested_seed: int | None) -> dict:
                     "seed": seed,
                     "signature": signature,
                     "family": profile["family"],
+                    "genre": profile["genre"],
                     "preset": preset,
                     "creative_vector": {
                         "hue": profile["palette"]["base_hue"],
@@ -1757,6 +1761,19 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     profile["strategy_version"] = STRATEGY_VERSION
     profile["timeline"] = [event.to_dict() for event in events]
     profile["composition"] = composition.to_dict()
+    profile["audio_composition_id"] = hashlib.sha256(
+        json.dumps(
+            {"genre": genre_name, "composition": composition.to_dict()},
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()[:24]
+    if any(
+        item.get("audio_composition_id") == profile["audio_composition_id"]
+        for item in catalog
+        if isinstance(item, dict)
+    ):
+        raise QualityGateError("Audio composition rejected: exact composition already exists")
     if ai_plan:
         profile["ai_plan"] = ai_plan
     genome = Genome.from_profile(profile, preset)
@@ -1822,6 +1839,7 @@ def generate(duration: float, preset: str, seed: int | None = None) -> Path:
     audio_dna = AudioDNA.from_quality_report(quality.to_dict())
     meta["audio_dna"] = audio_dna.to_dict()
     meta["audio_dna_id"] = audio_dna.dna_id
+    meta["audio_composition_id"] = profile["audio_composition_id"]
     publication = evaluate_publication(
         quality.to_dict(), visual_dna.to_dict(), audio_dna.to_dict(), puzzle=genome.puzzle,
         experiment=profile.get("experiment"), force_private=autonomy.force_private,

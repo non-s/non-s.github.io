@@ -35,6 +35,12 @@ def test_genome_is_reproducible_and_separate_from_observation():
     assert "brightness" not in first.to_dict()
 
 
+def test_genome_carries_unique_audio_composition_contract():
+    profile = {**_profile(), "audio_composition_id": "score_123"}
+    genome = Genome.from_profile(profile, "short")
+    assert genome.audio["composition_id"] == "score_123"
+
+
 def test_genome_v1_metadata_migrates_explicitly_and_future_version_is_rejected():
     current = Genome.from_profile(_profile(), "short").to_dict()
     legacy = {**current, "version": 1}

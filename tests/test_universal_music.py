@@ -143,14 +143,13 @@ def test_style_drift_force_changes_subset(tmp_path: Path, monkeypatch) -> None:
     assert a["rotation"] != b["rotation"]
 
 
-def test_pick_genre_for_seed_is_deterministic_and_in_subset(tmp_path: Path, monkeypatch) -> None:
+def test_pick_genre_for_seed_is_deterministic_and_in_full_catalog(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.setattr(liquid, "data_dir", lambda: tmp_path)
     liquid._update_style_drift(force=True)
     g1 = liquid._pick_genre_for_seed(999)
     g2 = liquid._pick_genre_for_seed(999)
     assert g1 == g2
-    subset = set(liquid._current_genres())
-    assert g1 in subset
+    assert g1 in set(list_genres())
 
 
 def test_pick_genre_for_seed_uses_all_genres_when_no_drift_file(monkeypatch, tmp_path) -> None:
