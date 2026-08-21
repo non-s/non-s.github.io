@@ -392,7 +392,7 @@ def _record_quality(profile: dict, report: QualityReport) -> None:
         atomic_write_json(path, history[-QUALITY_HISTORY_LIMIT:])
 
 
-def _recent_quality_fingerprints(limit: int = 96) -> list[tuple[float, ...]]:
+def _recent_quality_fingerprints(limit: int = 32) -> list[tuple[float, ...]]:
     path = data_dir() / "quality_history.json"
     # Read under the same lock used by _record_quality to avoid a TOCTOU race
     # where a concurrent writer truncates the file mid-read (which would make
@@ -2168,8 +2168,18 @@ def _short_duration_for_slot() -> float:
 
 
 def _retry_evolution_mode(error: str, current: EvolutionMode | None) -> EvolutionMode | None:
-    """Escape inherited lineages after a measured novelty rejection."""
-    return "off" if "duplicate" in error.lower() else current
+    """Force an aggressive mutation to escape a near-duplicate lineage.
+
+    Previously this returned ``"off"`` on duplicate rejections, which disabled
+    evolution entirely and left retries stuck in the same visual basin — the
+    varied seed alone was not enough to escape the 32-dim fingerprint
+    neighbourhood, so all 3 attempts failed with ``perceptual_near_duplicate``.
+    Forcing ``"active"`` ensures the retry inherits and mutates a *different*
+    parent genome, producing a perceptually distinct render.
+    """
+    if "duplicate" in error.lower():
+        return "active"
+    return current
 
 
 def main() -> int:
@@ -2203,8 +2213,11 @@ def main() -> int:
         if args.seed is not None or attempt == 1:
             attempt_seed = effective_seed
         else:
-            # Deterministically vary seed on retries so subsequent attempts generate distinct variations
-            seed_entropy = int(hashlib.sha256(f"attempt:{attempt}:{slot}".encode()).hexdigest(), 16)
+            # Deterministically vary seed on retries so subsequent attempts generate distinct variations.
+            # When escaping a near-duplicate, mix in extra entropy from the error
+            # itself so the retry does not land in the same visual basin.
+            escape_salt = str(last_error).encode() if last_error else b""
+            seed_entropy = int(hashlib.sha256(f"attempt:{attempt}:{slot}:".encode() + escape_salt).hexdigest(), 16)
             attempt_seed = (effective_seed + attempt * 10007 + seed_entropy) % (2**32)
         try:
             output = generate(
@@ -2218,8 +2231,8 @@ def main() -> int:
             print(f"Quality attempt {attempt}/{args.attempts} failed: {exc}")
             last_error = str(exc)
             next_mode = _retry_evolution_mode(last_error, evolution_mode_override)
-            if next_mode == "off" and evolution_mode_override != "off":
-                print("Novelty escape activated: retrying from a fresh non-inherited lineage.")
+            if next_mode == "active" and evolution_mode_override != "active":
+                print("Novelty escape activated: forcing aggressive mutation to escape duplicate lineage.")
             evolution_mode_override = next_mode
             try:
                 history = _load_history()

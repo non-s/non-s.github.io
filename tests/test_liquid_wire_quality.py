@@ -84,7 +84,7 @@ def test_perceptual_fingerprint_detects_duplicates() -> None:
     duplicate = _fingerprint_frames()
     different = tuple(_frame_metrics([_frame(80, 160), _frame(95, 160), _frame(105, 160)])["fingerprint"])
     assert _fingerprint_distance(first, duplicate) == 0.0
-    # Frente E recalibrated the near-duplicate threshold to 0.04 for 32 dims.
+    # Frente E recalibrated the near-duplicate threshold for 32 dims.
     assert _fingerprint_distance(first, different) > NEAR_DUPLICATE_THRESHOLD
 
 

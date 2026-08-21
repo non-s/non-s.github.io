@@ -70,6 +70,12 @@ def test_video_and_analytics_rebuild_append_only_publication_ledger() -> None:
         assert "restore-publication-ledger.sh" in workflow
 
 
+def test_live_and_evolution_rebuild_append_only_publication_ledger() -> None:
+    for filename in ("liquid-wire-live.yml", "liquid-wire-evolution.yml"):
+        workflow = (WORKFLOWS_DIR / filename).read_text(encoding="utf-8")
+        assert "restore-publication-ledger.sh" in workflow
+
+
 def test_continuous_live_chains_and_has_watchdog() -> None:
     live = (WORKFLOWS_DIR / "liquid-wire-live.yml").read_text(encoding="utf-8")
     watchdog = (WORKFLOWS_DIR / "liquid-wire-live-watchdog.yml").read_text(encoding="utf-8")

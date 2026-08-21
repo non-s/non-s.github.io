@@ -61,10 +61,15 @@ def _detect_duplicate_publication(tags: Any, now: datetime) -> tuple[bool, str]:
     (``publication_ledger._legacy_receipts``) intentionally leaves
     ``visual_dna_id`` blank when evidence is ambiguous, so those never match
     here and cannot poison the guard.
+
+    Recovery runs of the same scheduled slot legitimately reproduce the same
+    ``content_id``+``visual_dna_id`` and publish under a new ``video_id``.
+    When both records share the same ``production_slot`` we treat them as a
+    re-render, not a re-publication, and skip the guard.
     """
     if not isinstance(tags, dict):
         return False, ""
-    by_content: dict[tuple[str, str], list[tuple[datetime, str]]] = {}
+    by_content: dict[tuple[str, str], list[tuple[datetime, str, str]]] = {}
     for video_id, record in tags.items():
         if not isinstance(record, dict):
             continue
@@ -79,19 +84,27 @@ def _detect_duplicate_publication(tags: Any, now: datetime) -> tuple[bool, str]:
             continue
         if observed.tzinfo is None:
             observed = observed.replace(tzinfo=UTC)
-        by_content.setdefault((content_id, visual_dna_id), []).append((observed, str(video_id)))
+        slot = str(record.get("production_slot") or "")
+        by_content.setdefault((content_id, visual_dna_id), []).append((observed, str(video_id), slot))
     for (content_id, visual_dna_id), entries in by_content.items():
         if len(entries) < 2:
             continue
         entries.sort(key=lambda item: item[0])
         for older, newer in zip(entries, entries[1:], strict=False):
-            if newer[0] - older[0] <= DUPLICATE_WINDOW and newer[1] != older[1]:
-                return True, (
-                    f"duplicate content publication detected: content_id={content_id} "
-                    f"visual_dna_id={visual_dna_id} "
-                    f"video_ids={older[1]},{newer[1]} "
-                    f"within_{int(DUPLICATE_WINDOW.total_seconds())}s"
-                )
+            if newer[1] == older[1]:
+                continue
+            if newer[0] - older[0] > DUPLICATE_WINDOW:
+                continue
+            # Same production_slot → recovery/re-render of the same scheduled
+            # slot, not a genuine re-publication.
+            if older[2] and newer[2] and older[2] == newer[2]:
+                continue
+            return True, (
+                f"duplicate content publication detected: content_id={content_id} "
+                f"visual_dna_id={visual_dna_id} "
+                f"video_ids={older[1]},{newer[1]} "
+                f"within_{int(DUPLICATE_WINDOW.total_seconds())}s"
+            )
     return False, ""
 
 

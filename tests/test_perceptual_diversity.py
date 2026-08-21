@@ -2,7 +2,7 @@
 
 Testes de diversidade: 24 seeds diferentes devem produzir 24 impressoes
 digitais perceptuais distintas, com distancia pareada acima do threshold de
-near-duplicate (0.04), e a projecao PCA 2D deve produzir pontos 2D validos
+near-duplicate, e a projecao PCA 2D deve produzir pontos 2D validos
 para cada video.
 """
 
@@ -43,7 +43,7 @@ def _seeded_frames(seed: int, n: int = 4) -> list[np.ndarray]:
     rectangle, diagonal stripes, scattered dots, concentric rings) and a
     different hue / position / size, so the activity, centroid, motion,
     LBP, HSV and entropy dims all vary strongly across seeds. This keeps
-    every pair of seeds above the 0.04 near-duplicate diversity threshold.
+    every pair of seeds above the near-duplicate diversity threshold.
     """
     rng = np.random.default_rng(seed)
     base_hue = _hue_for_seed(seed)

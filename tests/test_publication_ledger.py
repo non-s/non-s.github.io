@@ -86,6 +86,28 @@ def test_rebuild_refuses_ambiguous_legacy_match(tmp_path) -> None:
     assert result["legacy_matches"] == 0
 
 
+def test_rebuild_deduplicates_recovery_renders_same_content(tmp_path) -> None:
+    """A recovery of the same slot publishes a new video_id with the same
+    content_id+visual_dna_id. The rebuild must keep only the most recent
+    video_id so the rollback duplicate guard never sees a stale pair.
+    """
+    evidence, data = tmp_path / "evidence", tmp_path / "data"
+    for video_id, uploaded in (("v1", "2026-08-20T11:00:00Z"), ("v2", "2026-08-20T11:30:00Z")):
+        meta = _metadata("lw-dup", "Recovery Test")
+        meta["visual_dna_id"] = "vdna_same"
+        receipt = publication_receipt(video_id, meta, uploaded_at=uploaded)
+        folder = evidence / video_id
+        folder.mkdir(parents=True)
+        (folder / f"publication_receipt_{video_id}.json").write_text(json.dumps(receipt), encoding="utf-8")
+
+    result = rebuild_publication_state(evidence, data)
+
+    tags = json.loads((data / "video_tags.json").read_text())
+    assert "v1" not in tags, "stale recovery video_id should be deduplicated"
+    assert "v2" in tags
+    assert result["video_tags"] == 1
+
+
 def test_rebuild_recovers_causal_cohort_from_self_contained_receipt(tmp_path) -> None:
     evidence, data = tmp_path / "evidence", tmp_path / "data"
     evidence.mkdir()

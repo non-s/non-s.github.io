@@ -73,6 +73,57 @@ def test_duplicate_outside_window_does_not_block(tmp_path):
     assert not any("duplicate" in r for r in decision.reasons)
 
 
+def test_recovery_of_same_slot_does_not_trigger_duplicate(tmp_path):
+    """A recovery run of the same scheduled slot reproduces the same
+    content_id+visual_dna_id under a new video_id. This is a re-render,
+    not a re-publication, and must not arm the kill switch.
+    """
+    now = datetime(2026, 1, 1, 12, tzinfo=UTC)
+    tags = {
+        "yt1": {
+            "content_id": "lw_x",
+            "visual_dna_id": "vdna_42",
+            "uploaded_at": "2026-01-01T06:30:00+00:00",
+            "production_slot": "2026-01-01T06",
+        },
+        "yt2": {
+            "content_id": "lw_x",
+            "visual_dna_id": "vdna_42",
+            "uploaded_at": "2026-01-01T07:15:00+00:00",
+            "production_slot": "2026-01-01T06",
+        },
+    }
+    (tmp_path / "video_tags.json").write_text(json.dumps(tags), encoding="utf-8")
+    decision = assess_rollback(tmp_path, now=now)
+    assert not any("duplicate" in r for r in decision.reasons)
+    assert decision.block_publication is False
+
+
+def test_different_slots_same_content_does_trigger_duplicate(tmp_path):
+    """Same content_id+visual_dna_id from *different* slots within 6h is a
+    genuine re-publication and must be blocked.
+    """
+    now = datetime(2026, 1, 1, 12, tzinfo=UTC)
+    tags = {
+        "yt1": {
+            "content_id": "lw_x",
+            "visual_dna_id": "vdna_42",
+            "uploaded_at": "2026-01-01T06:30:00+00:00",
+            "production_slot": "2026-01-01T06",
+        },
+        "yt2": {
+            "content_id": "lw_x",
+            "visual_dna_id": "vdna_42",
+            "uploaded_at": "2026-01-01T07:15:00+00:00",
+            "production_slot": "2026-01-01T07",
+        },
+    }
+    (tmp_path / "video_tags.json").write_text(json.dumps(tags), encoding="utf-8")
+    decision = assess_rollback(tmp_path, now=now)
+    assert any("duplicate" in r for r in decision.reasons)
+    assert decision.block_publication is True
+
+
 def test_local_policy_rejections_do_not_self_trigger_upload_rollback(tmp_path):
     now = datetime(2026, 1, 1, 12, tzinfo=UTC)
     metrics = [

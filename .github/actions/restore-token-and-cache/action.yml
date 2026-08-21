@@ -54,6 +54,9 @@ runs:
           _data/evolution_state.json
           _data/experiment_ledger.json
           _data/research_state.json
+          _data/pipeline_metrics.json
+          _data/dead_letter_queue.json
+          _data/research_ledger.json
         key: liquid-wire-data-${{ github.run_id }}
         restore-keys: liquid-wire-data-
     - name: "Cache analytics/dash"

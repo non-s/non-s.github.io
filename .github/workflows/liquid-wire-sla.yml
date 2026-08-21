@@ -12,6 +12,7 @@ permissions:
 jobs:
   audit:
     name: "Audit 24 completed hourly Short slots"
+    if: ${{ vars.LIQUID_WIRE_ENABLED == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

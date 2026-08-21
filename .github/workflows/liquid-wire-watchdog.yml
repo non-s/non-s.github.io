@@ -17,6 +17,7 @@ concurrency:
 jobs:
   ensure-hourly-short:
     name: "Ensure this hour has a healthy Short run"
+    if: ${{ vars.LIQUID_WIRE_ENABLED == '1' && vars.LIQUID_WIRE_PAUSE_SCHEDULES != '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

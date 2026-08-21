@@ -98,6 +98,7 @@ def video_tag_record(metadata: dict[str, Any], uploaded_at: str) -> dict[str, An
         "visual_intelligence": metadata.get("visual_intelligence", {}),
         "story_card": metadata.get("story_card", {}),
         "viewer_experience": metadata.get("viewer_experience", {}),
+        "production_slot": metadata.get("production_slot"),
     }
 
 
@@ -229,6 +230,30 @@ def rebuild_publication_state(evidence_root: Path, data_root: Path) -> dict[str,
 
     ordered_catalog = sorted(by_content.values(), key=lambda row: str(row.get("generated_at", "")))[-CATALOG_LIMIT:]
     ordered_tags = dict(sorted(tags.items(), key=lambda item: str(item[1].get("uploaded_at", "")))[-500:])
+    # Deduplicate by content_id + visual_dna_id: when a recovery/re-render of
+    # the same slot publishes a new video_id, keep only the most recent entry
+    # so the rollback duplicate guard never sees a stale pair.
+    seen_content_visual: dict[tuple[str, str], str] = {}
+    for vid, tag in list(ordered_tags.items()):
+        if not isinstance(tag, dict):
+            continue
+        cid = str(tag.get("content_id", "") or "")
+        vdid = str(tag.get("visual_dna_id", "") or "")
+        if not cid or not vdid:
+            continue
+        key = (cid, vdid)
+        if key in seen_content_visual:
+            older_vid = seen_content_visual[key]
+            older_tag = ordered_tags.get(older_vid, {})
+            older_ts = str(older_tag.get("uploaded_at", "")) if isinstance(older_tag, dict) else ""
+            newer_ts = str(tag.get("uploaded_at", ""))
+            if newer_ts >= older_ts:
+                del ordered_tags[older_vid]
+                seen_content_visual[key] = vid
+            else:
+                del ordered_tags[vid]
+        else:
+            seen_content_visual[key] = vid
     data_root.mkdir(parents=True, exist_ok=True)
     save_versioned(catalog_path, ordered_catalog, CATALOG_SCHEMA_VERSION)
     experiment_assignments = _rebuild_experiment_state(data_root, ordered_catalog)

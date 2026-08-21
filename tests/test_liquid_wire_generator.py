@@ -26,10 +26,11 @@ def test_long_render_cost_is_bounded_but_short_keeps_full_source_rate(monkeypatc
     assert 180 * liquid._render_fps_for_preset("long") == 1800
 
 
-def test_duplicate_rejection_forces_fresh_non_inherited_retry() -> None:
-    assert liquid._retry_evolution_mode("perceptual_near_duplicate", None) == "off"
-    assert liquid._retry_evolution_mode("final render is a perceptual near-duplicate", "active") == "off"
+def test_duplicate_rejection_forces_aggressive_mutation_retry() -> None:
+    assert liquid._retry_evolution_mode("perceptual_near_duplicate", None) == "active"
+    assert liquid._retry_evolution_mode("final render is a perceptual near-duplicate", "active") == "active"
     assert liquid._retry_evolution_mode("audio clipping", "active") == "active"
+    assert liquid._retry_evolution_mode("insufficient-motion", None) is None
 
 
 def test_profile_is_deterministic_for_seed() -> None:
